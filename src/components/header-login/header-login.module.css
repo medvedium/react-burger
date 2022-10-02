@@ -1,0 +1,21 @@
+.headerLogin {
+    justify-self: end;
+}
+
+.header_login_link {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: unset;
+    text-decoration: none;
+}
+
+.headerLogin:hover p {
+    color: #ffffff;
+    transition: all .2s linear;
+}
+
+.headerLogin:hover svg {
+    transition: all .2s linear;
+    fill: #fff;
+}
