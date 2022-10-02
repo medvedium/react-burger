@@ -1,5 +1,7 @@
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-constructor-item.module.css'
+import PropTypes from "prop-types";
+import {ingredientItem} from "../../utils/constants";
 
 const BurgerConstructorItem = ({item}) => {
     return (
@@ -15,5 +17,8 @@ const BurgerConstructorItem = ({item}) => {
     )
 }
 
+BurgerConstructorItem.propTypes = {
+    data: PropTypes.arrayOf(ingredientItem)
+}
 
 export default BurgerConstructorItem

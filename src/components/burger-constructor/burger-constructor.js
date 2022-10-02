@@ -1,8 +1,5 @@
 import BurgerConstructorTabs from "../burger-constructor-tabs/burger-constructor-tabs";
 import BurgerConstructorList from "../burger-constructor-list/burger-constructor-list";
-import PropTypes from "prop-types";
-import {ingredientItem} from "../../utils/constants";
-import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 
 const BurgerConstructor = (data) => {
     return(
@@ -17,8 +14,5 @@ const BurgerConstructor = (data) => {
 }
 
 
-BurgerConstructorItem.propTypes = {
-    data: PropTypes.arrayOf(ingredientItem)
-}
 
 export default BurgerConstructor
