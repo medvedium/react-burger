@@ -7,7 +7,7 @@ const OrderDetails = () => {
     <div className={styles.order_details}>
       <p className="text text_type_digits-large mb-8">034536</p>
       <p className="text text_type_main-medium mb-15">идентификатор заказа</p>
-      <img src={done} className="mb-15" />
+      <img src={done} className="mb-15" alt="Заказ успешно оформлен" />
       <p className="text text_type_main-default mb-2">
         Ваш заказ начали готовить
       </p>

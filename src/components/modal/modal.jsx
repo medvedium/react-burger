@@ -4,18 +4,17 @@ import ModalHeader from "../modal-header/modal-header";
 import styles from "./modal.module.css";
 import PropTypes from "prop-types";
 
-const Modal = (props) => {
-  const { isOpened, header, onClose } = props;
-  const closeModalByKeyboard = (event) => {
+const Modal = ({ isOpened, header, onClose, children }) => {
+  const escapeListener = (event) => {
     if (event.keyCode === 27) {
       onClose();
     }
   };
 
   useEffect(() => {
-    window.addEventListener("keydown", closeModalByKeyboard);
+    window.addEventListener("keydown", escapeListener);
     return () => {
-      window.removeEventListener("keydown", closeModalByKeyboard);
+      window.removeEventListener("keydown", escapeListener);
     };
   });
 
@@ -23,7 +22,7 @@ const Modal = (props) => {
     <ModalOverlay isOpened={isOpened} onClose={onClose}>
       <div className={styles.container}>
         <ModalHeader onClose={onClose} header={header} />
-        {props.children}
+        {children}
       </div>
     </ModalOverlay>
   );
@@ -33,6 +32,7 @@ Modal.propTypes = {
   isOpened: PropTypes.bool.isRequired,
   header: PropTypes.string,
   onClose: PropTypes.func.isRequired,
+  children: PropTypes.any,
 };
 
 export default Modal;
