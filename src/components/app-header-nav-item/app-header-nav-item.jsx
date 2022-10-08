@@ -1,17 +1,17 @@
 import styles from "./app-header-nav-item.module.css";
 import PropTypes from "prop-types";
 
-const AppHeaderNavItem = (props) => {
+const AppHeaderNavItem = ({ children, isActive, value }) => {
   return (
     <li>
       <a href="/" className={`${styles.listItem} pl-5 pr-5`}>
-        {props.children}
+        {children}
         <p
           className={`text text_type_main-default ml-2 ${
-            props.isActive ? null : "text_color_inactive"
+            isActive ? null : "text_color_inactive"
           }`}
         >
-          {props.value}
+          {value}
         </p>
       </a>
     </li>

@@ -1,18 +1,17 @@
 import PortalReactDOM from "react-dom";
 import { useEffect, useState } from "react";
 
-const Portal = (props) => {
-  const { children } = props;
-  const [container] = useState(() => document.createElement("div"));
+const Portal = ({ children }) => {
+  const [modalContainer] = useState(() => document.createElement("div"));
 
   useEffect(() => {
-    document.body.appendChild(container);
+    document.body.appendChild(modalContainer);
     return () => {
-      document.body.removeChild(container);
+      document.body.removeChild(modalContainer);
     };
-  }, [container]);
+  }, [modalContainer]);
 
-  return PortalReactDOM.createPortal(children, container);
+  return PortalReactDOM.createPortal(children, modalContainer);
 };
 
 export default Portal;
