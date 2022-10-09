@@ -1,0 +1,20 @@
+
+
+.properties_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 112px;
+}
+
+.properties_item:not(:last-child) {
+    margin-right: 20px;
+}
+
+.properties_title {
+
+}
+
+.properties_value {
+
+}

@@ -1,0 +1,23 @@
+.modal_header {
+    position: relative;
+    height: 64px;
+    display: flex;
+    align-items: center;
+}
+
+.modal_close {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all .2s linear;
+}
+
+.modal_close:hover {
+    transform: rotate(90deg);
+}
