@@ -1,26 +1,42 @@
 import AppHeader from "../app-header/app-header";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
+import BurgerConstructor from "../burger-constructor/burger-constructor";
 import styles from "./app.module.css";
 import ErrorBoundary from "../error-boundary/error-boundary";
-import { useEffect, useState } from "react";
-import { _URL } from "../../utils/constants";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { _URL, sortIngredients } from "../../utils/constants";
 import { fetchRequest } from "../../utils/fetchRequest";
+import { IngredientsContext } from "../../utils/ingredients-context";
+import { ConstructorIngredientsContext } from "../../utils/constructor-ingredients-context";
 
 function App() {
-  const [state, setState] = useState([]);
+  const [data, setData] = useState(useContext(IngredientsContext));
+  const [sorted, setSorted] = useState(
+    useContext(ConstructorIngredientsContext)
+  );
+
+  const sortData = useCallback(() => sortIngredients(data), [data]);
 
   useEffect(() => {
-    fetchRequest(_URL, setState);
+    fetchRequest(_URL, setData);
   }, []);
+
+  useEffect(() => {
+    setSorted(sortData);
+  }, [setSorted, sortData]);
 
   return (
     <main className={styles.main}>
       <ErrorBoundary>
         <AppHeader />
         <div className={styles.app_container}>
-          <BurgerConstructor data={state} />
-          <BurgerIngredients data={state} />
+          <ConstructorIngredientsContext.Provider value={sorted}>
+            <IngredientsContext.Provider value={data}>
+              <BurgerIngredients />
+            </IngredientsContext.Provider>
+
+            <BurgerConstructor />
+          </ConstructorIngredientsContext.Provider>
         </div>
       </ErrorBoundary>
     </main>

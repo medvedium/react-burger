@@ -2,14 +2,14 @@ import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./burger-constructor-item.module.css";
+import styles from "./burger-ingredients-item.module.css";
 import PropTypes from "prop-types";
 import { ingredientItem } from "../../utils/constants";
 import { useState } from "react";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
-const BurgerConstructorItem = ({ item }) => {
+const BurgerIngredientsItem = ({ item, count }) => {
   const [modalActive, setModalActive] = useState(false);
 
   const onClose = () => {
@@ -27,7 +27,7 @@ const BurgerConstructorItem = ({ item }) => {
         <p className={`${styles.name} text text_type_main-default`}>
           {item.name}
         </p>
-        <Counter count={1} size="default" />
+        {count && <Counter count={count} size="default" />}
       </div>
       {modalActive && (
         <Modal
@@ -42,8 +42,8 @@ const BurgerConstructorItem = ({ item }) => {
   );
 };
 
-BurgerConstructorItem.propTypes = {
+BurgerIngredientsItem.propTypes = {
   data: PropTypes.arrayOf(ingredientItem),
 };
 
-export default BurgerConstructorItem;
+export default BurgerIngredientsItem;

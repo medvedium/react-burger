@@ -1,8 +1,11 @@
-import React from "react";
+import React /*, { useContext }*/ from "react";
 import styles from "./order-details.module.css";
 import done from "../../images/done.svg";
+// import { IngredientsContext } from "../../utils/ingredients-context";
 
 const OrderDetails = () => {
+  // const ingredients = useContext(IngredientsContext);
+
   return (
     <div className={styles.order_details}>
       <p className="text text_type_digits-large mb-8">034536</p>
