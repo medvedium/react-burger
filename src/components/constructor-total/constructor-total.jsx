@@ -6,11 +6,13 @@ import OrderDetails from "../order-details/order-details";
 import { useContext, useEffect, useReducer, useState } from "react";
 import { ConstructorIngredientsContext } from "../../utils/constructor-ingredients-context";
 import { reducer } from "../../utils/total-reducer.js";
+import { OrderContext } from "../../utils/order-context";
 
 const ConstructorTotal = () => {
   const ingredients = useContext(ConstructorIngredientsContext);
   const initialTotalValue = { total: 0 };
   const [modalActive, setModalActive] = useState(false);
+  const [orderData, setOrderData] = useState(useContext(OrderContext));
   const [total, totalDispatch] = useReducer(
     reducer,
     initialTotalValue,
@@ -37,6 +39,32 @@ const ConstructorTotal = () => {
     setModalActive(false);
   };
 
+  const data = ingredients.map((item) => item._id);
+
+  const handleOrderClick = () => {
+    fetch("https://norma.nomoreparties.space/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json: charset=utf-8",
+      },
+      body: JSON.stringify({
+        ingredients: data,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setOrderData({
+            number: data.order.number,
+            name: data.name,
+          });
+          setModalActive(true);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className={`${styles.total_block} mt-10`}>
       <p className="text text_type_digits-medium pr-2">{total.total}</p>
@@ -45,15 +73,15 @@ const ConstructorTotal = () => {
         htmlType={"submit"}
         type="primary"
         size="large"
-        onClick={() => {
-          setModalActive(true);
-        }}
+        onClick={handleOrderClick}
       >
         Оформить заказ
       </Button>
       {modalActive && (
         <Modal onClose={onClose} isOpened={modalActive}>
-          <OrderDetails />
+          <OrderContext.Provider value={orderData}>
+            <OrderDetails />
+          </OrderContext.Provider>
         </Modal>
       )}
     </div>

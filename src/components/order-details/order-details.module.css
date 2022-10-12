@@ -4,3 +4,7 @@
     flex-direction: column;
     align-items: center;
 }
+
+.order_name {
+    text-align: center;
+}

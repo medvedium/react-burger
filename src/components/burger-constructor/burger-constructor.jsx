@@ -7,10 +7,6 @@ import { useContext } from "react";
 import PropTypes from "prop-types";
 import { ConstructorIngredientsContext } from "../../utils/constructor-ingredients-context";
 
-// bun1 - arr[0]
-// splice(arr[0], arr[arr.length - 2])
-// bun2 - arr[0]
-
 const BurgerConstructor = () => {
   const ingredients = useContext(ConstructorIngredientsContext);
 

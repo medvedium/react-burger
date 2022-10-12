@@ -5,7 +5,7 @@ import styles from "./app.module.css";
 import ErrorBoundary from "../error-boundary/error-boundary";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { _URL, sortIngredients } from "../../utils/constants";
-import { fetchRequest } from "../../utils/fetchRequest";
+import { fetchRequest } from "../../utils/fetch-request";
 import { IngredientsContext } from "../../utils/ingredients-context";
 import { ConstructorIngredientsContext } from "../../utils/constructor-ingredients-context";
 
