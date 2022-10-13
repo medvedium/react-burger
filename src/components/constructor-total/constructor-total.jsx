@@ -4,15 +4,16 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { useContext, useEffect, useReducer, useState } from "react";
-import { ConstructorIngredientsContext } from "../../utils/constructor-ingredients-context";
 import { reducer } from "../../utils/total-reducer.js";
-import { OrderContext } from "../../utils/order-context";
+import { ConstructorIngredientsContext } from "../../utils/contexts/constructor-ingredients-context";
+import { _ORDER_URL } from "../../utils/constants";
+import { fetchPost } from "../../utils/api";
 
 const ConstructorTotal = () => {
   const ingredients = useContext(ConstructorIngredientsContext);
   const initialTotalValue = { total: 0 };
   const [modalActive, setModalActive] = useState(false);
-  const [orderData, setOrderData] = useState(useContext(OrderContext));
+  const [orderData, setOrderData] = useState({});
   const [total, totalDispatch] = useReducer(
     reducer,
     initialTotalValue,
@@ -42,25 +43,13 @@ const ConstructorTotal = () => {
   const data = ingredients.map((item) => item._id);
 
   const handleOrderClick = () => {
-    fetch("https://norma.nomoreparties.space/api/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json: charset=utf-8",
-      },
-      body: JSON.stringify({
-        ingredients: data,
-      }),
-    })
-      .then((res) => res.json())
+    fetchPost(_ORDER_URL, { ingredients: data })
       .then((data) => {
-        if (data.success) {
-          setOrderData({
-            number: data.order.number,
-            name: data.name,
-          });
-          setModalActive(true);
-        }
+        setOrderData({
+          number: data.order.number,
+          name: data.name,
+        });
+        setModalActive(true);
       })
       .catch((err) => console.log(err));
   };
@@ -79,9 +68,7 @@ const ConstructorTotal = () => {
       </Button>
       {modalActive && (
         <Modal onClose={onClose} isOpened={modalActive}>
-          <OrderContext.Provider value={orderData}>
-            <OrderDetails />
-          </OrderContext.Provider>
+          <OrderDetails name={orderData.name} number={orderData.number} />
         </Modal>
       )}
     </div>

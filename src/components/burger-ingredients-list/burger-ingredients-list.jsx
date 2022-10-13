@@ -1,16 +1,16 @@
-import styles from "./burger-constructor-list.module.css";
+import styles from "./burger-ingredients-list.module.css";
 import BurgerIngredientsItem from "../burger-ingredients-item/burger-ingredients-item";
-import PropTypes from "prop-types";
-import { ingredientItem, _BUN, _SAUCE, _MAIN } from "../../utils/constants";
+import { _BUN, _SAUCE, _MAIN } from "../../utils/constants";
 import { useContext } from "react";
-import { IngredientsContext } from "../../utils/ingredients-context";
-import { ConstructorIngredientsContext } from "../../utils/constructor-ingredients-context";
+import { ConstructorIngredientsContext } from "../../utils/contexts/constructor-ingredients-context";
+import { IngredientsContext } from "../../utils/contexts/ingredients-context";
 
 const BurgerIngredientsList = () => {
   const ingredients = useContext(IngredientsContext);
   const sorted = useContext(ConstructorIngredientsContext);
 
   const addedIds = sorted.map((item) => item._id);
+
   return (
     <div className={`${styles.list} custom-scroll`}>
       <p className="text text_type_main-medium">Булки</p>
@@ -19,8 +19,8 @@ const BurgerIngredientsList = () => {
           item.type === _BUN ? (
             <BurgerIngredientsItem
               item={item}
-              key={index}
-              count={addedIds.indexOf(item._id) >= 0 ? 1 : null}
+              key={item._id}
+              count={addedIds.indexOf(item._id) >= 0 ? 1 : 0}
             />
           ) : null
         )}
@@ -31,8 +31,8 @@ const BurgerIngredientsList = () => {
           item.type === _SAUCE ? (
             <BurgerIngredientsItem
               item={item}
-              key={index}
-              count={addedIds.indexOf(item._id) >= 0 ? 1 : null}
+              key={item._id}
+              count={addedIds.indexOf(item._id) >= 0 ? 1 : 0}
             />
           ) : null
         )}
@@ -43,18 +43,14 @@ const BurgerIngredientsList = () => {
           item.type === _MAIN ? (
             <BurgerIngredientsItem
               item={item}
-              key={index}
-              count={addedIds.indexOf(item._id) >= 0 ? 1 : null}
+              key={item._id}
+              count={addedIds.indexOf(item._id) >= 0 ? 1 : 0}
             />
           ) : null
         )}
       </div>
     </div>
   );
-};
-
-BurgerIngredientsList.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientItem),
 };
 
 export default BurgerIngredientsList;

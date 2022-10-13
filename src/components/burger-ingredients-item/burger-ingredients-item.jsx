@@ -27,7 +27,7 @@ const BurgerIngredientsItem = ({ item, count }) => {
         <p className={`${styles.name} text text_type_main-default`}>
           {item.name}
         </p>
-        {count && <Counter count={count} size="default" />}
+        {count ? <Counter count={count} size="default" /> : null}
       </div>
       {modalActive && (
         <Modal
@@ -43,7 +43,8 @@ const BurgerIngredientsItem = ({ item, count }) => {
 };
 
 BurgerIngredientsItem.propTypes = {
-  data: PropTypes.arrayOf(ingredientItem),
+  count: PropTypes.number,
+  item: ingredientItem.isRequired,
 };
 
 export default BurgerIngredientsItem;

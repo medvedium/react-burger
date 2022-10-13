@@ -19,7 +19,9 @@ export const _BUN = "bun";
 export const _SAUCE = "sauce";
 export const _MAIN = "main";
 
-export const _URL = "https://norma.nomoreparties.space/api/ingredients";
+export const _BASE_URL = "https://norma.nomoreparties.space/api";
+export const _DATA_URL = `${_BASE_URL}/ingredients`;
+export const _ORDER_URL = `${_BASE_URL}/orders`;
 
 export const sortIngredients = (data) => {
   const sortedData = [];
@@ -37,3 +39,10 @@ export const sortIngredients = (data) => {
   });
   return sortedData;
 };
+
+export function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка ${res.status}`);
+}

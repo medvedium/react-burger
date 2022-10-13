@@ -4,10 +4,10 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import styles from "./app.module.css";
 import ErrorBoundary from "../error-boundary/error-boundary";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { _URL, sortIngredients } from "../../utils/constants";
-import { fetchRequest } from "../../utils/fetch-request";
-import { IngredientsContext } from "../../utils/ingredients-context";
-import { ConstructorIngredientsContext } from "../../utils/constructor-ingredients-context";
+import { _DATA_URL, sortIngredients } from "../../utils/constants";
+import { ConstructorIngredientsContext } from "../../utils/contexts/constructor-ingredients-context";
+import { IngredientsContext } from "../../utils/contexts/ingredients-context";
+import { fetchGet } from "../../utils/api";
 
 function App() {
   const [data, setData] = useState(useContext(IngredientsContext));
@@ -18,7 +18,9 @@ function App() {
   const sortData = useCallback(() => sortIngredients(data), [data]);
 
   useEffect(() => {
-    fetchRequest(_URL, setData);
+    fetchGet(_DATA_URL)
+      .then(({ data }) => setData(data))
+      .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
@@ -26,20 +28,18 @@ function App() {
   }, [setSorted, sortData]);
 
   return (
-    <main className={styles.main}>
-      <ErrorBoundary>
-        <AppHeader />
-        <div className={styles.app_container}>
-          <ConstructorIngredientsContext.Provider value={sorted}>
-            <IngredientsContext.Provider value={data}>
-              <BurgerIngredients />
-            </IngredientsContext.Provider>
+    <ErrorBoundary>
+      <AppHeader />
+      <main className={styles.app_container}>
+        <ConstructorIngredientsContext.Provider value={sorted}>
+          <IngredientsContext.Provider value={data}>
+            <BurgerIngredients />
+          </IngredientsContext.Provider>
 
-            <BurgerConstructor />
-          </ConstructorIngredientsContext.Provider>
-        </div>
-      </ErrorBoundary>
-    </main>
+          <BurgerConstructor />
+        </ConstructorIngredientsContext.Provider>
+      </main>
+    </ErrorBoundary>
   );
 }
 
