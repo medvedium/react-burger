@@ -20,7 +20,8 @@ const AppHeaderNavItem = ({ children, isActive, value }) => {
 
 AppHeaderNavItem.propTypes = {
   isActive: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default AppHeaderNavItem;

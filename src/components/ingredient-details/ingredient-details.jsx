@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./ingredient-details.module.css";
 import IngredientDetailsProperties from "../ingredient-details-properties/ingredient-details-properties";
-import PropTypes from "prop-types";
 import { ingredientItem } from "../../utils/constants";
 
 const IngredientDetails = ({ item }) => {
@@ -15,7 +14,7 @@ const IngredientDetails = ({ item }) => {
 };
 
 IngredientDetails.propTypes = {
-  data: PropTypes.arrayOf(ingredientItem),
+  item: ingredientItem.isRequired,
 };
 
 export default IngredientDetails;

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 const Modal = ({ isOpened, header, onClose, children }) => {
   const escapeListener = (event) => {
-    if (event.keyCode === 27) {
+    if (event.key === "Escape") {
       onClose();
     }
   };
@@ -32,7 +32,7 @@ Modal.propTypes = {
   isOpened: PropTypes.bool.isRequired,
   header: PropTypes.string,
   onClose: PropTypes.func.isRequired,
-  children: PropTypes.any,
+  children: PropTypes.element.isRequired,
 };
 
 export default Modal;
