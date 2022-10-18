@@ -1,21 +1,26 @@
 .section {
-  padding-top: 100px;
-  padding-left: 16px;
+    padding-top: 100px;
+    padding-left: 16px;
 }
 
 .ingredients_list {
-  max-height: 464px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+    max-height: 464px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .item {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
+
 .item > svg {
-  cursor: grab;
-  margin-right: 8px;
+    cursor: grab;
+    margin-right: 8px;
+}
+
+.constructor_element img {
+    object-fit: contain;
 }

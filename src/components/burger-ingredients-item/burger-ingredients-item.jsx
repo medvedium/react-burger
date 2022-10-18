@@ -4,21 +4,48 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients-item.module.css";
 import PropTypes from "prop-types";
-import { ingredientItem } from "../../utils/constants";
-import { useState } from "react";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
+import { _BUN, ingredientItem } from "../../utils/constants";
+// import { useDrag } from "react-dnd";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ADD_BUN,
+  ADD_INGREDIENT,
+  OPEN_INGREDIENT_MODAL,
+  SELECT_INGREDIENT,
+} from "../../services/actions/ingredient";
 
 const BurgerIngredientsItem = ({ item, count }) => {
-  const [modalActive, setModalActive] = useState(false);
+  const dispatch = useDispatch();
 
-  const onClose = () => {
-    setModalActive(false);
+  const openModal = () => {
+    dispatch({ type: SELECT_INGREDIENT, item: item });
+    dispatch({ type: OPEN_INGREDIENT_MODAL });
   };
+
+  // const { selectedIngredients } = useSelector((state) => state);
+
+  const addIngredient = () => {
+    dispatch({ type: ADD_INGREDIENT, item: item });
+  };
+
+  const addBun = () => {
+    dispatch({ type: ADD_BUN, item: item });
+  };
+
+  // const [{ isDrag }, dragRef] = useDrag({
+  //   type: "ingredient",
+  //   item: item._id,
+  //   collect: (monitor) => ({
+  //     isDrag: monitor.isDragging(),
+  //   }),
+  // });
 
   return (
     <>
-      <div className={styles.card} onClick={() => setModalActive(true)}>
+      <div
+        className={styles.card}
+        onClick={item.type !== _BUN ? addIngredient : addBun}
+      >
         <img src={item.image} alt={item.name} />
         <div className={`${styles.price} pt-1 pt-2`}>
           <p className="text text_type_digits-default mr-2">{item.price}</p>
@@ -29,15 +56,6 @@ const BurgerIngredientsItem = ({ item, count }) => {
         </p>
         {count ? <Counter count={count} size="default" /> : null}
       </div>
-      {modalActive && (
-        <Modal
-          onClose={onClose}
-          isOpened={modalActive}
-          header={"Детали ингредиента"}
-        >
-          <IngredientDetails item={item} />
-        </Modal>
-      )}
     </>
   );
 };
