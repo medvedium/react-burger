@@ -9,10 +9,10 @@ import {
   OPEN_INGREDIENT_MODAL,
   REMOVE_INGREDIENT,
   SELECT_INGREDIENT,
+  GET_TOTAL_PRICE,
 } from "../actions/ingredient";
 import { fetchGet } from "../../utils/api";
 import { _BUN, _DATA_URL, _MAIN, _SAUCE } from "../../utils/constants";
-import { useId } from "react";
 import { nanoid } from "nanoid";
 
 const initialState = {
@@ -26,6 +26,7 @@ const initialState = {
   selectedIngredients: [],
   selectedBun: {},
   activeTab: _BUN,
+  total: null,
 };
 
 export function getIngredients() {
@@ -145,6 +146,17 @@ export const ingredientsList = (state = initialState, action) => {
             (item) => item._id !== action.item._id
           ),
         ],
+      };
+    }
+    case GET_TOTAL_PRICE: {
+      return {
+        ...state,
+        total:
+          state.selectedIngredients &&
+          state.selectedIngredients.reduce(
+            (a, b) => a + b.price,
+            state.selectedBun.price * 2 || 0
+          ),
       };
     }
     default:

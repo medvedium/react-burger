@@ -1,9 +1,3 @@
-const checkPromise = (promise) => {
-  return promise.then((res) => {
-    return res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`);
-  });
-};
-
 export const fetchGet = (url) => {
   const promise = fetch(url, {
     method: "GET",
@@ -26,4 +20,10 @@ export const fetchPost = (url, data) => {
     body: JSON.stringify(data),
   });
   return checkPromise(promise);
+};
+
+const checkPromise = (promise) => {
+  return promise.then((res) => {
+    return res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`);
+  });
 };

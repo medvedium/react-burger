@@ -11,7 +11,6 @@ const initialState = {
   isRequest: false,
   isRequestError: false,
   isOrderModalOpen: false,
-  total: null,
   orderName: null,
   orderNumber: null,
 };
@@ -28,10 +27,10 @@ const initialState = {
 //     .catch((err) => console.log(err));
 // };
 
-export function postOrderData(data) {
+export function postOrderData(orderData) {
   return function (dispatch) {
     dispatch({ type: MAKE_ORDER });
-    fetchPost(_ORDER_URL, data)
+    fetchPost(_ORDER_URL, orderData)
       .then((data) => {
         dispatch({ type: GET_ORDER_DATA, payload: data });
         dispatch({ type: OPEN_ORDER_MODAL });
@@ -70,6 +69,7 @@ export const burgerConstructor = (state = initialState, action) => {
         isRequestError: true,
       };
     }
+
     default:
       return state;
   }

@@ -11,6 +11,7 @@ import {
   ADD_INGREDIENT,
   OPEN_INGREDIENT_MODAL,
   SELECT_INGREDIENT,
+  GET_TOTAL_PRICE,
 } from "../../services/actions/ingredient";
 import { useDrag } from "react-dnd";
 import { useEffect, useMemo } from "react";
@@ -27,10 +28,12 @@ const BurgerIngredientsItem = ({ item }) => {
 
   const addIngredient = () => {
     dispatch({ type: ADD_INGREDIENT, item: item });
+    dispatch({ type: GET_TOTAL_PRICE });
   };
 
   const addBun = () => {
     dispatch({ type: ADD_BUN, item: item });
+    dispatch({ type: GET_TOTAL_PRICE });
   };
 
   // const [{ isDrag }, dragRef] = useDrag({
