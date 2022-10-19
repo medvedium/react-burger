@@ -1,0 +1,4 @@
+export const OPEN_ORDER_MODAL = "OPEN_ORDER_MODAL";
+export const MAKE_ORDER = "MAKE_ORDER";
+export const MAKE_ORDER_FAILED = "MAKE_ORDER_FAILED";
+export const GET_ORDER_DATA = "GET_ORDER_DATA";

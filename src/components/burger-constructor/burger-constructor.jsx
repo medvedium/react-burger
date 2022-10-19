@@ -39,7 +39,7 @@ const BurgerConstructor = () => {
           {selectedIngredients &&
             selectedIngredients.map((ingredient) => {
               return (
-                <div key={ingredient._id} className={styles.item}>
+                <div key={ingredient.uid} className={styles.item}>
                   <DragIcon type="primary" />
                   <ConstructorElement
                     text={ingredient.name}

@@ -5,7 +5,6 @@ import {
 import styles from "./burger-ingredients-item.module.css";
 import PropTypes from "prop-types";
 import { _BUN, ingredientItem } from "../../utils/constants";
-// import { useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_BUN,
@@ -13,8 +12,10 @@ import {
   OPEN_INGREDIENT_MODAL,
   SELECT_INGREDIENT,
 } from "../../services/actions/ingredient";
+import { useDrag } from "react-dnd";
+import { useEffect, useMemo } from "react";
 
-const BurgerIngredientsItem = ({ item, count }) => {
+const BurgerIngredientsItem = ({ item }) => {
   const dispatch = useDispatch();
 
   const openModal = () => {
@@ -22,7 +23,7 @@ const BurgerIngredientsItem = ({ item, count }) => {
     dispatch({ type: OPEN_INGREDIENT_MODAL });
   };
 
-  // const { selectedIngredients } = useSelector((state) => state);
+  const { selectedIngredients } = useSelector((state) => state);
 
   const addIngredient = () => {
     dispatch({ type: ADD_INGREDIENT, item: item });
@@ -44,7 +45,8 @@ const BurgerIngredientsItem = ({ item, count }) => {
     <>
       <div
         className={styles.card}
-        onClick={item.type !== _BUN ? addIngredient : addBun}
+        onClick={item.type === _BUN ? addBun : addIngredient}
+        // onClick={openModal}
       >
         <img src={item.image} alt={item.name} />
         <div className={`${styles.price} pt-1 pt-2`}>
@@ -54,7 +56,7 @@ const BurgerIngredientsItem = ({ item, count }) => {
         <p className={`${styles.name} text text_type_main-default`}>
           {item.name}
         </p>
-        {count ? <Counter count={count} size="default" /> : null}
+        {item.count && <Counter count={item.count} size="default" />}
       </div>
     </>
   );

@@ -12,6 +12,8 @@ import {
 } from "../actions/ingredient";
 import { fetchGet } from "../../utils/api";
 import { _BUN, _DATA_URL, _MAIN, _SAUCE } from "../../utils/constants";
+import { useId } from "react";
+import { nanoid } from "nanoid";
 
 const initialState = {
   bun: [],
@@ -52,9 +54,27 @@ export const ingredientsList = (state = initialState, action) => {
     case GET_INGREDIENTS_SUCCESS: {
       return {
         ...state,
-        bun: [...action.payload.filter((item) => item.type === _BUN)],
-        sauce: [...action.payload.filter((item) => item.type === _SAUCE)],
-        main: [...action.payload.filter((item) => item.type === _MAIN)],
+        bun: [
+          ...action.payload
+            .filter((item) => item.type === _BUN)
+            .map((item) => {
+              return { ...item, count: null };
+            }),
+        ],
+        sauce: [
+          ...action.payload
+            .filter((item) => item.type === _SAUCE)
+            .map((item) => {
+              return { ...item, count: null };
+            }),
+        ],
+        main: [
+          ...action.payload
+            .filter((item) => item.type === _MAIN)
+            .map((item) => {
+              return { ...item, count: null };
+            }),
+        ],
         isRequest: false,
       };
     }
@@ -92,13 +112,29 @@ export const ingredientsList = (state = initialState, action) => {
     case ADD_INGREDIENT: {
       return {
         ...state,
-        selectedIngredients: [...state.selectedIngredients, action.item],
+        selectedIngredients: [
+          ...state.selectedIngredients,
+          { ...action.item, uid: nanoid(8), count: action.item.count++ },
+        ],
       };
     }
     case ADD_BUN: {
       return {
         ...state,
         selectedBun: action.item,
+        bun: state.bun.map((item) => {
+          if (item === action.item) {
+            return {
+              ...item,
+              count: 2,
+            };
+          } else {
+            return {
+              ...item,
+              count: null,
+            };
+          }
+        }),
       };
     }
     case REMOVE_INGREDIENT: {
