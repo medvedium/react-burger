@@ -11,11 +11,11 @@ import {
 } from "../../services/actions/ingredient";
 import { useDispatch } from "react-redux";
 
-const BurgerConstructorItem = ({
+function BurgerConstructorItem({
   ingredient,
-  idx,
+  index,
   moveConstructorIngredient,
-}) => {
+}) {
   const dispatch = useDispatch();
 
   const handleIngredientRemove = (ingredient) => {
@@ -25,13 +25,13 @@ const BurgerConstructorItem = ({
 
   const ref = useRef(null);
 
-  const [{ isDrag }, dragRef] = useDrag(() => ({
+  const [{ isDrag }, dragRef] = useDrag({
     type: "constructorElement",
     collect: (monitor) => ({
       isDrag: !!monitor.isDragging(),
     }),
-    item: { ingredient },
-  }));
+    item: () => ({ index, id: ingredient.id }),
+  });
 
   const [{ handlerId }, drop] = useDrop(() => ({
     accept: "constructorElement",
@@ -44,10 +44,9 @@ const BurgerConstructorItem = ({
       if (!ref.current) {
         return;
       }
-      const dragIndex = item.idx;
-      const hoverIndex = idx;
 
-      console.log(dragIndex);
+      const dragIndex = item.index;
+      const hoverIndex = index;
 
       if (dragIndex === hoverIndex) {
         return;
@@ -64,18 +63,19 @@ const BurgerConstructorItem = ({
         return;
       }
       moveConstructorIngredient(dragIndex, hoverIndex);
-      item.idx = hoverIndex;
+      item.index = hoverIndex;
     },
   }));
 
   dragRef(drop(ref));
+  const preventDefault = (e) => e.preventDefault();
 
   return (
     <div
       className={`${styles.item} ${isDrag && styles.dragging}`}
       ref={ref}
       data-handler-id={handlerId}
-      onDrop={(e) => e.preventDefault()}
+      onDrop={preventDefault}
     >
       <DragIcon type="primary" />
       <ConstructorElement
@@ -86,6 +86,6 @@ const BurgerConstructorItem = ({
       />
     </div>
   );
-};
+}
 
 export default BurgerConstructorItem;

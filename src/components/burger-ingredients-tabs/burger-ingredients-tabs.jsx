@@ -10,6 +10,17 @@ const BurgerIngredientsTabs = () => {
   const dispatch = useDispatch();
   const handleTabToggle = (e) => {
     dispatch({ type: CHOOSE_TAB, value: e });
+    const activeTarget = document.querySelector(`[data-tab-target="${e}"]`);
+    const list = document.querySelector(
+      "div[class^='burger-ingredients-list_list']"
+    );
+    list.scrollTo({
+      top:
+        activeTarget.getBoundingClientRect().top -
+        list.getBoundingClientRect().top +
+        list.scrollTop,
+      behavior: "smooth",
+    });
   };
   return (
     <div className={`${styles.tabs_list} mb-10`}>

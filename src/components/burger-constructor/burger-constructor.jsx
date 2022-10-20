@@ -43,21 +43,15 @@ const BurgerConstructor = (callback, deps) => {
 
   const moveConstructorIngredient = useCallback(
     (dragIndex, hoverIndex) => {
-      const dragConstructorIngredient = selectedIngredients[dragIndex];
-      const newConstructorIngredients = [...selectedIngredients];
+      const dragCard = selectedIngredients[dragIndex];
+      const newCards = [...selectedIngredients];
 
-      newConstructorIngredients.splice(dragIndex, 1);
-      newConstructorIngredients.splice(
-        hoverIndex,
-        0,
-        dragConstructorIngredient
-      );
-
-      console.log(newConstructorIngredients);
+      newCards.splice(dragIndex, 1);
+      newCards.splice(hoverIndex, 0, dragCard);
 
       dispatch({
         type: UPDATE_SELECTED_INGREDIENTS_LIST,
-        payload: newConstructorIngredients,
+        payload: newCards,
       });
     },
     [selectedIngredients, dispatch]
@@ -88,12 +82,12 @@ const BurgerConstructor = (callback, deps) => {
         </div>
         <div className={`${styles.ingredients_list}  custom-scroll mt-4 mb-4`}>
           {selectedIngredients &&
-            selectedIngredients.map((ingredient, index) => {
+            selectedIngredients.map((item, index) => {
               return (
                 <BurgerConstructorItem
-                  ingredient={ingredient}
-                  idx={index}
-                  key={ingredient.uid}
+                  ingredient={item}
+                  index={index}
+                  key={item.uid}
                   moveConstructorIngredient={moveConstructorIngredient}
                 />
               );

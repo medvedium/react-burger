@@ -3,7 +3,8 @@ import BurgerIngredientsItem from "../burger-ingredients-item/burger-ingredients
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/reducers/ingredients";
-import { _BUN, _SAUCE } from "../../utils/constants";
+import { _BUN, _MAIN, _SAUCE } from "../../utils/constants";
+import { CHOOSE_TAB } from "../../services/actions/ingredient";
 
 const BurgerIngredientsList = () => {
   const { isRequest, isRequestError, bun, sauce, main, activeTab } =
@@ -15,36 +16,46 @@ const BurgerIngredientsList = () => {
   const sauceRef = useRef();
   const mainRef = useRef();
 
-  function scrollList(selector) {
-    selector.scrollIntoView({ block: "start", behavior: "smooth" });
-  }
+  // function scrollList(selector) {
+  //   selector.scrollTo({ block: "start", behavior: "smooth" });
+  // }
 
   useEffect(() => {
     dispatch(getIngredients());
   }, []);
 
-  useEffect(() => {
-    if (bun) {
-      activeTab === _BUN
-        ? scrollList(bunRef.current)
-        : activeTab === _SAUCE
-        ? scrollList(sauceRef.current)
-        : scrollList(mainRef.current);
-    }
-  }, [activeTab]);
-
-  // const highlightActiveTab = () => {
-  //   const bunElement = bunRef.current;
-  //   Math.abs(bunElement.getBoundingClientRect().top);
-  // };
-  //
   // useEffect(() => {
-  //   const list = listRef.current;
-  //   list && list.addEventListener("scroll", highlightActiveTab);
-  //   return () => {
-  //     list && list.removeEventListener("scroll", highlightActiveTab);
-  //   };
-  // });
+  //   if (bun) {
+  //     activeTab === _BUN
+  //       ? scrollList(bunRef.current)
+  //       : activeTab === _SAUCE
+  //       ? scrollList(sauceRef.current)
+  //       : scrollList(mainRef.current);
+  //   }
+  // }, [activeTab]);
+
+  const highlightActiveTab = () => {
+    const bunPos = Math.abs(
+      bunRef.current.getBoundingClientRect().top -
+        listRef.current.getBoundingClientRect().top
+    );
+    const saucePos = Math.abs(
+      sauceRef.current.getBoundingClientRect().top -
+        listRef.current.getBoundingClientRect().top
+    );
+    const mainPos = Math.abs(
+      mainRef.current.getBoundingClientRect().top -
+        listRef.current.getBoundingClientRect().top
+    );
+
+    if (bunPos < saucePos && bunPos < mainPos) {
+      dispatch({ type: CHOOSE_TAB, value: _BUN });
+    } else if (saucePos < bunPos && saucePos < mainPos) {
+      dispatch({ type: CHOOSE_TAB, value: _SAUCE });
+    } else if (mainPos < bunPos && mainPos < saucePos) {
+      dispatch({ type: CHOOSE_TAB, value: _MAIN });
+    }
+  };
 
   if (isRequestError) {
     return "Error";
@@ -52,8 +63,16 @@ const BurgerIngredientsList = () => {
     return "Loading...";
   } else
     return (
-      <div className={`${styles.list} custom-scroll`} ref={listRef}>
-        <p className="text text_type_main-medium" ref={bunRef}>
+      <div
+        className={`${styles.list} custom-scroll`}
+        ref={listRef}
+        onScroll={(e) => highlightActiveTab()}
+      >
+        <p
+          className="text text_type_main-medium"
+          ref={bunRef}
+          data-tab-target={_BUN}
+        >
           Булки
         </p>
         <div className={styles.section}>
@@ -61,7 +80,11 @@ const BurgerIngredientsList = () => {
             <BurgerIngredientsItem item={item} key={item._id} />
           ))}
         </div>
-        <p className="text text_type_main-medium" ref={sauceRef}>
+        <p
+          className="text text_type_main-medium"
+          ref={sauceRef}
+          data-tab-target={_SAUCE}
+        >
           Соусы
         </p>
         <div className={styles.section}>
@@ -69,7 +92,11 @@ const BurgerIngredientsList = () => {
             <BurgerIngredientsItem item={item} key={item._id} />
           ))}
         </div>
-        <p className="text text_type_main-medium" ref={mainRef}>
+        <p
+          className="text text_type_main-medium"
+          ref={mainRef}
+          data-tab-target={_MAIN}
+        >
           Начинки
         </p>
         <div className={styles.section}>
