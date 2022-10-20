@@ -11,6 +11,7 @@ import {
 } from "../../services/actions/ingredient";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
+import { ingredientItem } from "../../utils/constants";
 
 function BurgerConstructorItem({ item, index, moveCard }) {
   const dispatch = useDispatch();
@@ -83,7 +84,7 @@ function BurgerConstructorItem({ item, index, moveCard }) {
 }
 
 BurgerConstructorItem.propTypes = {
-  item: PropTypes.object.isRequired,
+  item: ingredientItem.isRequired,
   index: PropTypes.number.isRequired,
   moveCard: PropTypes.func.isRequired,
 };

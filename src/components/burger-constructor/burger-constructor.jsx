@@ -39,8 +39,6 @@ const BurgerConstructor = (callback, deps) => {
     }),
   });
 
-  const borderColor = isHover ? "lightgreen" : "transparent";
-
   const moveCard = useCallback(
     (dragIndex, hoverIndex) => {
       const dragCard = selectedIngredients[dragIndex];
@@ -64,9 +62,8 @@ const BurgerConstructor = (callback, deps) => {
   } else if (selectedIngredients) {
     return (
       <section
-        className={styles.section}
+        className={`${styles.section} ${isHover ? styles.hovered : ""}`}
         ref={ingredientDropTarget}
-        style={{ borderColor }}
       >
         <div className={"pl-8"}>
           <ConstructorElement
