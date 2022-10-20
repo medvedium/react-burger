@@ -4,8 +4,6 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postOrderData } from "../../services/reducers/burger-constructor";
-import { fetchPost } from "../../utils/api";
-import { _ORDER_URL } from "../../utils/constants";
 
 const ConstructorTotal = (factory, deps) => {
   const dispatch = useDispatch();
@@ -14,7 +12,7 @@ const ConstructorTotal = (factory, deps) => {
     (state) => state.ingredientsList
   );
 
-  const data = useMemo(() => {
+  const addedIds = useMemo(() => {
     return (
       selectedIngredients &&
       selectedBun && [
@@ -32,7 +30,7 @@ const ConstructorTotal = (factory, deps) => {
         htmlType={"submit"}
         type="primary"
         size="large"
-        onClick={() => dispatch(postOrderData(data))}
+        onClick={() => dispatch(postOrderData(addedIds))}
       >
         Оформить заказ
       </Button>

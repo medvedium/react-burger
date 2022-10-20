@@ -1,8 +1,9 @@
 import {
-  GET_ORDER_DATA,
+  MAKE_ORDER_SUCCESS,
   MAKE_ORDER,
   MAKE_ORDER_FAILED,
   OPEN_ORDER_MODAL,
+  CLOSE_ORDER_MODAL,
 } from "../actions/burger-constructor";
 import { fetchPost } from "../../utils/api";
 import { _ORDER_URL } from "../../utils/constants";
@@ -15,27 +16,17 @@ const initialState = {
   orderNumber: null,
 };
 
-// const handleOrderClick = () => {
-//   fetchPost(_ORDER_URL, { main: data })
-//     .then((data) => {
-//       setOrderData({
-//         number: data.order.number,
-//         name: data.name,
-//       });
-//       setModalActive(true);
-//     })
-//     .catch((err) => console.log(err));
-// };
-
 export function postOrderData(orderData) {
   return function (dispatch) {
     dispatch({ type: MAKE_ORDER });
     fetchPost(_ORDER_URL, orderData)
       .then((data) => {
-        dispatch({ type: GET_ORDER_DATA, payload: data });
+        dispatch({ type: MAKE_ORDER_SUCCESS, payload: data });
         dispatch({ type: OPEN_ORDER_MODAL });
       })
-      .catch(() => dispatch({ type: MAKE_ORDER_FAILED }));
+      .catch((error) => {
+        dispatch({ type: MAKE_ORDER_FAILED });
+      });
   };
 }
 
@@ -47,6 +38,12 @@ export const burgerConstructor = (state = initialState, action) => {
         isOrderModalOpen: true,
       };
     }
+    case CLOSE_ORDER_MODAL: {
+      return {
+        ...state,
+        isOrderModalOpen: false,
+      };
+    }
     case MAKE_ORDER: {
       return {
         ...state,
@@ -54,12 +51,12 @@ export const burgerConstructor = (state = initialState, action) => {
         isRequestError: false,
       };
     }
-    case GET_ORDER_DATA: {
+    case MAKE_ORDER_SUCCESS: {
       return {
         ...state,
         isRequest: false,
-        orderName: action.payload.data.name,
-        orderNumber: action.payload.data.number,
+        orderName: action.payload.name,
+        orderNumber: action.payload.order.number,
       };
     }
     case MAKE_ORDER_FAILED: {
@@ -69,7 +66,6 @@ export const burgerConstructor = (state = initialState, action) => {
         isRequestError: true,
       };
     }
-
     default:
       return state;
   }

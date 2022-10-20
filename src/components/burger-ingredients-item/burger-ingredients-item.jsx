@@ -4,17 +4,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients-item.module.css";
 import PropTypes from "prop-types";
-import { _BUN, ingredientItem } from "../../utils/constants";
-import { useDispatch, useSelector } from "react-redux";
+import { ingredientItem } from "../../utils/constants";
+import { useDispatch } from "react-redux";
 import {
-  ADD_BUN,
-  ADD_INGREDIENT,
   OPEN_INGREDIENT_MODAL,
   SELECT_INGREDIENT,
-  GET_TOTAL_PRICE,
 } from "../../services/actions/ingredient";
 import { useDrag } from "react-dnd";
-import { useEffect, useMemo } from "react";
 
 const BurgerIngredientsItem = ({ item }) => {
   const dispatch = useDispatch();
@@ -24,44 +20,27 @@ const BurgerIngredientsItem = ({ item }) => {
     dispatch({ type: OPEN_INGREDIENT_MODAL });
   };
 
-  const { selectedIngredients } = useSelector((state) => state);
-
-  const addIngredient = () => {
-    dispatch({ type: ADD_INGREDIENT, item: item });
-    dispatch({ type: GET_TOTAL_PRICE });
-  };
-
-  const addBun = () => {
-    dispatch({ type: ADD_BUN, item: item });
-    dispatch({ type: GET_TOTAL_PRICE });
-  };
-
-  // const [{ isDrag }, dragRef] = useDrag({
-  //   type: "ingredient",
-  //   item: item._id,
-  //   collect: (monitor) => ({
-  //     isDrag: monitor.isDragging(),
-  //   }),
-  // });
+  const [{ isDrag }, dragRef] = useDrag({
+    type: "ingredient",
+    item: item,
+  });
 
   return (
-    <>
-      <div
-        className={styles.card}
-        onClick={item.type === _BUN ? addBun : addIngredient}
-        // onClick={openModal}
-      >
-        <img src={item.image} alt={item.name} />
-        <div className={`${styles.price} pt-1 pt-2`}>
-          <p className="text text_type_digits-default mr-2">{item.price}</p>
-          <CurrencyIcon type="primary" />
+    !isDrag && (
+      <>
+        <div className={styles.card} onClick={openModal} ref={dragRef}>
+          <img src={item.image} alt={item.name} />
+          <div className={`${styles.price} pt-1 pt-2`}>
+            <p className="text text_type_digits-default mr-2">{item.price}</p>
+            <CurrencyIcon type="primary" />
+          </div>
+          <p className={`${styles.name} text text_type_main-default`}>
+            {item.name}
+          </p>
+          {item.count > 0 && <Counter count={item.count} size="default" />}
         </div>
-        <p className={`${styles.name} text text_type_main-default`}>
-          {item.name}
-        </p>
-        {item.count && <Counter count={item.count} size="default" />}
-      </div>
-    </>
+      </>
+    )
   );
 };
 

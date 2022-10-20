@@ -10,6 +10,7 @@ import {
   REMOVE_INGREDIENT,
   SELECT_INGREDIENT,
   GET_TOTAL_PRICE,
+  UPDATE_SELECTED_INGREDIENTS_LIST,
 } from "../actions/ingredient";
 import { fetchGet } from "../../utils/api";
 import { _BUN, _DATA_URL, _MAIN, _SAUCE } from "../../utils/constants";
@@ -143,8 +144,17 @@ export const ingredientsList = (state = initialState, action) => {
         ...state,
         selectedIngredients: [
           ...state.selectedIngredients.filter(
-            (item) => item._id !== action.item._id
+            (item) => item.uid !== action.item.uid
           ),
+        ],
+        [action.item.type]: [
+          ...state[action.item.type].map((item) => {
+            if (item._id === action.item._id) {
+              return { ...item, count: --item.count };
+            } else {
+              return item;
+            }
+          }),
         ],
       };
     }
@@ -157,6 +167,12 @@ export const ingredientsList = (state = initialState, action) => {
             (a, b) => a + b.price,
             state.selectedBun.price * 2 || 0
           ),
+      };
+    }
+    case UPDATE_SELECTED_INGREDIENTS_LIST: {
+      return {
+        ...state,
+        // selectedIngredients: [...action.payload],
       };
     }
     default:

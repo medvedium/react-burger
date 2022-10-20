@@ -10,6 +10,7 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { CLOSE_INGREDIENT_MODAL } from "../../services/actions/ingredient";
 import OrderDetails from "../order-details/order-details";
+import { CLOSE_ORDER_MODAL } from "../../services/actions/burger-constructor";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,8 +20,12 @@ function App() {
   const { isOrderModalOpen, orderName, orderNumber } = useSelector(
     (state) => state.burgerConstructor
   );
-  const onClose = () => {
+  const onCloseIngredientModal = () => {
     dispatch({ type: CLOSE_INGREDIENT_MODAL });
+  };
+
+  const onCloseOrderModal = () => {
+    dispatch({ type: CLOSE_ORDER_MODAL });
   };
 
   return (
@@ -33,19 +38,19 @@ function App() {
         </DndProvider>
       </main>
 
+      {isOrderModalOpen && (
+        <Modal onClose={onCloseOrderModal} isOpened={isOrderModalOpen}>
+          <OrderDetails name={orderName} number={orderNumber} />
+        </Modal>
+      )}
+
       {isIngredientModalOpen && (
         <Modal
-          onClose={onClose}
+          onClose={onCloseIngredientModal}
           isOpened={isIngredientModalOpen}
           header={"Детали ингредиента"}
         >
           <IngredientDetails item={selectedIngredient} />
-        </Modal>
-      )}
-
-      {isOrderModalOpen && (
-        <Modal onClose={onClose} isOpened={isOrderModalOpen}>
-          <OrderDetails name={orderName} number={orderNumber} />
         </Modal>
       )}
     </ErrorBoundary>

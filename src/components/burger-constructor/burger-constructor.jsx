@@ -1,20 +1,67 @@
 import styles from "./burger-constructor.module.css";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ConstructorTotal from "../constructor-total/constructor-total";
 import { useDispatch, useSelector } from "react-redux";
 import no_image from "../../images/no-image.png";
-import { REMOVE_INGREDIENT } from "../../services/actions/ingredient";
+import {
+  ADD_BUN,
+  ADD_INGREDIENT,
+  GET_TOTAL_PRICE,
+  UPDATE_SELECTED_INGREDIENTS_LIST,
+} from "../../services/actions/ingredient";
+import { useDrop } from "react-dnd";
+import { _BUN } from "../../utils/constants";
+import BurgerConstructorItem from "../burer-constructor-item/burger-constructor-item";
+import { useCallback } from "react";
 
-const BurgerConstructor = () => {
+const BurgerConstructor = (callback, deps) => {
   const { selectedBun, selectedIngredients, isRequest, isRequestError } =
     useSelector((state) => state.ingredientsList);
 
   const dispatch = useDispatch();
 
-  const handleIngredientRemove = (ingredient) => {
-    dispatch({ type: REMOVE_INGREDIENT, item: ingredient });
+  const addIngredient = (item) => {
+    dispatch({ type: ADD_INGREDIENT, item: item });
+    dispatch({ type: GET_TOTAL_PRICE });
   };
+  const addBun = (item) => {
+    dispatch({ type: ADD_BUN, item: item });
+    dispatch({ type: GET_TOTAL_PRICE });
+  };
+
+  const [{ isHover }, ingredientDropTarget] = useDrop({
+    accept: "ingredient",
+    drop(item) {
+      item.type === _BUN ? addBun(item) : addIngredient(item);
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
+  const borderColor = isHover ? "lightgreen" : "transparent";
+
+  const moveConstructorIngredient = useCallback(
+    (dragIndex, hoverIndex) => {
+      const dragConstructorIngredient = selectedIngredients[dragIndex];
+      const newConstructorIngredients = [...selectedIngredients];
+
+      newConstructorIngredients.splice(dragIndex, 1);
+      newConstructorIngredients.splice(
+        hoverIndex,
+        0,
+        dragConstructorIngredient
+      );
+
+      console.log(newConstructorIngredients);
+
+      dispatch({
+        type: UPDATE_SELECTED_INGREDIENTS_LIST,
+        payload: newConstructorIngredients,
+      });
+    },
+    [selectedIngredients, dispatch]
+  );
 
   if (isRequestError) {
     return "Error";
@@ -22,7 +69,11 @@ const BurgerConstructor = () => {
     return "Loading...";
   } else if (selectedIngredients) {
     return (
-      <section className={styles.section}>
+      <section
+        className={styles.section}
+        ref={ingredientDropTarget}
+        style={{ borderColor }}
+      >
         <div className={"pl-8"}>
           <ConstructorElement
             className={styles.constructor_element}
@@ -35,19 +86,16 @@ const BurgerConstructor = () => {
             thumbnail={selectedBun.image ? selectedBun.image : no_image}
           />
         </div>
-        <div className={`${styles.ingredients_list} custom-scroll mt-4 mb-4`}>
+        <div className={`${styles.ingredients_list}  custom-scroll mt-4 mb-4`}>
           {selectedIngredients &&
-            selectedIngredients.map((ingredient) => {
+            selectedIngredients.map((ingredient, index) => {
               return (
-                <div key={ingredient.uid} className={styles.item}>
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    text={ingredient.name}
-                    price={ingredient.price}
-                    thumbnail={ingredient.image}
-                    handleClose={() => handleIngredientRemove(ingredient)}
-                  />
-                </div>
+                <BurgerConstructorItem
+                  ingredient={ingredient}
+                  idx={index}
+                  key={ingredient.uid}
+                  moveConstructorIngredient={moveConstructorIngredient}
+                />
               );
             })}
         </div>
