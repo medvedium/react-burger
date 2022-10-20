@@ -3,7 +3,6 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients-item.module.css";
-import PropTypes from "prop-types";
 import { ingredientItem } from "../../utils/constants";
 import { useDispatch } from "react-redux";
 import {
@@ -45,7 +44,6 @@ const BurgerIngredientsItem = ({ item }) => {
 };
 
 BurgerIngredientsItem.propTypes = {
-  count: PropTypes.number,
   item: ingredientItem.isRequired,
 };
 

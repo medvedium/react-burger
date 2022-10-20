@@ -10,6 +10,7 @@ import {
   REMOVE_INGREDIENT,
 } from "../../services/actions/ingredient";
 import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 
 function BurgerConstructorItem({ item, index, moveCard }) {
   const dispatch = useDispatch();
@@ -80,5 +81,11 @@ function BurgerConstructorItem({ item, index, moveCard }) {
     </div>
   );
 }
+
+BurgerConstructorItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  moveCard: PropTypes.func.isRequired,
+};
 
 export default BurgerConstructorItem;

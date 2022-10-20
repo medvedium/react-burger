@@ -8,6 +8,7 @@ import { CHOOSE_TAB } from "../../services/actions/ingredient";
 const BurgerIngredientsTabs = () => {
   const { activeTab } = useSelector((state) => state.ingredientsList);
   const dispatch = useDispatch();
+
   const handleTabToggle = (e) => {
     dispatch({ type: CHOOSE_TAB, value: e });
     const activeTarget = document.querySelector(`[data-tab-target="${e}"]`);
@@ -22,6 +23,7 @@ const BurgerIngredientsTabs = () => {
       behavior: "smooth",
     });
   };
+
   return (
     <div className={`${styles.tabs_list} mb-10`}>
       <Tab

@@ -1,11 +1,11 @@
 import styles from "./constructor-total.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postOrderData } from "../../services/reducers/burger-constructor";
 
-const ConstructorTotal = (factory, deps) => {
+const ConstructorTotal = () => {
   const dispatch = useDispatch();
 
   const { selectedIngredients, selectedBun, total } = useSelector(

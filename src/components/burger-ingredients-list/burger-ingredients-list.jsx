@@ -7,8 +7,9 @@ import { _BUN, _MAIN, _SAUCE } from "../../utils/constants";
 import { CHOOSE_TAB } from "../../services/actions/ingredient";
 
 const BurgerIngredientsList = () => {
-  const { isRequest, isRequestError, bun, sauce, main, activeTab } =
-    useSelector((state) => state.ingredientsList);
+  const { isRequest, isRequestError, bun, sauce, main } = useSelector(
+    (state) => state.ingredientsList
+  );
 
   const dispatch = useDispatch();
   const listRef = useRef();
@@ -16,23 +17,9 @@ const BurgerIngredientsList = () => {
   const sauceRef = useRef();
   const mainRef = useRef();
 
-  // function scrollList(selector) {
-  //   selector.scrollTo({ block: "start", behavior: "smooth" });
-  // }
-
   useEffect(() => {
     dispatch(getIngredients());
-  }, []);
-
-  // useEffect(() => {
-  //   if (bun) {
-  //     activeTab === _BUN
-  //       ? scrollList(bunRef.current)
-  //       : activeTab === _SAUCE
-  //       ? scrollList(sauceRef.current)
-  //       : scrollList(mainRef.current);
-  //   }
-  // }, [activeTab]);
+  }, [dispatch]);
 
   const highlightActiveTab = () => {
     const bunPos = Math.abs(
