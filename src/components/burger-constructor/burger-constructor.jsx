@@ -41,7 +41,7 @@ const BurgerConstructor = (callback, deps) => {
 
   const borderColor = isHover ? "lightgreen" : "transparent";
 
-  const moveConstructorIngredient = useCallback(
+  const moveCard = useCallback(
     (dragIndex, hoverIndex) => {
       const dragCard = selectedIngredients[dragIndex];
       const newCards = [...selectedIngredients];
@@ -85,10 +85,10 @@ const BurgerConstructor = (callback, deps) => {
             selectedIngredients.map((item, index) => {
               return (
                 <BurgerConstructorItem
-                  ingredient={item}
+                  item={item}
                   index={index}
                   key={item.uid}
-                  moveConstructorIngredient={moveConstructorIngredient}
+                  moveCard={moveCard}
                 />
               );
             })}

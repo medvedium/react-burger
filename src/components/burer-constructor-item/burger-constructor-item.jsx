@@ -11,30 +11,17 @@ import {
 } from "../../services/actions/ingredient";
 import { useDispatch } from "react-redux";
 
-function BurgerConstructorItem({
-  ingredient,
-  index,
-  moveConstructorIngredient,
-}) {
+function BurgerConstructorItem({ item, index, moveCard }) {
   const dispatch = useDispatch();
 
-  const handleIngredientRemove = (ingredient) => {
-    dispatch({ type: REMOVE_INGREDIENT, item: ingredient });
+  const handleIngredientRemove = (item) => {
+    dispatch({ type: REMOVE_INGREDIENT, item: item });
     dispatch({ type: GET_TOTAL_PRICE });
   };
 
   const ref = useRef(null);
-
-  const [{ isDrag }, dragRef] = useDrag({
-    type: "constructorElement",
-    collect: (monitor) => ({
-      isDrag: !!monitor.isDragging(),
-    }),
-    item: () => ({ index, id: ingredient.id }),
-  });
-
-  const [{ handlerId }, drop] = useDrop(() => ({
-    accept: "constructorElement",
+  const [{ handlerId }, drop] = useDrop({
+    accept: "component",
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
@@ -44,10 +31,8 @@ function BurgerConstructorItem({
       if (!ref.current) {
         return;
       }
-
       const dragIndex = item.index;
       const hoverIndex = index;
-
       if (dragIndex === hoverIndex) {
         return;
       }
@@ -62,27 +47,35 @@ function BurgerConstructorItem({
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-      moveConstructorIngredient(dragIndex, hoverIndex);
+      moveCard(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
-  }));
+  });
 
-  dragRef(drop(ref));
+  const [{ isDragging }, drag] = useDrag({
+    type: "component",
+    item: () => ({ id: item.id, index }),
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  drag(drop(ref));
   const preventDefault = (e) => e.preventDefault();
 
   return (
     <div
-      className={`${styles.item} ${isDrag && styles.dragging}`}
+      className={`${styles.item} ${isDragging && styles.dragging}`}
       ref={ref}
       data-handler-id={handlerId}
       onDrop={preventDefault}
     >
       <DragIcon type="primary" />
       <ConstructorElement
-        text={ingredient.name}
-        price={ingredient.price}
-        thumbnail={ingredient.image}
-        handleClose={() => handleIngredientRemove(ingredient)}
+        text={item.name}
+        price={item.price}
+        thumbnail={item.image}
+        handleClose={() => handleIngredientRemove(item)}
       />
     </div>
   );
