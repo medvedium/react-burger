@@ -172,7 +172,7 @@ export const ingredientsList = (state = initialState, action) => {
     case UPDATE_SELECTED_INGREDIENTS_LIST: {
       return {
         ...state,
-        // selectedIngredients: [...action.payload],
+        selectedIngredients: [...action.payload],
       };
     }
     default:
