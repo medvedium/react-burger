@@ -1,5 +1,6 @@
 import { fetchPost } from "../../utils/api";
 import { _ORDER_URL } from "../../utils/constants";
+import { RESET_CONSTRUCTOR } from "./ingredient";
 
 export const OPEN_ORDER_MODAL = "OPEN_ORDER_MODAL";
 export const MAKE_ORDER = "MAKE_ORDER";
@@ -14,6 +15,7 @@ export function postOrderData(orderData) {
       .then((data) => {
         dispatch({ type: MAKE_ORDER_SUCCESS, payload: data });
         dispatch({ type: OPEN_ORDER_MODAL });
+        dispatch({ type: RESET_CONSTRUCTOR });
       })
       .catch((error) => {
         dispatch({ type: MAKE_ORDER_FAILED });

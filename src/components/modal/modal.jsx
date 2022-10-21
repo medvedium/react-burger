@@ -5,13 +5,15 @@ import styles from "./modal.module.css";
 import PropTypes from "prop-types";
 
 const Modal = ({ isOpened, header, onClose, children }) => {
-  const escapeListener = (event) => {
-    if (event.key === "Escape") {
-      onClose();
-    }
-  };
-
   useEffect(() => {
+    if (!isOpened) return;
+
+    const escapeListener = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
     window.addEventListener("keydown", escapeListener);
     return () => {
       window.removeEventListener("keydown", escapeListener);

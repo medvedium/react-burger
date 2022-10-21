@@ -1,5 +1,6 @@
 import { fetchGet } from "../../utils/api";
-import { _DATA_URL } from "../../utils/constants";
+import { _BUN, _DATA_URL } from "../../utils/constants";
+import { nanoid } from "nanoid";
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -14,6 +15,7 @@ export const REMOVE_INGREDIENT = "REMOVE_INGREDIENT";
 export const GET_TOTAL_PRICE = "GET_TOTAL_PRICE";
 export const UPDATE_SELECTED_INGREDIENTS_LIST =
   "UPDATE_SELECTED_INGREDIENTS_LIST";
+export const RESET_CONSTRUCTOR = "RESET_CONSTRUCTOR";
 
 export function getIngredients() {
   return function (dispatch) {
@@ -28,3 +30,14 @@ export function getIngredients() {
       .catch(() => dispatch({ type: GET_INGREDIENTS_FAILED }));
   };
 }
+
+export const addIngredient = (dispatch, item) => {
+  if (item.type === _BUN) {
+    dispatch({ type: ADD_BUN, item: item });
+    dispatch({ type: GET_TOTAL_PRICE });
+  } else {
+    item.uid = nanoid(8);
+    dispatch({ type: ADD_INGREDIENT, item: item });
+    dispatch({ type: GET_TOTAL_PRICE });
+  }
+};

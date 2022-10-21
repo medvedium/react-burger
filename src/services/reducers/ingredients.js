@@ -11,10 +11,9 @@ import {
   SELECT_INGREDIENT,
   GET_TOTAL_PRICE,
   UPDATE_SELECTED_INGREDIENTS_LIST,
+  RESET_CONSTRUCTOR,
 } from "../actions/ingredient";
-import { fetchGet } from "../../utils/api";
-import { _BUN, _DATA_URL, _MAIN, _SAUCE } from "../../utils/constants";
-import { nanoid } from "nanoid";
+import { _BUN, _MAIN, _SAUCE } from "../../utils/constants";
 
 const initialState = {
   bun: [],
@@ -102,7 +101,7 @@ export const ingredientsList = (state = initialState, action) => {
         ...state,
         selectedIngredients: [
           ...state.selectedIngredients,
-          { ...action.item, uid: nanoid(8), count: action.item.count++ },
+          { ...action.item, count: action.item.count++ },
         ],
       };
     }
@@ -159,6 +158,28 @@ export const ingredientsList = (state = initialState, action) => {
       return {
         ...state,
         selectedIngredients: [...action.payload],
+      };
+    }
+    case RESET_CONSTRUCTOR: {
+      return {
+        ...state,
+        selectedIngredients: [],
+        selectedBun: {},
+        bun: [
+          ...state.bun.map((item) => {
+            return { ...item, count: 0 };
+          }),
+        ],
+        sauce: [
+          ...state.sauce.map((item) => {
+            return { ...item, count: 0 };
+          }),
+        ],
+        main: [
+          ...state.main.map((item) => {
+            return { ...item, count: 0 };
+          }),
+        ],
       };
     }
     default:

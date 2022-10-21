@@ -9,7 +9,7 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 13px;
 }
 .constructor_element img {
     object-fit: contain;

@@ -4,35 +4,23 @@ import ConstructorTotal from "../constructor-total/constructor-total";
 import { useDispatch, useSelector } from "react-redux";
 import no_image from "../../images/no-image.png";
 import {
-  ADD_BUN,
-  ADD_INGREDIENT,
-  GET_TOTAL_PRICE,
+  addIngredient,
   UPDATE_SELECTED_INGREDIENTS_LIST,
 } from "../../services/actions/ingredient";
 import { useDrop } from "react-dnd";
-import { _BUN } from "../../utils/constants";
 import BurgerConstructorItem from "../burer-constructor-item/burger-constructor-item";
 import { useCallback } from "react";
 
-const BurgerConstructor = (callback, deps) => {
+const BurgerConstructor = () => {
   const { selectedBun, selectedIngredients, isRequest, isRequestError } =
     useSelector((state) => state.ingredientsList);
 
   const dispatch = useDispatch();
 
-  const addIngredient = (item) => {
-    dispatch({ type: ADD_INGREDIENT, item: item });
-    dispatch({ type: GET_TOTAL_PRICE });
-  };
-  const addBun = (item) => {
-    dispatch({ type: ADD_BUN, item: item });
-    dispatch({ type: GET_TOTAL_PRICE });
-  };
-
   const [{ isHover }, ingredientDropTarget] = useDrop({
     accept: "ingredient",
     drop(item) {
-      item.type === _BUN ? addBun(item) : addIngredient(item);
+      addIngredient(dispatch, item);
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),

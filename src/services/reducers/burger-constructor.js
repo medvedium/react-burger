@@ -5,8 +5,6 @@ import {
   OPEN_ORDER_MODAL,
   CLOSE_ORDER_MODAL,
 } from "../actions/burger-constructor";
-import { fetchPost } from "../../utils/api";
-import { _ORDER_URL } from "../../utils/constants";
 
 const initialState = {
   isRequest: false,
