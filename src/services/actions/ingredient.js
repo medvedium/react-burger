@@ -1,3 +1,6 @@
+import { fetchGet } from "../../utils/api";
+import { _DATA_URL } from "../../utils/constants";
+
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
 export const GET_INGREDIENTS_FAILED = "GET_INGREDIENTS_FAILED";
@@ -11,3 +14,17 @@ export const REMOVE_INGREDIENT = "REMOVE_INGREDIENT";
 export const GET_TOTAL_PRICE = "GET_TOTAL_PRICE";
 export const UPDATE_SELECTED_INGREDIENTS_LIST =
   "UPDATE_SELECTED_INGREDIENTS_LIST";
+
+export function getIngredients() {
+  return function (dispatch) {
+    dispatch({ type: GET_INGREDIENTS });
+    fetchGet(_DATA_URL)
+      .then(({ data }) => {
+        dispatch({
+          type: GET_INGREDIENTS_SUCCESS,
+          payload: data,
+        });
+      })
+      .catch(() => dispatch({ type: GET_INGREDIENTS_FAILED }));
+  };
+}

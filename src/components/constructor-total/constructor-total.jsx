@@ -3,7 +3,7 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postOrderData } from "../../services/reducers/burger-constructor";
+import { postOrderData } from "../../services/actions/burger-constructor";
 
 const ConstructorTotal = () => {
   const dispatch = useDispatch();

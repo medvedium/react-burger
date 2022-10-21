@@ -16,20 +16,6 @@ const initialState = {
   orderNumber: null,
 };
 
-export function postOrderData(orderData) {
-  return function (dispatch) {
-    dispatch({ type: MAKE_ORDER });
-    fetchPost(_ORDER_URL, orderData)
-      .then((data) => {
-        dispatch({ type: MAKE_ORDER_SUCCESS, payload: data });
-        dispatch({ type: OPEN_ORDER_MODAL });
-      })
-      .catch((error) => {
-        dispatch({ type: MAKE_ORDER_FAILED });
-      });
-  };
-}
-
 export const burgerConstructor = (state = initialState, action) => {
   switch (action.type) {
     case OPEN_ORDER_MODAL: {

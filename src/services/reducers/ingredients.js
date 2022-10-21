@@ -30,20 +30,6 @@ const initialState = {
   total: null,
 };
 
-export function getIngredients() {
-  return function (dispatch) {
-    dispatch({ type: GET_INGREDIENTS });
-    fetchGet(_DATA_URL)
-      .then(({ data }) => {
-        dispatch({
-          type: GET_INGREDIENTS_SUCCESS,
-          payload: data,
-        });
-      })
-      .catch(() => dispatch({ type: GET_INGREDIENTS_FAILED }));
-  };
-}
-
 export const ingredientsList = (state = initialState, action) => {
   switch (action.type) {
     case GET_INGREDIENTS: {
