@@ -1,16 +1,15 @@
-.section {
-    padding-top: 100px;
-    padding-left: 16px;
+
+.item {
+    display: flex;
+    align-items: center;
     border: 1px solid transparent;
 }
 
-.ingredients_list {
-    max-height: 464px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 13px;
+.item > svg {
+    cursor: grab;
+    margin-right: 8px;
 }
+
 .constructor_element img {
     object-fit: contain;
 }
@@ -26,6 +25,6 @@
     z-index: 1;
 }
 
-.hovered {
-    border: 1px solid green;
+.dragging {
+    opacity: 0.5;
 }

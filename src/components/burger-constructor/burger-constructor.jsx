@@ -1,58 +1,98 @@
 import styles from "./burger-constructor.module.css";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ConstructorTotal from "../constructor-total/constructor-total";
-import { _BUN } from "../../utils/constants";
-import { useContext } from "react";
-import { ConstructorIngredientsContext } from "../../utils/contexts/constructor-ingredients-context";
+import { useDispatch, useSelector } from "react-redux";
+import no_image from "../../images/no-image.png";
+import {
+  addIngredient,
+  UPDATE_SELECTED_INGREDIENTS_LIST,
+} from "../../services/actions/ingredient";
+import { useDrop } from "react-dnd";
+import BurgerConstructorItem from "../burer-constructor-item/burger-constructor-item";
+import { useCallback } from "react";
 
 const BurgerConstructor = () => {
-  const ingredients = useContext(ConstructorIngredientsContext);
+  const { selectedBun, selectedIngredients, isRequest, isRequestError } =
+    useSelector((state) => state.ingredientsList);
 
-  return (
-    <>
-      {ingredients.length && (
-        <section className={styles.section}>
-          <div className={"pl-8"}>
-            <ConstructorElement
-              key={ingredients[0]._id}
-              type="top"
-              isLocked={true}
-              text={ingredients[0].name + " (верх)"}
-              price={ingredients[0].price}
-              thumbnail={ingredients[0].image}
-            />
-          </div>
-          <div className={`${styles.ingredients_list} custom-scroll mt-4 mb-4`}>
-            {ingredients.map((ingredient) => {
-              return ingredient.type !== _BUN ? (
-                <div key={ingredient._id} className={styles.item}>
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    text={ingredient.name}
-                    price={ingredient.price}
-                    thumbnail={ingredient.image}
-                    handleClose={() => console.log("remove")}
-                  />
-                </div>
-              ) : null;
-            })}
-          </div>
-          <div className={"pl-8"}>
-            <ConstructorElement
-              key={ingredients[0]._id}
-              type="bottom"
-              isLocked={true}
-              text={ingredients[0].name + " (низ)"}
-              price={ingredients[0].price}
-              thumbnail={ingredients[0].image}
-            />
-          </div>
-          <ConstructorTotal />
-        </section>
-      )}
-    </>
+  const dispatch = useDispatch();
+
+  const [{ isHover }, ingredientDropTarget] = useDrop({
+    accept: "ingredient",
+    drop(item) {
+      addIngredient(dispatch, item);
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
+  const moveCard = useCallback(
+    (dragIndex, hoverIndex) => {
+      const dragCard = selectedIngredients[dragIndex];
+      const newCards = [...selectedIngredients];
+
+      newCards.splice(dragIndex, 1);
+      newCards.splice(hoverIndex, 0, dragCard);
+
+      dispatch({
+        type: UPDATE_SELECTED_INGREDIENTS_LIST,
+        payload: newCards,
+      });
+    },
+    [selectedIngredients, dispatch]
   );
+
+  if (isRequestError) {
+    return "Error";
+  } else if (isRequest) {
+    return "Loading...";
+  } else if (selectedIngredients) {
+    return (
+      <section
+        className={`${styles.section} ${isHover ? styles.hovered : ""}`}
+        ref={ingredientDropTarget}
+      >
+        <div className={"pl-8"}>
+          <ConstructorElement
+            className={styles.constructor_element}
+            type="top"
+            isLocked={true}
+            text={
+              selectedBun.name ? selectedBun.name + " (верх)" : "Выберите булку"
+            }
+            price={selectedBun.price ? selectedBun.price : 0}
+            thumbnail={selectedBun.image ? selectedBun.image : no_image}
+          />
+        </div>
+        <div className={`${styles.ingredients_list}  custom-scroll mt-4 mb-4`}>
+          {selectedIngredients &&
+            selectedIngredients.map((item, index) => {
+              return (
+                <BurgerConstructorItem
+                  item={item}
+                  index={index}
+                  key={item.uid}
+                  moveCard={moveCard}
+                />
+              );
+            })}
+        </div>
+        <div className={"pl-8"}>
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={
+              selectedBun.name ? selectedBun.name + " (низ)" : "Выберите булку"
+            }
+            price={selectedBun.price ? selectedBun.price : 0}
+            thumbnail={selectedBun.image ? selectedBun.image : no_image}
+          />
+        </div>
+        <ConstructorTotal />
+      </section>
+    );
+  }
 };
 
 export default BurgerConstructor;
