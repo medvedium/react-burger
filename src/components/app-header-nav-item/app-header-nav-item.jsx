@@ -1,10 +1,11 @@
 import styles from "./app-header-nav-item.module.css";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const AppHeaderNavItem = ({ children, isActive, value }) => {
   return (
     <li>
-      <a href="/" className={`${styles.listItem} pl-5 pr-5`}>
+      <Link to="/main" className={`${styles.listItem} pl-5 pr-5`}>
         {children}
         <p
           className={`text text_type_main-default ml-2 ${
@@ -13,7 +14,7 @@ const AppHeaderNavItem = ({ children, isActive, value }) => {
         >
           {value}
         </p>
-      </a>
+      </Link>
     </li>
   );
 };

@@ -1,5 +1,7 @@
 .headerLogin {
     justify-self: end;
+    display: flex;
+    text-decoration: none;
 }
 
 .header_login_link {

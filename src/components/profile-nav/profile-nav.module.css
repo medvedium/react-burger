@@ -1,0 +1,9 @@
+.profile_nav {
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+}
+.profile_description {
+    color: #8585ad;
+    opacity: .4;
+}

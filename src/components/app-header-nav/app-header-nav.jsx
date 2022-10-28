@@ -1,20 +1,31 @@
-import AppHeaderNavItem from "../app-header-nav-item/app-header-nav-item";
 import {
   BurgerIcon,
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header-nav.module.css";
+import { Link } from "react-router-dom";
 
 function AppHeaderNav() {
   return (
     <nav>
       <ul className={styles.navList}>
-        <AppHeaderNavItem isActive value={"Конструктор"}>
-          <BurgerIcon type={"primary"} className={"mr-2"} />
-        </AppHeaderNavItem>
-        <AppHeaderNavItem isActive={false} value={"Лента заказов"}>
-          <ListIcon type={"secondary"} className={"mr-2"} />
-        </AppHeaderNavItem>
+        <li className="pr-10">
+          <Link to="/" className="d-flex">
+            <BurgerIcon type={"primary"} className={"mr-2"} />
+            <p className="text text_type_main-default ml-2 text_color_inactive">
+              Конструктор
+            </p>
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/" className="d-flex">
+            <ListIcon type={"secondary"} className={"mr-2"} />
+            <p className="text text_type_main-default ml-2 text_color_inactive">
+              Лента заказов
+            </p>
+          </Link>
+        </li>
       </ul>
     </nav>
   );
