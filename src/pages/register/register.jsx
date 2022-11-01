@@ -6,13 +6,34 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { registerPost } from "../../utils/api";
+import { _REGISTER_URL } from "../../utils/constants";
 
 const RegisterPage = () => {
-  const [value, setValue] = React.useState("");
+  const [state, setState] = React.useState({
+    email: "",
+    password: "",
+    name: "",
+  });
+
+  const history = useHistory();
+
   const onChange = (e) => {
-    setValue(e.target.value);
+    const { target } = e;
+    const value = target.value;
+    const { name } = target;
+    setState({
+      ...state,
+      [name]: value,
+    });
   };
+  const register = () => {
+    registerPost(_REGISTER_URL, state.email, state.password, state.name)
+      .then(() => history.replace("/"))
+      .catch((res) => console.log(res));
+  };
+
   const inputRef = useRef();
   return (
     <div className={styles.register_wrap}>
@@ -20,8 +41,8 @@ const RegisterPage = () => {
       <Input
         type={"text"}
         placeholder={"Имя"}
-        onChange={(e) => setValue(e.target.value)}
-        value={value}
+        onChange={(e) => onChange(e)}
+        value={state.name}
         name={"name"}
         error={false}
         ref={inputRef}
@@ -30,18 +51,24 @@ const RegisterPage = () => {
         extraClass="mb-6"
       />
       <EmailInput
-        onChange={(e) => onChange}
-        value={value}
+        onChange={(e) => onChange(e)}
+        value={state.email}
         name={"email"}
         extraClass="mb-6"
       />
       <PasswordInput
-        onChange={(e) => onChange}
-        value={value}
+        onChange={(e) => onChange(e)}
+        value={state.password}
         name={"password"}
         extraClass="mb-6"
       />
-      <Button type="primary" size="medium" htmlType="submit" extraClass="mb-20">
+      <Button
+        type="primary"
+        size="medium"
+        htmlType="submit"
+        extraClass="mb-20"
+        onClick={register}
+      >
         Зарегистрироваться
       </Button>
       <p className="text text_type_main-default mb-4">

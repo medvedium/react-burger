@@ -4,31 +4,29 @@ import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { resetPasswordPost } from "../../utils/api";
+import { _EMAIL_RESET_URL } from "../../utils/constants";
 
 const ForgotPasswordPage = () => {
+  const history = useHistory();
+
   const [email, setEmail] = React.useState("");
   const onChange = (e) => {
     setEmail(e.target.value);
   };
 
-  const sendEmailRequest = () => {
-    fetch("https://norma.nomoreparties.space/api/password-reset", {
-      body: {
-        email: "",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
+  const sendEmailRequest = (email) => {
+    resetPasswordPost(_EMAIL_RESET_URL, email).then(() => {
+      history.replace({ pathname: "/reset-password" });
+    });
   };
 
   return (
     <div className={styles.forgot_password_wrap}>
       <p className="text text_type_main-medium mb-6">Восстановление пароля</p>
       <EmailInput
-        onChange={(e) => onChange}
+        onChange={(e) => onChange(e)}
         value={email}
         name={"email"}
         placeholder={"Укажите e-mail"}
@@ -39,7 +37,7 @@ const ForgotPasswordPage = () => {
         size="medium"
         htmlType="submit"
         extraClass="mb-20"
-        onClick={(e) => sendEmailRequest}
+        onClick={(e) => sendEmailRequest(email)}
       >
         Восстановить
       </Button>

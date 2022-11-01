@@ -8,7 +8,7 @@ const ProfileNav = () => {
       <Link to="/profile/">
         <p className="text text_type_main-medium pt-4 pr-4 pb-4 ">Профиль</p>
       </Link>
-      <Link to="/profile/">
+      <Link to="/profile/orders">
         <p className="text text_type_main-medium pt-4 pr-4 pb-4 text_color_inactive">
           История заказов
         </p>

@@ -6,9 +6,9 @@ import { useEffect } from "react";
 const HeaderLogin = () => {
   let pageIsActive = true;
   const history = useHistory();
-  useEffect(() => {
-    console.log(history);
-  });
+  // useEffect(() => {
+  //   console.log(history);
+  // });
   return (
     <Link
       to="/profile"
