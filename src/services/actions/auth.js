@@ -1,8 +1,9 @@
-import { _LOGIN_URL } from "../../utils/constants";
+import { _LOGIN_URL, _LOGOUT_URL } from "../../utils/constants";
 import {
   deleteCookie,
   getCookie,
   loginPost,
+  logoutPost,
   refreshTokenRequest,
   setCookie,
 } from "../../utils/api";
@@ -12,12 +13,11 @@ export const SET_USER = "SET_USER";
 export const SET_TOKEN = "SET_TOKEN";
 export const REFRESH_USER = "REFRESH_USER";
 
-export const login = (postData) => {
-  let accessToken;
+export const login = (postData, history) => {
   return function (dispatch) {
     loginPost(_LOGIN_URL, postData)
       .then((res) => {
-        console.log(res);
+        let accessToken;
         if (res.accessToken.indexOf("Bearer") === 0)
           accessToken = res.accessToken.split("Bearer ")[1];
         else accessToken = res.accessToken;
@@ -26,12 +26,26 @@ export const login = (postData) => {
           user: { ...res.user, password: postData.password },
           token: accessToken,
         });
-        setCookie("date", new Date());
         setCookie("refreshToken", res.refreshToken);
-        dispatch({ type: LOGIN_SUCCESS });
       })
+      .then(() => history.replace({ pathname: "/login" }))
       .catch((err) => {
         console.log(err);
+      });
+  };
+};
+
+export const logout = (token, history) => {
+  return function (dispatch) {
+    logoutPost(_LOGOUT_URL, token)
+      .then(() => {
+        const oldTokenCookie = getCookie("refreshToken");
+        console.log(oldTokenCookie);
+        deleteCookie("refreshToken", oldTokenCookie);
+      })
+      .then(() => history.replace({ pathname: "/login" }))
+      .catch((res) => {
+        console.log(res);
       });
   };
 };
@@ -40,21 +54,20 @@ export const refreshUserData = (token) => {
   const refreshData = {
     token: token,
   };
-  let accessToken = null;
   return function (dispatch) {
     return refreshTokenRequest(refreshData).then((res) => {
-      const oldDate = getCookie("date");
+      let accessToken = null;
       deleteCookie("refreshToken", token);
-      deleteCookie("date", oldDate);
-      if (res.accessToken.indexOf("Bearer") === 0)
+      if (res.accessToken.indexOf("Bearer") === 0) {
         accessToken = res.accessToken.split("Bearer ")[1];
-      else accessToken = res.accessToken;
+      } else {
+        accessToken = res.accessToken;
+      }
       dispatch({
         type: REFRESH_USER,
         token: accessToken,
       });
       setCookie("refreshToken", res.refreshToken);
-      setCookie("date", new Date());
       return accessToken;
     });
   };

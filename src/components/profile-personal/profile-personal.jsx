@@ -1,16 +1,32 @@
 import styles from "./profile-personal.module.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useSelector } from "react-redux";
 
-const ProfilePersonal = () => {
+const ProfilePersonal = ({ userData }) => {
   const [value, setValue] = React.useState("");
   const inputRef = React.useRef(null);
   const onIconClick = () => {
     setTimeout(() => inputRef.current.focus(), 0);
     alert("Icon Click Callback");
   };
+
+  const { name, email, password } = useSelector((store) => store.userData);
+
+  const [state, setState] = useState({
+    name: name,
+    email: email,
+    password: password,
+  });
+
   const onChange = (e) => {
-    setValue(e.target.value);
+    const { target } = e;
+    const value = target.value;
+    const { name } = target;
+    setState({
+      ...state,
+      [name]: value,
+    });
   };
 
   return (
@@ -18,9 +34,9 @@ const ProfilePersonal = () => {
       <Input
         type={"text"}
         placeholder={"Имя"}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => onChange(e)}
         icon={"EditIcon"}
-        value={value}
+        value={state.name}
         name={"Имя"}
         error={false}
         ref={inputRef}
@@ -33,9 +49,9 @@ const ProfilePersonal = () => {
       <Input
         type={"text"}
         placeholder={"Логин"}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => onChange(e)}
         icon={"EditIcon"}
-        value={value}
+        value={state.email}
         name={"name"}
         error={false}
         ref={inputRef}
@@ -48,9 +64,9 @@ const ProfilePersonal = () => {
       <Input
         type={"text"}
         placeholder={"Пароль"}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => onChange(e)}
         icon={"EditIcon"}
-        value={value}
+        value={state.password}
         name={"name"}
         error={false}
         ref={inputRef}

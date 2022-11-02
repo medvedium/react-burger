@@ -7,3 +7,15 @@
     color: #8585ad;
     opacity: .4;
 }
+
+.logout_button {
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.logout_button:hover p {
+    color: #ffffff !important;
+}

@@ -6,7 +6,6 @@ import {
 } from "../actions/auth";
 
 const initialState = {
-  isAuth: false,
   name: "",
   email: "",
   password: "",
@@ -16,6 +15,7 @@ const initialState = {
 export const userData = (state = initialState, action) => {
   switch (action.type) {
     case SET_USER: {
+      console.log(action);
       return {
         ...state,
         email: action.user.email,

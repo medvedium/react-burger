@@ -4,11 +4,17 @@ import ProfileNav from "../../components/profile-nav/profile-nav";
 import ProfilePersonal from "../../components/profile-personal/profile-personal";
 import { useDispatch, useSelector } from "react-redux";
 import { getCookie, getUserRequest } from "../../utils/api";
-import { useHistory, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Redirect,
+  Route,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 import { refreshUserData } from "../../services/actions/auth";
 
 const ProfilePage = () => {
-  const accessToken = useSelector((state) => state.userData);
+  const accessToken = useSelector((state) => state.userData.token);
   const isAuth = document.cookie.includes("refreshToken");
   const history = useHistory();
   const location = useLocation();
@@ -18,12 +24,13 @@ const ProfilePage = () => {
   const refreshToken = document.cookie.includes("refreshToken")
     ? getCookie("refreshToken")
     : "";
-
   useEffect(() => {
     getUserRequest(accessToken)
       .then((res) => {
         userData = res.user;
-        if (userData) setUser(userData);
+        if (userData) {
+          setUser(userData);
+        }
       })
       .catch(() => {
         isAuth
@@ -33,14 +40,19 @@ const ProfilePage = () => {
               state: { from: location.pathname },
             });
       });
-  }, [userData, accessToken]);
+  }, [accessToken]);
 
-  return (
-    <div className={styles.profile_page}>
-      <ProfileNav />
-      <ProfilePersonal userData={{ ...user }} />
-    </div>
-  );
+  if (isAuth) {
+    return (
+      <div className={styles.profile_page}>
+        <ProfileNav refreshToken={refreshToken} />
+
+        <ProfilePersonal userData={user} />
+      </div>
+    );
+  } else {
+    return <Redirect to={{ pathname: "/login", state: { from: location } }} />;
+  }
 };
 
 export default ProfilePage;

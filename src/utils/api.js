@@ -84,9 +84,22 @@ export const loginPost = (url, postData) => {
   return checkPromise(promise);
 };
 
+export const logoutPost = (url, token) => {
+  const promise = fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
+  return checkPromise(promise);
+};
+
 export const getUserRequest = (token) => {
   const promise = fetch(_GET_USER_URL, {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
