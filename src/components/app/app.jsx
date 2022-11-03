@@ -71,8 +71,7 @@ function App() {
               children={
                 <Modal
                   onClose={() => handleModalClose()}
-                  title="Детали ингредиента"
-                  isOpened={false}
+                  header="Детали ингредиента"
                 >
                   <IngredientsPage />
                 </Modal>

@@ -16,6 +16,8 @@ const IngredientsPage = () => {
   }, [items, ingredientId]);
   return (
     <div className={styles.ingredient}>
+      <p className="text text_type_main-large mb-8">Детали ингредиента</p>
+
       <img src={item.image_large} alt={item.name} className="mb-4" />
       <p className="text text_type_main-medium mb-8">{item.name}</p>
       <IngredientDetailsProperties ingredient={item} />
