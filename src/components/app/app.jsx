@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import AppHeader from "../app-header/app-header";
-import { Route, Switch } from "react-router-dom";
+import {
+  Route,
+  Router,
+  Switch,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 import HomePage from "../../pages/home/home";
 import LoginPage from "../../pages/login/login";
 import RegisterPage from "../../pages/register/register";
@@ -13,30 +19,77 @@ import ProtectedRoute from "../protected-route/protected-route";
 import OrdersPage from "../../pages/orders/orders";
 import { getIngredients } from "../../services/actions/ingredient";
 import { useDispatch } from "react-redux";
+import Modal from "../modal/modal";
 
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
+  const history = useHistory();
+
+  const ModalSwitch = () => {
+    const location = useLocation();
+
+    let background = location.state && location.state.background;
+
+    const handleModalClose = () => {
+      history.goBack();
+    };
+
+    return (
+      <React.StrictMode>
+        <AppHeader />
+        <main className="app_container">
+          <Switch location={background || location}>
+            <Route path="/" exact component={HomePage} />
+            <Route path="/login" exact component={LoginPage} />
+            <Route path="/register" exact component={RegisterPage} />
+            <Route
+              path="/forgot-password"
+              exact
+              component={ForgotPasswordPage}
+            />
+            <Route path="/reset-password" exact component={ResetPasswordPage} />
+            <ProtectedRoute path="/profile" exact component={ProfilePage} />
+            <ProtectedRoute
+              path="/profile/orders"
+              exact
+              component={OrdersPage}
+            />
+            <Route
+              path="/ingredients/:ingredientId"
+              exact
+              component={IngredientsPage}
+            />
+            <Route component={PageNotFound404} />
+          </Switch>
+
+          {background && (
+            <Route
+              path="/ingredients/:ingredientId"
+              children={
+                <Modal
+                  onClose={() => handleModalClose()}
+                  title="Детали ингредиента"
+                  isOpened={false}
+                >
+                  <IngredientsPage />
+                </Modal>
+              }
+            />
+          )}
+        </main>
+      </React.StrictMode>
+    );
+  };
 
   return (
-    <React.StrictMode>
-      <AppHeader />
-      <main className="app_container">
-        <Switch>
-          <Route path="/" exact component={HomePage} />
-          <Route path="/login" exact component={LoginPage} />
-          <Route path="/register" exact component={RegisterPage} />
-          <Route path="/forgot-password" exact component={ForgotPasswordPage} />
-          <Route path="/reset-password" exact component={ResetPasswordPage} />
-          <ProtectedRoute path="/profile" exact component={ProfilePage} />
-          <ProtectedRoute path="/profile/orders" exact component={OrdersPage} />
-          <Route path="ingredients/:id" exact component={IngredientsPage} />
-          <Route path="*" component={PageNotFound404} />
-        </Switch>
-      </main>
-    </React.StrictMode>
+    <div>
+      <Router history={history}>
+        <ModalSwitch />
+      </Router>
+    </div>
   );
 }
 

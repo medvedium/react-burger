@@ -10,9 +10,13 @@ import {
   SELECT_INGREDIENT,
 } from "../../services/actions/ingredient";
 import { useDrag } from "react-dnd";
+import { Link, useLocation } from "react-router-dom";
 
 const BurgerIngredientsItem = ({ item }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  const ingredientId = item["_id"];
 
   const openModal = () => {
     dispatch({ type: SELECT_INGREDIENT, item: item });
@@ -26,7 +30,13 @@ const BurgerIngredientsItem = ({ item }) => {
 
   return (
     !isDrag && (
-      <>
+      <Link
+        to={{
+          pathname: `/ingredients/${ingredientId}`,
+          state: { background: location },
+        }}
+        key={ingredientId}
+      >
         <div className={styles.card} onClick={openModal} ref={dragRef}>
           <img src={item.image} alt={item.name} />
           <div className={`${styles.price} pt-1 pt-2`}>
@@ -38,7 +48,7 @@ const BurgerIngredientsItem = ({ item }) => {
           </p>
           {item.count > 0 && <Counter count={item.count} size="default" />}
         </div>
-      </>
+      </Link>
     )
   );
 };
