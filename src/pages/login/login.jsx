@@ -6,19 +6,21 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
-import { login } from "../../services/actions/auth";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { checkUser, login } from "../../services/actions/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { getCookie } from "../../utils/api";
 
 const LoginPage = () => {
   const history = useHistory();
   const location = useLocation();
-  const isAuth = document.cookie.includes("refreshToken");
+  const { isAuth } = useSelector((state) => state.userData);
+  const dispatch = useDispatch();
+
+  const token = document.cookie ? getCookie("token") : "";
 
   useEffect(() => {
-    if (isAuth) {
-      history.replace("/");
-    }
-  }, [isAuth]);
+    dispatch(checkUser(token));
+  }, [dispatch, isAuth, token]);
 
   const [state, setState] = React.useState({
     email: "",
@@ -39,13 +41,15 @@ const LoginPage = () => {
     email: state.email,
     password: state.password,
   };
-  const dispatch = useDispatch();
 
-  if (isAuth) {
-    return <Redirect to={location?.state?.from || "/"} />;
-  } else {
+  const handleLogin = (e) => {
+    e.preventDefault();
+    dispatch(login(postData, history));
+  };
+
+  if (!isAuth) {
     return (
-      <div className={styles.login_wrap}>
+      <form className={styles.login_wrap} onSubmit={(e) => handleLogin(e)}>
         <p className="text text_type_main-medium mb-6">Вход</p>
         <EmailInput
           onChange={(e) => onChange(e)}
@@ -59,13 +63,7 @@ const LoginPage = () => {
           name={"password"}
           extraClass="mb-6"
         />
-        <Button
-          type="primary"
-          size="medium"
-          htmlType="submit"
-          extraClass="mb-20"
-          onClick={() => dispatch(login(postData, history))}
-        >
+        <Button type="primary" htmlType="submit" extraClass="mb-20">
           Войти
         </Button>
         <p className="text text_type_main-default mb-4">
@@ -75,8 +73,10 @@ const LoginPage = () => {
         <p className="text text_type_main-default">
           Забыли пароль? <Link to="/forgot-password">Восстановить пароль</Link>
         </p>
-      </div>
+      </form>
     );
+  } else {
+    return <Redirect to={location?.state?.from.pathname || "/"} />;
   }
 };
 

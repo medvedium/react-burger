@@ -1,26 +1,45 @@
 import styles from "./profile-nav.module.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
-import { logout } from "../../services/actions/auth";
-import { deleteCookie, getCookie } from "../../utils/api";
+import { checkUser, logout } from "../../services/actions/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { getCookie } from "../../utils/api";
 
-const ProfileNav = (refreshToken) => {
+const ProfileNav = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  let isAuth = document.cookie.includes("refreshToken");
+  const token = document.cookie ? getCookie("refreshToken") : "";
+  const { isAuth } = useSelector((state) => state.userData);
+
+  useEffect(() => {
+    dispatch(checkUser(token));
+  }, [dispatch, isAuth, token]);
+
   const handleLogout = () => {
-    deleteCookie("refreshToken", refreshToken);
-    history.replace("/login");
+    dispatch(logout(token, history));
   };
 
   if (isAuth) {
     return (
       <div className={`${styles.profile_nav} mr-15`}>
-        <Link to="/profile/">
-          <p className="text text_type_main-medium pt-4 pr-4 pb-4 ">Профиль</p>
+        <Link to="/profile">
+          <p
+            className={`${
+              location.pathname === "/profile" ? "" : "text_color_inactive"
+            } text text_type_main-medium pt-4 pr-4 pb-4`}
+          >
+            Профиль
+          </p>
         </Link>
         <Link to="/profile/orders">
-          <p className="text text_type_main-medium pt-4 pr-4 pb-4 text_color_inactive">
+          <p
+            className={`${
+              location.pathname === "/profile/orders"
+                ? ""
+                : "text_color_inactive"
+            } text text_type_main-medium pt-4 pr-4 pb-4`}
+          >
             История заказов
           </p>
         </Link>

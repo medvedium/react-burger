@@ -1,80 +1,93 @@
 import styles from "./profile-personal.module.css";
 import React, { useEffect, useState } from "react";
-import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "react-redux";
+import {
+  Button,
+  Input,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { useDispatch, useSelector } from "react-redux";
+import { useFormAndValidation } from "../../hooks/useFormAndValidation";
+import { patchUserData } from "../../services/actions/auth";
 
-const ProfilePersonal = ({ userData }) => {
-  const [value, setValue] = React.useState("");
-  const inputRef = React.useRef(null);
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0);
-    alert("Icon Click Callback");
-  };
+const ProfilePersonal = () => {
+  const dispatch = useDispatch();
+  const { name, email, password, token } = useSelector(
+    (store) => store.userData
+  );
+  const [isChanged, setChanged] = useState(false);
 
-  const { name, email, password } = useSelector((store) => store.userData);
-
-  const [state, setState] = useState({
-    name: name,
-    email: email,
-    password: password,
-  });
-
-  const onChange = (e) => {
-    const { target } = e;
-    const value = target.value;
-    const { name } = target;
-    setState({
-      ...state,
-      [name]: value,
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormAndValidation({
+      email: email,
+      password: password,
+      name: name,
     });
+
+  useEffect(() => {
+    if (
+      email === values.email &&
+      password === values.password &&
+      name === values.name
+    ) {
+      setChanged(false);
+    } else setChanged(true);
+  }, [values, name, email, password, isChanged]);
+
+  const submitForm = (event) => {
+    event.preventDefault();
+    dispatch(patchUserData(values, token));
   };
 
   return (
     <div>
-      <Input
-        type={"text"}
-        placeholder={"Имя"}
-        onChange={(e) => onChange(e)}
-        icon={"EditIcon"}
-        value={state.name}
-        name={"Имя"}
-        error={false}
-        ref={inputRef}
-        onIconClick={onIconClick}
-        errorText={"Ошибка"}
-        size={"default"}
-        extraClass="mb-6"
-        disabled
-      />
-      <Input
-        type={"text"}
-        placeholder={"Логин"}
-        onChange={(e) => onChange(e)}
-        icon={"EditIcon"}
-        value={state.email}
-        name={"name"}
-        error={false}
-        ref={inputRef}
-        onIconClick={onIconClick}
-        errorText={"Ошибка"}
-        size={"default"}
-        extraClass="mb-6"
-        disabled
-      />
-      <Input
-        type={"text"}
-        placeholder={"Пароль"}
-        onChange={(e) => onChange(e)}
-        icon={"EditIcon"}
-        value={state.password}
-        name={"name"}
-        error={false}
-        ref={inputRef}
-        onIconClick={onIconClick}
-        errorText={"Ошибка"}
-        size={"default"}
-        disabled
-      />
+      <form onSubmit={(event) => submitForm(event)}>
+        <Input
+          type={"text"}
+          placeholder={"Имя"}
+          onChange={(e) => handleChange(e)}
+          value={values.name || ""}
+          name={"name"}
+          error={isValid === false}
+          errorText={errors.name || ""}
+          extraClass="mb-6"
+        />
+        <Input
+          type={"email"}
+          placeholder={"Логин"}
+          onChange={(e) => handleChange(e)}
+          value={values.email || ""}
+          name={"email"}
+          error={isValid === false}
+          errorText={errors.email || ""}
+          extraClass="mb-6"
+        />
+        <Input
+          type={"password"}
+          placeholder={"Пароль"}
+          onChange={(e) => handleChange(e)}
+          value={values.password || ""}
+          name={"password"}
+          error={isValid === false}
+          errorText={errors.password || ""}
+          extraClass={"mb-6"}
+          autoComplete={"off"}
+        />
+        <div
+          className={`${styles.button_container} ${
+            !isChanged ? styles.hidden : ""
+          }`}
+        >
+          <Button
+            type="primary"
+            htmlType="button"
+            onClick={() => resetForm({ name, email, password })}
+          >
+            Отменить
+          </Button>
+          <Button type="primary" htmlType="submit">
+            Сохранить
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };

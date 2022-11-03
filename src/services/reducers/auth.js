@@ -1,6 +1,8 @@
 import {
   LOGIN_SUCCESS,
+  LOGOUT_SUCCESS,
   REFRESH_USER,
+  RESET_USER,
   SET_TOKEN,
   SET_USER,
 } from "../actions/auth";
@@ -10,12 +12,12 @@ const initialState = {
   email: "",
   password: "",
   token: "",
+  isAuth: false,
 };
 
 export const userData = (state = initialState, action) => {
   switch (action.type) {
     case SET_USER: {
-      console.log(action);
       return {
         ...state,
         email: action.user.email,
@@ -40,6 +42,19 @@ export const userData = (state = initialState, action) => {
       return {
         ...state,
         token: action.token,
+        name: action.user.name,
+        email: action.user.email,
+      };
+    }
+    case RESET_USER: {
+      return {
+        ...initialState,
+      };
+    }
+    case LOGOUT_SUCCESS: {
+      return {
+        ...state,
+        isAuth: false,
       };
     }
     default:

@@ -1,14 +1,11 @@
 import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./header-login.module.css";
-import { Link, useHistory } from "react-router-dom";
-import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const HeaderLogin = () => {
-  let pageIsActive = true;
-  const history = useHistory();
-  // useEffect(() => {
-  //   console.log(history);
-  // });
+  const location = useLocation();
+  let pageIsActive = location.pathname.includes("profile");
+
   return (
     <Link
       to="/profile"

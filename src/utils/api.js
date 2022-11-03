@@ -108,6 +108,22 @@ export const getUserRequest = (token) => {
   return checkPromise(promise);
 };
 
+export const userDataPatch = (userData, token) => {
+  const promise = fetch(_GET_USER_URL, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      email: userData.email,
+      password: userData.password,
+      name: userData.name,
+    }),
+  });
+  return checkPromise(promise);
+};
+
 export const refreshTokenRequest = (tokenData) => {
   const promise = fetch(_TOKEN_URL, {
     method: "POST",

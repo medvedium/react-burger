@@ -8,6 +8,8 @@ import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { rootReducer } from "./services/reducers";
 import thunk from "redux-thunk";
+import ErrorBoundary from "./components/error-boundary/error-boundary";
+import { BrowserRouter } from "react-router-dom";
 
 const enhancer = composeWithDevTools(applyMiddleware(thunk));
 const store = createStore(rootReducer, enhancer);
@@ -17,7 +19,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <Provider store={store}>
-    <App />
+    <ErrorBoundary>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ErrorBoundary>
   </Provider>
 );
 

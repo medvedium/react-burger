@@ -3,16 +3,25 @@ import {
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header-nav.module.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function AppHeaderNav() {
+  const location = useLocation();
+
   return (
     <nav>
       <ul className={styles.navList}>
         <li className="pr-10">
           <Link to="/" className="d-flex">
-            <BurgerIcon type={"primary"} className={"mr-2"} />
-            <p className="text text_type_main-default ml-2 text_color_inactive">
+            <BurgerIcon
+              type={location.pathname === "/" ? "primary" : "secondary"}
+              className={"mr-2"}
+            />
+            <p
+              className={`text text_type_main-default ml-2 ${
+                location.pathname === "/" ? "" : "text_color_inactive"
+              }`}
+            >
               Конструктор
             </p>
           </Link>

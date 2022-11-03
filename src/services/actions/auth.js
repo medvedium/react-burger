@@ -2,16 +2,20 @@ import { _LOGIN_URL, _LOGOUT_URL } from "../../utils/constants";
 import {
   deleteCookie,
   getCookie,
+  getUserRequest,
   loginPost,
   logoutPost,
   refreshTokenRequest,
   setCookie,
+  userDataPatch,
 } from "../../utils/api";
 
 export const LOGIN_SUCCESS = "LOGIN";
 export const SET_USER = "SET_USER";
 export const SET_TOKEN = "SET_TOKEN";
 export const REFRESH_USER = "REFRESH_USER";
+export const RESET_USER = "RESET_USER";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 
 export const login = (postData, history) => {
   return function (dispatch) {
@@ -24,9 +28,10 @@ export const login = (postData, history) => {
         dispatch({
           type: SET_USER,
           user: { ...res.user, password: postData.password },
-          token: accessToken,
+          isAuth: true,
         });
         setCookie("refreshToken", res.refreshToken);
+        setCookie("token", accessToken);
       })
       .then(() => history.replace({ pathname: "/login" }))
       .catch((err) => {
@@ -40,10 +45,17 @@ export const logout = (token, history) => {
     logoutPost(_LOGOUT_URL, token)
       .then(() => {
         const oldTokenCookie = getCookie("refreshToken");
-        console.log(oldTokenCookie);
+        const oldAccessTokenCookie = getCookie("token");
         deleteCookie("refreshToken", oldTokenCookie);
+        deleteCookie("token", oldAccessTokenCookie);
       })
-      .then(() => history.replace({ pathname: "/login" }))
+      .then(() => {
+        history.replace("/login");
+      })
+      .then(() => {
+        dispatch({ type: RESET_USER });
+        dispatch({ type: LOGOUT_SUCCESS });
+      })
       .catch((res) => {
         console.log(res);
       });
@@ -66,9 +78,38 @@ export const refreshUserData = (token) => {
       dispatch({
         type: REFRESH_USER,
         token: accessToken,
+        user: res.user,
+        isAuth: true,
       });
       setCookie("refreshToken", res.refreshToken);
       return accessToken;
     });
+  };
+};
+
+export const patchUserData = (userData, token) => {
+  return function (dispatch) {
+    return userDataPatch(userData, token).then((res) => {
+      setCookie("token", res.accessToken);
+      dispatch({
+        type: REFRESH_USER,
+        // token: res.accessToken,
+        user: res.user,
+      });
+    });
+  };
+};
+
+export const checkUser = (token) => {
+  return function (dispatch) {
+    return getUserRequest(token)
+      .then(() => {
+        dispatch({
+          type: LOGIN_SUCCESS,
+        });
+      })
+      .catch(() => {
+        refreshUserData(token);
+      });
   };
 };
