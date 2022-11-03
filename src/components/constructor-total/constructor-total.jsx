@@ -33,8 +33,13 @@ const ConstructorTotal = () => {
   }, [selectedIngredients, selectedBun]);
 
   const handleOrder = () => {
-    if (isAuth) dispatch(postOrderData(addedIds));
-    else history.replace("/login");
+    if (isAuth) {
+      if (selectedBun._id && selectedIngredients.length) {
+        dispatch(postOrderData(addedIds));
+      }
+    } else {
+      history.replace("/login");
+    }
   };
 
   return (

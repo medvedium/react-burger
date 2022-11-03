@@ -20,6 +20,7 @@ import OrdersPage from "../../pages/orders/orders";
 import { getIngredients } from "../../services/actions/ingredient";
 import { useDispatch } from "react-redux";
 import Modal from "../modal/modal";
+import { MODAL_CLOSE, MODAL_OPEN } from "../../services/actions/modal";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,14 +28,20 @@ function App() {
     dispatch(getIngredients());
   }, [dispatch]);
   const history = useHistory();
+  const location = useLocation();
 
   const ModalSwitch = () => {
-    const location = useLocation();
-
     let background = location.state && location.state.background;
+
+    useEffect(() => {
+      if (background) {
+        dispatch({ type: MODAL_OPEN });
+      }
+    });
 
     const handleModalClose = () => {
       history.goBack();
+      dispatch({ type: MODAL_CLOSE });
     };
 
     return (

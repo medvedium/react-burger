@@ -3,10 +3,12 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 import ModalHeader from "../modal-header/modal-header";
 import styles from "./modal.module.css";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-const Modal = ({ isOpened, header, onClose, children }) => {
+const Modal = ({ header, onClose, children }) => {
+  const modalIsOpen = useSelector((store) => store.modalReducer);
   useEffect(() => {
-    if (!isOpened) return;
+    if (!modalIsOpen) return;
 
     const escapeListener = (event) => {
       if (event.key === "Escape") {
@@ -21,7 +23,7 @@ const Modal = ({ isOpened, header, onClose, children }) => {
   });
 
   return (
-    <ModalOverlay isOpened={isOpened} onClose={onClose}>
+    <ModalOverlay onClose={onClose}>
       <div className={styles.container}>
         <ModalHeader onClose={onClose} header={header} />
         {children}
@@ -31,7 +33,6 @@ const Modal = ({ isOpened, header, onClose, children }) => {
 };
 
 Modal.propTypes = {
-  isOpened: PropTypes.bool.isRequired,
   header: PropTypes.string,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,

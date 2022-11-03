@@ -39,3 +39,8 @@ a:hover * {
   display: flex;
   align-items: center;
 }
+
+.m0-a {
+  margin: 0 auto;
+  width: min-content;
+}

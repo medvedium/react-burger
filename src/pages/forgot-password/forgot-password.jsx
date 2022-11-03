@@ -9,6 +9,7 @@ import { getCookie, resetPasswordPost } from "../../utils/api";
 import { _EMAIL_RESET_URL } from "../../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { checkUser } from "../../services/actions/auth";
+import { useFormAndValidation } from "../../hooks/useFormAndValidation";
 
 const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
@@ -21,12 +22,9 @@ const ForgotPasswordPage = () => {
     dispatch(checkUser(token));
   }, [dispatch, isAuth, token]);
 
-  const [email, setEmail] = React.useState("");
-  const onChange = (e) => {
-    setEmail(e.target.value);
-  };
+  const { values, handleChange, errors, isValid } = useFormAndValidation({});
 
-  const sendEmailRequest = (e, email) => {
+  const submitForm = (e, email) => {
     e.preventDefault();
     resetPasswordPost(_EMAIL_RESET_URL, email).then(() => {
       history.replace({
@@ -42,15 +40,18 @@ const ForgotPasswordPage = () => {
     return (
       <form
         className={styles.forgot_password_wrap}
-        onSubmit={(e) => sendEmailRequest(e, email)}
+        onSubmit={(e) => submitForm(e)}
       >
         <p className="text text_type_main-medium mb-6">Восстановление пароля</p>
         <EmailInput
-          onChange={(e) => onChange(e)}
-          value={email}
+          size={"default"}
+          onChange={(e) => handleChange(e)}
+          value={values.email || ""}
+          error={isValid === false}
+          errorText={errors.email || ""}
           name={"email"}
           placeholder={"Укажите e-mail"}
-          extraClass={"mb-6"}
+          extraClass={"mb-6 m0-a"}
         />
         <Button
           type="primary"
