@@ -1,7 +1,7 @@
 import styles from "./constructor-total.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postOrderData } from "../../services/actions/burger-constructor";
 import { getCookie } from "../../utils/api";
@@ -13,10 +13,6 @@ const ConstructorTotal = () => {
   const history = useHistory();
   const token = document.cookie ? getCookie("token") : "";
   const { isAuth } = useSelector((state) => state.userData);
-
-  useEffect(() => {
-    dispatch(checkUser(token));
-  }, [dispatch, isAuth, token]);
 
   const { selectedIngredients, selectedBun, total } = useSelector(
     (state) => state.ingredientsList
@@ -33,6 +29,7 @@ const ConstructorTotal = () => {
   }, [selectedIngredients, selectedBun]);
 
   const handleOrder = () => {
+    dispatch(checkUser(token));
     if (isAuth) {
       if (selectedBun._id && selectedIngredients.length) {
         dispatch(postOrderData(addedIds));

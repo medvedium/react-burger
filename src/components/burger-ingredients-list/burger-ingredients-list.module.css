@@ -1,10 +1,10 @@
 .section {
-    padding: 24px 16px 40px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px 32px;
+  padding: 24px 16px 40px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 32px;
 }
 .list {
-    max-height: 664px;
-    overflow-y: auto;
+  max-height: 664px;
+  overflow-y: auto;
 }

@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const HeaderLogin = () => {
   const location = useLocation();
-  let pageIsActive = location.pathname.includes("profile");
+  const pageIsActive = location.pathname.includes("profile");
 
   return (
     <Link

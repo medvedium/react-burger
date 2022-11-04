@@ -31,7 +31,7 @@ function App() {
   const location = useLocation();
 
   const ModalSwitch = () => {
-    let background = location.state && location.state.background;
+    const background = location.state && location.state.background;
 
     useEffect(() => {
       if (background) {

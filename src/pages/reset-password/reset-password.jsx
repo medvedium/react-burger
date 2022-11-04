@@ -48,7 +48,7 @@ const ResetPasswordPage = () => {
       >
         <p className="text text_type_main-medium mb-6">Восстановление пароля</p>
         <PasswordInput
-          onChange={(e) => onChange(e)}
+          onChange={onChange}
           value={state.password}
           name={"password"}
           placeholder={"Введите новый пароль"}
@@ -57,7 +57,7 @@ const ResetPasswordPage = () => {
         <Input
           type={"text"}
           placeholder={"Введите код из письма"}
-          onChange={(e) => onChange(e)}
+          onChange={onChange}
           value={state.token}
           name={"token"}
           error={false}

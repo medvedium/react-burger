@@ -49,16 +49,16 @@ const LoginPage = () => {
 
   if (!isAuth) {
     return (
-      <form className={styles.login_wrap} onSubmit={(e) => handleLogin(e)}>
+      <form className={styles.login_wrap} onSubmit={handleLogin}>
         <p className="text text_type_main-medium mb-6">Вход</p>
         <EmailInput
-          onChange={(e) => onChange(e)}
+          onChange={onChange}
           value={state.email}
           name={"email"}
           extraClass="mb-6"
         />
         <PasswordInput
-          onChange={(e) => onChange(e)}
+          onChange={onChange}
           value={state.password}
           name={"password"}
           extraClass="mb-6"

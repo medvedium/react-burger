@@ -1,23 +1,23 @@
 .headerLogin {
-    justify-self: end;
-    display: flex;
-    text-decoration: none;
+  justify-self: end;
+  display: flex;
+  text-decoration: none;
 }
 
 .header_login_link {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    color: unset;
-    text-decoration: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: unset;
+  text-decoration: none;
 }
 
 .headerLogin:hover p {
-    color: #ffffff;
-    transition: all .2s linear;
+  color: #ffffff;
+  transition: all 0.2s linear;
 }
 
 .headerLogin:hover svg {
-    transition: all .2s linear;
-    fill: #fff;
+  transition: all 0.2s linear;
+  fill: #fff;
 }

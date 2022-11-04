@@ -1,8 +1,8 @@
 .button_container {
-    display: flex;
-    justify-content: space-evenly;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .hidden {
-    display: none !important;
+  display: none !important;
 }

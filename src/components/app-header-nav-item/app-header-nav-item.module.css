@@ -1,17 +1,17 @@
 .listItem {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    text-decoration: none;
-    color: unset;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: unset;
 }
 
 .listItem:hover p {
-    color: #ffffff;
-    transition: all .2s linear;
+  color: #ffffff;
+  transition: all 0.2s linear;
 }
 
 .listItem:hover svg {
-    transition: all .2s linear;
-    fill: #fff;
+  transition: all 0.2s linear;
+  fill: #fff;
 }
