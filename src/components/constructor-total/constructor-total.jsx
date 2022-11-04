@@ -11,7 +11,6 @@ import { useHistory } from "react-router-dom";
 const ConstructorTotal = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const token = document.cookie ? getCookie("token") : "";
   const { isAuth } = useSelector((state) => state.userData);
 
   const { selectedIngredients, selectedBun, total } = useSelector(
@@ -29,7 +28,6 @@ const ConstructorTotal = () => {
   }, [selectedIngredients, selectedBun]);
 
   const handleOrder = () => {
-    dispatch(checkUser(token));
     if (isAuth) {
       if (selectedBun._id && selectedIngredients.length) {
         dispatch(postOrderData(addedIds));
