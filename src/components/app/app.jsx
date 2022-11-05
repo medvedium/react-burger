@@ -1,59 +1,101 @@
+import React, { useEffect } from "react";
 import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import styles from "./app.module.css";
-import ErrorBoundary from "../error-boundary/error-boundary";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  Route,
+  Router,
+  Switch,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
+import HomePage from "../../pages/home/home";
+import LoginPage from "../../pages/login/login";
+import RegisterPage from "../../pages/register/register";
+import ForgotPasswordPage from "../../pages/forgot-password/forgot-password";
+import ResetPasswordPage from "../../pages/reset-password/reset-password";
+import ProfilePage from "../../pages/profile/profile";
+import IngredientsPage from "../../pages/ingredients/ingredients";
+import PageNotFound404 from "../../pages/page-not-found-404/page-not-found-404";
+import ProtectedRoute from "../protected-route/protected-route";
+import OrdersPage from "../../pages/orders/orders";
+import { getIngredients } from "../../services/actions/ingredient";
+import { useDispatch } from "react-redux";
 import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
-import OrderDetails from "../order-details/order-details";
-import { CLOSE_INGREDIENT_MODAL } from "../../services/actions/ingredient";
-import { CLOSE_ORDER_MODAL } from "../../services/actions/burger-constructor";
+import { MODAL_CLOSE, MODAL_OPEN } from "../../services/actions/modal";
 
 function App() {
   const dispatch = useDispatch();
-  const { isIngredientModalOpen, selectedIngredient } = useSelector(
-    (state) => state.ingredientsList
-  );
-  const { isOrderModalOpen, orderName, orderNumber } = useSelector(
-    (state) => state.burgerConstructor
-  );
-  const onCloseIngredientModal = () => {
-    dispatch({ type: CLOSE_INGREDIENT_MODAL });
-  };
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
+  const history = useHistory();
+  const location = useLocation();
 
-  const onCloseOrderModal = () => {
-    dispatch({ type: CLOSE_ORDER_MODAL });
+  const ModalSwitch = () => {
+    const background = location.state && location.state.background;
+
+    useEffect(() => {
+      if (background) {
+        dispatch({ type: MODAL_OPEN });
+      }
+    });
+
+    const handleModalClose = () => {
+      history.goBack();
+      dispatch({ type: MODAL_CLOSE });
+    };
+
+    return (
+      <React.StrictMode>
+        <AppHeader />
+        <main className="app_container">
+          <Switch location={background || location}>
+            <Route path="/" exact component={HomePage} />
+            <Route path="/login" exact component={LoginPage} />
+            <Route path="/register" exact component={RegisterPage} />
+            <Route
+              path="/forgot-password"
+              exact
+              component={ForgotPasswordPage}
+            />
+            <Route path="/reset-password" exact component={ResetPasswordPage} />
+            <ProtectedRoute path="/profile" exact component={ProfilePage} />
+            <ProtectedRoute
+              path="/profile/orders"
+              exact
+              component={OrdersPage}
+            />
+            <Route
+              path="/ingredients/:ingredientId"
+              exact
+              component={IngredientsPage}
+            />
+            <Route component={PageNotFound404} />
+          </Switch>
+
+          {background && (
+            <Route
+              path="/ingredients/:ingredientId"
+              children={
+                <Modal
+                  onClose={() => handleModalClose()}
+                  header="Детали ингредиента"
+                >
+                  <IngredientsPage />
+                </Modal>
+              }
+            />
+          )}
+        </main>
+      </React.StrictMode>
+    );
   };
 
   return (
-    <ErrorBoundary>
-      <AppHeader />
-      <main className={styles.app_container}>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
-      </main>
-
-      {isOrderModalOpen && (
-        <Modal onClose={onCloseOrderModal} isOpened={isOrderModalOpen}>
-          <OrderDetails name={orderName} number={orderNumber} />
-        </Modal>
-      )}
-
-      {isIngredientModalOpen && (
-        <Modal
-          onClose={onCloseIngredientModal}
-          isOpened={isIngredientModalOpen}
-          header={"Детали ингредиента"}
-        >
-          <IngredientDetails item={selectedIngredient} />
-        </Modal>
-      )}
-    </ErrorBoundary>
+    <div>
+      <Router history={history}>
+        <ModalSwitch />
+      </Router>
+    </div>
   );
 }
 

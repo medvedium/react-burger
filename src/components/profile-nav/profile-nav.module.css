@@ -1,0 +1,21 @@
+.profile_nav {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+}
+.profile_description {
+  color: #8585ad;
+  opacity: 0.4;
+}
+
+.logout_button {
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.logout_button:hover p {
+  color: #ffffff !important;
+}

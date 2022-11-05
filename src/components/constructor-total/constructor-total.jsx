@@ -4,9 +4,14 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postOrderData } from "../../services/actions/burger-constructor";
+import { getCookie } from "../../utils/api";
+import { checkUser } from "../../services/actions/auth";
+import { useHistory } from "react-router-dom";
 
 const ConstructorTotal = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const { isAuth } = useSelector((state) => state.userData);
 
   const { selectedIngredients, selectedBun, total } = useSelector(
     (state) => state.ingredientsList
@@ -22,15 +27,25 @@ const ConstructorTotal = () => {
     );
   }, [selectedIngredients, selectedBun]);
 
+  const handleOrder = () => {
+    if (isAuth) {
+      if (selectedBun._id && selectedIngredients.length) {
+        dispatch(postOrderData(addedIds));
+      }
+    } else {
+      history.replace("/login");
+    }
+  };
+
   return (
     <div className={`${styles.total_block} mt-10`}>
-      <p className="text text_type_digits-medium pr-2">{total}</p>
+      <p className="text text_type_digits-medium pr-2">{total || 0}</p>
       <CurrencyIcon type={"primary"} />
       <Button
         htmlType={"submit"}
         type="primary"
         size="large"
-        onClick={() => dispatch(postOrderData(addedIds))}
+        onClick={() => handleOrder()}
       >
         Оформить заказ
       </Button>

@@ -16,6 +16,7 @@ import {
 import { _BUN, _MAIN, _SAUCE } from "../../utils/constants";
 
 const initialState = {
+  items: [],
   bun: [],
   sauce: [],
   main: [],
@@ -41,6 +42,7 @@ export const ingredientsList = (state = initialState, action) => {
     case GET_INGREDIENTS_SUCCESS: {
       return {
         ...state,
+        items: [...action.payload],
         bun: [
           ...action.payload
             .filter((item) => item.type === _BUN)
@@ -165,6 +167,7 @@ export const ingredientsList = (state = initialState, action) => {
         ...state,
         selectedIngredients: [],
         selectedBun: {},
+        total: 0,
         bun: [
           ...state.bun.map((item) => {
             return { ...item, count: 0 };

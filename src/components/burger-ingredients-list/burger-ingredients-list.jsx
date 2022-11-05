@@ -1,9 +1,9 @@
 import styles from "./burger-ingredients-list.module.css";
 import BurgerIngredientsItem from "../burger-ingredients-item/burger-ingredients-item";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { _BUN, _MAIN, _SAUCE } from "../../utils/constants";
-import { CHOOSE_TAB, getIngredients } from "../../services/actions/ingredient";
+import { CHOOSE_TAB } from "../../services/actions/ingredient";
 
 const BurgerIngredientsList = () => {
   const { isRequest, isRequestError, bun, sauce, main } = useSelector(
@@ -15,10 +15,6 @@ const BurgerIngredientsList = () => {
   const bunRef = useRef();
   const sauceRef = useRef();
   const mainRef = useRef();
-
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
 
   const highlightActiveTab = () => {
     const bunPos = Math.abs(
