@@ -105,7 +105,7 @@ function App() {
 
   return (
     <div>
-      <Router history={history}>{/*<ModalSwitch />*/}</Router>
+      <Router history={history}><ModalSwitch /></Router>
     </div>
   );
 }

@@ -11,7 +11,7 @@ import { patchUserData } from "../../services/actions/auth";
 const ProfilePersonal = () => {
   const dispatch = useDispatch();
   const { name, email, password, token } = useSelector(
-    (store) => store.userData
+    (store) => store.rootReducer.userData
   );
   const [isChanged, setChanged] = useState(false);
 

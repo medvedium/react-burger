@@ -9,10 +9,10 @@ import { useHistory } from "react-router-dom";
 const ConstructorTotal = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { isAuth } = useSelector((state) => state.userData);
+  const { isAuth } = useSelector((state) => state.rootReducer.userData);
 
   const { selectedIngredients, selectedBun, total } = useSelector(
-    (state) => state.ingredientsList
+    (state) => state.rootReducer.ingredientsList
   );
 
   const addedIds = useMemo(() => {

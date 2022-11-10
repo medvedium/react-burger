@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CHOOSE_TAB } from "../../services/actions/ingredient";
 
 const BurgerIngredientsTabs = () => {
-  const { activeTab } = useSelector((state) => state.ingredientsList);
+  const { activeTab } = useSelector((state) => state.rootReducer.ingredientsList);
   const dispatch = useDispatch();
 
   const handleTabToggle = (e) => {

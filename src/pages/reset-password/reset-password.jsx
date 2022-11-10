@@ -15,7 +15,7 @@ const ResetPasswordPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const token = document.cookie ? getCookie("token") : "";
-  const { isAuth } = useSelector((state) => state.userData);
+  const { isAuth } = useSelector((state) => state.rootReducer.userData);
 
   useEffect(() => {
     dispatch(checkUser(token));

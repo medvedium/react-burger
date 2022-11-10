@@ -16,7 +16,7 @@ const ForgotPasswordPage = () => {
   const history = useHistory();
   const location = useLocation();
   const token = document.cookie ? getCookie("token") : "";
-  const { isAuth } = useSelector((state) => state.userData);
+  const { isAuth } = useSelector((state) => state.rootReducer.userData);
 
   useEffect(() => {
     dispatch(checkUser(token));

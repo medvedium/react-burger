@@ -15,7 +15,7 @@ import { checkUser } from "../../services/actions/auth";
 const RegisterPage = () => {
   const history = useHistory();
   const location = useLocation();
-  const { isAuth } = useSelector((state) => state.userData);
+  const { isAuth } = useSelector((state) => state.rootReducer.userData);
   const dispatch = useDispatch();
 
   const token = document.cookie ? getCookie("token") : "";

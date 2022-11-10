@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 
 const IngredientsPage = () => {
-  const { items } = useSelector((store) => store.ingredientsList);
+  const { items } = useSelector((store) => store.rootReducer.ingredientsList);
   const { ingredientId } = useParams();
   const [item, setItem] = useState({});
   const location = useLocation();

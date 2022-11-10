@@ -14,7 +14,7 @@ import { useForm } from "../../hooks/useForm";
 const LoginPage = () => {
   const history = useHistory();
   const location = useLocation();
-  const { isAuth } = useSelector((state) => state.userData);
+  const { isAuth } = useSelector((state) => state.rootReducer.userData);
   const dispatch = useDispatch();
 
   const token = document.cookie ? getCookie("token") : "";

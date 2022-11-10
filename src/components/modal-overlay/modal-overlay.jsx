@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 const ModalOverlay = ({ children, onClose }) => {
-  const modalIsOpen = useSelector((store) => store.modalReducer);
+  const modalIsOpen = useSelector((store) => store.rootReducer.modalReducer);
   if (!modalIsOpen) {
     return null;
   }

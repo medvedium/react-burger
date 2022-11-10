@@ -13,7 +13,7 @@ import { useCallback } from "react";
 
 const BurgerConstructor = () => {
   const { selectedBun, selectedIngredients, isRequest, isRequestError } =
-    useSelector((state) => state.ingredientsList);
+    useSelector((state) => state.rootReducer.ingredientsList);
 
   const dispatch = useDispatch();
 

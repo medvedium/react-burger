@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 const Modal = ({ header, onClose, children }) => {
-  const modalIsOpen = useSelector((store) => store.modalReducer);
+  const modalIsOpen = useSelector((store) => store.rootReducer.modalReducer);
   useEffect(() => {
     if (!modalIsOpen) return;
 

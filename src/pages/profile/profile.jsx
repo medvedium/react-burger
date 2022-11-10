@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const token = document.cookie ? getCookie("token") : "";
-  const { isAuth } = useSelector((state) => state.userData);
+  const { isAuth } = useSelector((state) => state.rootReducer.userData);
 
   useEffect(() => {
     dispatch(checkUser(token));

@@ -7,7 +7,7 @@ import { CHOOSE_TAB } from "../../services/actions/ingredient";
 
 const BurgerIngredientsList = () => {
   const { isRequest, isRequestError, bun, sauce, main } = useSelector(
-    (state) => state.ingredientsList
+    (state) => state.rootReducer.ingredientsList
   );
 
   const dispatch = useDispatch();
