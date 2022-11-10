@@ -17,16 +17,29 @@ import IngredientsPage from "../../pages/ingredients/ingredients";
 import PageNotFound404 from "../../pages/page-not-found-404/page-not-found-404";
 import ProtectedRoute from "../protected-route/protected-route";
 import OrdersPage from "../../pages/orders/orders";
-import { getIngredients } from "../../services/actions/ingredient";
+import {
+  GET_INGREDIENTS_SUCCESS,
+  getIngredients,
+} from "../../services/actions/ingredient";
 import { useDispatch } from "react-redux";
 import Modal from "../modal/modal";
 import { MODAL_CLOSE, MODAL_OPEN } from "../../services/actions/modal";
+import { useGetIngredientsQuery } from "../../store/api";
 
 function App() {
   const dispatch = useDispatch();
+  const { isLoading, isError, data, isSuccess } = useGetIngredientsQuery();
+  console.log(data);
   useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
+    isSuccess &&
+      dispatch({
+        type: GET_INGREDIENTS_SUCCESS,
+        payload: data,
+      });
+  }, [dispatch, data]);
+  // useEffect(() => {
+  //   dispatch(getIngredients(data));
+  // }, [dispatch]);
   const history = useHistory();
   const location = useLocation();
 
@@ -92,9 +105,7 @@ function App() {
 
   return (
     <div>
-      <Router history={history}>
-        <ModalSwitch />
-      </Router>
+      <Router history={history}>{/*<ModalSwitch />*/}</Router>
     </div>
   );
 }

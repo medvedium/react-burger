@@ -40,12 +40,13 @@ export const ingredientsList = (state = initialState, action) => {
       };
     }
     case GET_INGREDIENTS_SUCCESS: {
+      console.log(action.payload);
       return {
         ...state,
-        items: [...action.payload],
+        items: action.payload,
         bun: [
           ...action.payload
-            .filter((item) => item.type === _BUN)
+            ?.filter((item) => item.type === _BUN)
             .map((item) => {
               return { ...item, count: null };
             }),

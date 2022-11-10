@@ -17,17 +17,21 @@ export const UPDATE_SELECTED_INGREDIENTS_LIST =
   "UPDATE_SELECTED_INGREDIENTS_LIST";
 export const RESET_CONSTRUCTOR = "RESET_CONSTRUCTOR";
 
-export function getIngredients() {
+export function getIngredients(data) {
   return function (dispatch) {
     dispatch({ type: GET_INGREDIENTS });
-    fetchGet(_DATA_URL)
-      .then(({ data }) => {
-        dispatch({
-          type: GET_INGREDIENTS_SUCCESS,
-          payload: data,
-        });
-      })
-      .catch(() => dispatch({ type: GET_INGREDIENTS_FAILED }));
+    dispatch({
+      type: GET_INGREDIENTS_SUCCESS,
+      payload: data,
+    });
+    // fetchGet(_DATA_URL)
+    //   .then(({ data }) => {
+    //     dispatch({
+    //       type: GET_INGREDIENTS_SUCCESS,
+    //       payload: data,
+    //     });
+    //   })
+    //   .catch(() => dispatch({ type: GET_INGREDIENTS_FAILED }));
   };
 }
 

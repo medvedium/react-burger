@@ -11,9 +11,10 @@ import { rootReducer } from "./services/reducers";
 import thunk from "redux-thunk";
 import ErrorBoundary from "./components/error-boundary/error-boundary";
 import { BrowserRouter } from "react-router-dom";
+import { store } from "./store";
 
-const enhancer = composeWithDevTools(applyMiddleware(thunk));
-const store = createStore(rootReducer, enhancer);
+// const enhancer = composeWithDevTools(applyMiddleware(thunk));
+// const store = createStore(rootReducer, enhancer);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

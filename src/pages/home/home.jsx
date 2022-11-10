@@ -14,10 +14,10 @@ import IngredientDetails from "../../components/ingredient-details/ingredient-de
 const HomePage = () => {
   const dispatch = useDispatch();
   const { isIngredientModalOpen, selectedIngredient } = useSelector(
-    (state) => state.ingredientsList
+    (store) => store.rootReducer.ingredientsList
   );
   const { isOrderModalOpen, orderName, orderNumber } = useSelector(
-    (state) => state.burgerConstructor
+    (store) => store.rootReducer.burgerConstructor
   );
   const onCloseIngredientModal = () => {
     dispatch({ type: CLOSE_INGREDIENT_MODAL });
