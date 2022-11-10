@@ -7,7 +7,7 @@ export const api = createApi({
     baseUrl: "https://norma.nomoreparties.space/api/",
   }),
   endpoints: (build) => ({
-    getIngredients: build.query<IIngredient[], any>({
+    getIngredients: build.query<IIngredient[], string>({
       query: () => ({
         url: `ingredients`,
         // method: 'POST',

@@ -17,23 +17,23 @@ export const UPDATE_SELECTED_INGREDIENTS_LIST =
   "UPDATE_SELECTED_INGREDIENTS_LIST";
 export const RESET_CONSTRUCTOR = "RESET_CONSTRUCTOR";
 
-export function getIngredients(data) {
-  return function (dispatch) {
-    dispatch({ type: GET_INGREDIENTS });
-    dispatch({
-      type: GET_INGREDIENTS_SUCCESS,
-      payload: data,
-    });
-    // fetchGet(_DATA_URL)
-    //   .then(({ data }) => {
-    //     dispatch({
-    //       type: GET_INGREDIENTS_SUCCESS,
-    //       payload: data,
-    //     });
-    //   })
-    //   .catch(() => dispatch({ type: GET_INGREDIENTS_FAILED }));
-  };
-}
+// export function getIngredients(data) {
+// return function (dispatch) {
+//   dispatch({ type: GET_INGREDIENTS });
+//   dispatch({
+//     type: GET_INGREDIENTS_SUCCESS,
+//     payload: data,
+//   });
+// fetchGet(_DATA_URL)
+//   .then(({ data }) => {
+//     dispatch({
+//       type: GET_INGREDIENTS_SUCCESS,
+//       payload: data,
+//     });
+//   })
+//   .catch(() => dispatch({ type: GET_INGREDIENTS_FAILED }));
+//   };
+// }
 
 export const addIngredient = (dispatch, item) => {
   if (item.type === _BUN) {

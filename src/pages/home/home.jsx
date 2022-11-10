@@ -10,11 +10,12 @@ import BurgerConstructor from "../../components/burger-constructor/burger-constr
 import Modal from "../../components/modal/modal";
 import OrderDetails from "../../components/order-details/order-details";
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
+import { useAppSelector } from "../../hooks/redux";
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { isIngredientModalOpen, selectedIngredient } = useSelector(
-    (store) => store.rootReducer.ingredientsList
+  const { isIngredientModalOpen, selectedIngredient } = useAppSelector(
+    (store) => store.ingredients
   );
   const { isOrderModalOpen, orderName, orderNumber } = useSelector(
     (store) => store.rootReducer.burgerConstructor
@@ -31,7 +32,7 @@ const HomePage = () => {
       <div className={styles.home_container}>
         <DndProvider backend={HTML5Backend}>
           <BurgerIngredients />
-          <BurgerConstructor />
+          {/*<BurgerConstructor />*/}
         </DndProvider>
       </div>
 

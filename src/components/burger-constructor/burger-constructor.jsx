@@ -10,10 +10,11 @@ import {
 import { useDrop } from "react-dnd";
 import BurgerConstructorItem from "../burer-constructor-item/burger-constructor-item";
 import { useCallback } from "react";
+import { useAppSelector } from "../../hooks/redux";
 
 const BurgerConstructor = () => {
   const { selectedBun, selectedIngredients, isRequest, isRequestError } =
-    useSelector((state) => state.rootReducer.ingredientsList);
+    useAppSelector((state) => state.ingredients);
 
   const dispatch = useDispatch();
 

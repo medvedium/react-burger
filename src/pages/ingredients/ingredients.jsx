@@ -3,9 +3,10 @@ import styles from "../../components/ingredient-details/ingredient-details.modul
 import IngredientDetailsProperties from "../../components/ingredient-details-properties/ingredient-details-properties";
 import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
+import { useAppSelector } from "../../hooks/redux";
 
 const IngredientsPage = () => {
-  const { items } = useSelector((store) => store.rootReducer.ingredientsList);
+  const { items } = useAppSelector((store) => store.ingredients);
   const { ingredientId } = useParams();
   const [item, setItem] = useState({});
   const location = useLocation();

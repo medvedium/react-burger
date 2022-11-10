@@ -4,13 +4,17 @@ import styles from "./burger-ingredients-tabs.module.css";
 import { _BUN, _SAUCE, _MAIN } from "../../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { CHOOSE_TAB } from "../../services/actions/ingredient";
+import { useActions } from "../../hooks/actions";
+import { useAppSelector } from "../../hooks/redux";
 
 const BurgerIngredientsTabs = () => {
-  const { activeTab } = useSelector((state) => state.rootReducer.ingredientsList);
+  const { activeTab } = useAppSelector((state) => state.ingredients);
   const dispatch = useDispatch();
+  const { chooseTab } = useActions();
 
   const handleTabToggle = (e) => {
-    dispatch({ type: CHOOSE_TAB, value: e });
+    // dispatch({ type: CHOOSE_TAB, value: e });
+    chooseTab(e);
     const activeTarget = document.querySelector(`[data-tab-target="${e}"]`);
     const list = document.querySelector(
       "div[class^='burger-ingredients-list_list']"

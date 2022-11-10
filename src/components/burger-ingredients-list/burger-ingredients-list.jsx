@@ -4,11 +4,18 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { _BUN, _MAIN, _SAUCE } from "../../utils/constants";
 import { CHOOSE_TAB } from "../../services/actions/ingredient";
+import { useAppSelector } from "../../hooks/redux";
+import { useActions } from "../../hooks/actions";
 
 const BurgerIngredientsList = () => {
-  const { isRequest, isRequestError, bun, sauce, main } = useSelector(
-    (state) => state.rootReducer.ingredientsList
-  );
+  // const { isRequest, isRequestError, bun, sauce, main } = useSelector(
+  //   (state) => state.rootReducer.ingredientsList
+  // );
+  //
+  // const { bun, sauce, main } = useAppSelector((state) => state.ingredientsList);
+
+  const { bun, sauce, main } = useAppSelector((state) => state.ingredients);
+  const { chooseTab } = useActions();
 
   const dispatch = useDispatch();
   const listRef = useRef();
@@ -31,63 +38,58 @@ const BurgerIngredientsList = () => {
     );
 
     if (bunPos < saucePos && bunPos < mainPos) {
-      dispatch({ type: CHOOSE_TAB, value: _BUN });
+      chooseTab(_BUN);
     } else if (saucePos < bunPos && saucePos < mainPos) {
-      dispatch({ type: CHOOSE_TAB, value: _SAUCE });
+      chooseTab(_SAUCE);
     } else if (mainPos < bunPos && mainPos < saucePos) {
-      dispatch({ type: CHOOSE_TAB, value: _MAIN });
+      chooseTab(_MAIN);
     }
   };
 
-  if (isRequestError) {
-    return "Error";
-  } else if (isRequest) {
-    return "Loading...";
-  } else
-    return (
-      <div
-        className={`${styles.list} custom-scroll`}
-        ref={listRef}
-        onScroll={(e) => highlightActiveTab()}
+  return (
+    <div
+      className={`${styles.list} custom-scroll`}
+      ref={listRef}
+      onScroll={(e) => highlightActiveTab()}
+    >
+      <p
+        className="text text_type_main-medium"
+        ref={bunRef}
+        data-tab-target={_BUN}
       >
-        <p
-          className="text text_type_main-medium"
-          ref={bunRef}
-          data-tab-target={_BUN}
-        >
-          Булки
-        </p>
-        <div className={styles.section}>
-          {bun.map((item) => (
-            <BurgerIngredientsItem item={item} key={item._id} />
-          ))}
-        </div>
-        <p
-          className="text text_type_main-medium"
-          ref={sauceRef}
-          data-tab-target={_SAUCE}
-        >
-          Соусы
-        </p>
-        <div className={styles.section}>
-          {sauce.map((item) => (
-            <BurgerIngredientsItem item={item} key={item._id} />
-          ))}
-        </div>
-        <p
-          className="text text_type_main-medium"
-          ref={mainRef}
-          data-tab-target={_MAIN}
-        >
-          Начинки
-        </p>
-        <div className={styles.section}>
-          {main.map((item) => (
-            <BurgerIngredientsItem item={item} key={item._id} />
-          ))}
-        </div>
+        Булки
+      </p>
+      <div className={styles.section}>
+        {bun.map((item) => (
+          <BurgerIngredientsItem item={item} key={item._id} />
+        ))}
       </div>
-    );
+      <p
+        className="text text_type_main-medium"
+        ref={sauceRef}
+        data-tab-target={_SAUCE}
+      >
+        Соусы
+      </p>
+      <div className={styles.section}>
+        {sauce.map((item) => (
+          <BurgerIngredientsItem item={item} key={item._id} />
+        ))}
+      </div>
+      <p
+        className="text text_type_main-medium"
+        ref={mainRef}
+        data-tab-target={_MAIN}
+      >
+        Начинки
+      </p>
+      <div className={styles.section}>
+        {main.map((item) => (
+          <BurgerIngredientsItem item={item} key={item._id} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default BurgerIngredientsList;

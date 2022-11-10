@@ -5,7 +5,7 @@ import { userData } from "./auth";
 import { modalReducer } from "./modal";
 
 export const rootReducer = combineReducers({
-  ingredientsList,
+  // ingredientsList,
   burgerConstructor,
   userData,
   modalReducer,

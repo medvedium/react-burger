@@ -40,7 +40,6 @@ export const ingredientsList = (state = initialState, action) => {
       };
     }
     case GET_INGREDIENTS_SUCCESS: {
-      console.log(action.payload);
       return {
         ...state,
         items: action.payload,

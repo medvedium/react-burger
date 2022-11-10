@@ -6,15 +6,15 @@ function request(url, options) {
   });
 }
 
-export const fetchGet = (url) => {
-  return request(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json: charset=utf-8",
-    },
-  });
-};
+// export const fetchGet = (url) => {
+//   return request(url, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Accept: "application/json: charset=utf-8",
+//     },
+//   });
+// };
 
 export const fetchPost = (url, orderData) => {
   return request(url, {
