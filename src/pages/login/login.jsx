@@ -9,6 +9,7 @@ import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 import { checkUser, login } from "../../services/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { getCookie } from "../../utils/api";
+import { useForm } from "../../hooks/useForm";
 
 const LoginPage = () => {
   const history = useHistory();
@@ -22,29 +23,14 @@ const LoginPage = () => {
     dispatch(checkUser(token));
   }, [dispatch, isAuth, token]);
 
-  const [state, setState] = React.useState({
+  const { values, handleChange } = useForm({
     email: "",
     password: "",
   });
 
-  const onChange = (e) => {
-    const { target } = e;
-    const value = target.value;
-    const { name } = target;
-    setState({
-      ...state,
-      [name]: value,
-    });
-  };
-
-  const postData = {
-    email: state.email,
-    password: state.password,
-  };
-
   const handleLogin = (e) => {
     e.preventDefault();
-    dispatch(login(postData, history));
+    dispatch(login(values, history));
   };
 
   if (!isAuth) {
@@ -52,14 +38,14 @@ const LoginPage = () => {
       <form className={styles.login_wrap} onSubmit={handleLogin}>
         <p className="text text_type_main-medium mb-6">Вход</p>
         <EmailInput
-          onChange={onChange}
-          value={state.email}
+          onChange={(e) => handleChange(e)}
+          value={values.email || ""}
           name={"email"}
           extraClass="mb-6"
         />
         <PasswordInput
-          onChange={onChange}
-          value={state.password}
+          onChange={(e) => handleChange(e)}
+          value={values.password || ""}
           name={"password"}
           extraClass="mb-6"
         />

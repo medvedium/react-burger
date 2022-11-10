@@ -1,35 +1,33 @@
 import { _GET_USER_URL, _TOKEN_URL } from "./constants";
 
-const checkPromise = (promise) => {
-  return promise.then((res) => {
+function request(url, options) {
+  return fetch(url, options).then((res) => {
     return res.ok ? res.json() : Promise.reject(`Ошибка ${res.status} ${res}`);
   });
-};
+}
 
 export const fetchGet = (url) => {
-  const promise = fetch(url, {
+  return request(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json: charset=utf-8",
     },
   });
-  return checkPromise(promise);
 };
 
 export const fetchPost = (url, orderData) => {
-  const promise = fetch(url, {
+  return request(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ ingredients: orderData }),
   });
-  return checkPromise(promise);
 };
 
 export const resetPasswordPost = (url, email) => {
-  const promise = fetch(url, {
+  return request(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,11 +36,10 @@ export const resetPasswordPost = (url, email) => {
       email: email,
     }),
   });
-  return checkPromise(promise);
 };
 
 export const setNewPasswordPost = (url, password, token) => {
-  const promise = fetch(url, {
+  return request(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -52,11 +49,10 @@ export const setNewPasswordPost = (url, password, token) => {
       token: token,
     }),
   });
-  return checkPromise(promise);
 };
 
 export const registerPost = (url, email, password, userName) => {
-  const promise = fetch(url, {
+  return request(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -67,11 +63,10 @@ export const registerPost = (url, email, password, userName) => {
       name: userName,
     }),
   });
-  return checkPromise(promise);
 };
 
 export const loginPost = (url, postData) => {
-  const promise = fetch(url, {
+  return request(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -81,11 +76,10 @@ export const loginPost = (url, postData) => {
       password: postData.password,
     }),
   });
-  return checkPromise(promise);
 };
 
 export const logoutPost = (url, token) => {
-  const promise = fetch(url, {
+  return request(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -94,22 +88,20 @@ export const logoutPost = (url, token) => {
       token: token,
     }),
   });
-  return checkPromise(promise);
 };
 
 export const getUserRequest = (token) => {
-  const promise = fetch(_GET_USER_URL, {
+  return request(_GET_USER_URL, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
   });
-  return checkPromise(promise);
 };
 
 export const userDataPatch = (userData, token) => {
-  const promise = fetch(_GET_USER_URL, {
+  return request(_GET_USER_URL, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -121,25 +113,27 @@ export const userDataPatch = (userData, token) => {
       name: userData.name,
     }),
   });
-  return checkPromise(promise);
 };
 
 export const refreshTokenRequest = (tokenData) => {
-  const promise = fetch(_TOKEN_URL, {
+  return request(_TOKEN_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(tokenData),
   });
-  return checkPromise(promise);
 };
 
 export const getCookie = (cookieName) => {
-  return document.cookie
-    .split("; ")
-    .filter((str) => str.includes(cookieName))[0]
-    .split("=")[1];
+  const matches = document.cookie.match(
+    new RegExp(
+      "(?:^|; )" +
+        cookieName.replace(/([.$?*|{}()\]\\+^])/g, "\\$1") +
+        "=([^;]*)"
+    )
+  );
+  return matches ? decodeURIComponent(matches[1]) : undefined;
 };
 
 export const setCookie = (name, value) => {

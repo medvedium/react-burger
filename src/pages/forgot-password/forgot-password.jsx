@@ -38,11 +38,14 @@ const ForgotPasswordPage = () => {
 
   if (!isAuth) {
     return (
-      <form className={styles.forgot_password_wrap} onSubmit={submitForm}>
+      <form
+        className={styles.forgot_password_wrap}
+        onSubmit={(e) => submitForm(e)}
+      >
         <p className="text text_type_main-medium mb-6">Восстановление пароля</p>
         <EmailInput
           size={"default"}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e)}
           value={values.email || ""}
           error={isValid === false}
           errorText={errors.email || ""}

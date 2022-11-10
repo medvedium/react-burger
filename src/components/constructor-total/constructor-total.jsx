@@ -4,8 +4,6 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postOrderData } from "../../services/actions/burger-constructor";
-import { getCookie } from "../../utils/api";
-import { checkUser } from "../../services/actions/auth";
 import { useHistory } from "react-router-dom";
 
 const ConstructorTotal = () => {

@@ -35,9 +35,9 @@ const ResetPasswordPage = () => {
 
   const setNewPassword = (e) => {
     e.preventDefault();
-    setNewPasswordPost(_PASSWORD_RESET_URL, state.password, state.token)
-      .then(() => {})
-      .catch((err) => console.log(err));
+    setNewPasswordPost(_PASSWORD_RESET_URL, state.password, state.token).catch(
+      (err) => console.log(err)
+    );
   };
 
   if (!isAuth && location?.state?.from.pathname === "/forgot-password") {
