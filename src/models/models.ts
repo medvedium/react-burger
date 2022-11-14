@@ -12,6 +12,7 @@ export interface IIngredient {
   image_large: string;
   __v: number;
   count: number;
+  uid?: string;
 }
 
 export interface ServerResponse {

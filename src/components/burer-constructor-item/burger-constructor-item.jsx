@@ -5,20 +5,16 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
-import {
-  GET_TOTAL_PRICE,
-  REMOVE_INGREDIENT,
-} from "../../services/actions/ingredient";
-import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { ingredientItem } from "../../utils/constants";
+import { useActions } from "../../hooks/actions";
 
 function BurgerConstructorItem({ item, index, moveCard }) {
-  const dispatch = useDispatch();
+  const { removeIngredient, getTotalPrice } = useActions();
 
   const handleIngredientRemove = (item) => {
-    dispatch({ type: REMOVE_INGREDIENT, item: item });
-    dispatch({ type: GET_TOTAL_PRICE });
+    removeIngredient(item);
+    getTotalPrice();
   };
 
   const ref = useRef(null);

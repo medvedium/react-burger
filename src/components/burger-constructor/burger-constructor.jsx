@@ -1,27 +1,34 @@
 import styles from "./burger-constructor.module.css";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import ConstructorTotal from "../constructor-total/constructor-total";
-import { useDispatch, useSelector } from "react-redux";
 import no_image from "../../images/no-image.png";
-import {
-  addIngredient,
-  UPDATE_SELECTED_INGREDIENTS_LIST,
-} from "../../services/actions/ingredient";
 import { useDrop } from "react-dnd";
 import BurgerConstructorItem from "../burer-constructor-item/burger-constructor-item";
 import { useCallback } from "react";
 import { useAppSelector } from "../../hooks/redux";
+import { _BUN } from "../../utils/constants";
+import { nanoid } from "nanoid";
+import { useActions } from "../../hooks/actions";
 
 const BurgerConstructor = () => {
   const { selectedBun, selectedIngredients, isRequest, isRequestError } =
     useAppSelector((state) => state.ingredients);
 
-  const dispatch = useDispatch();
+  const { addBun, getTotalPrice, addIngredient, updateSelectedIngredients } =
+    useActions();
 
   const [{ isHover }, ingredientDropTarget] = useDrop({
     accept: "ingredient",
     drop(item) {
-      addIngredient(dispatch, item);
+      const newItem = { ...item };
+      if (item.type === _BUN) {
+        addBun(item);
+        getTotalPrice();
+      } else {
+        newItem.uid = nanoid(8);
+        addIngredient(newItem);
+        getTotalPrice();
+      }
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -36,12 +43,9 @@ const BurgerConstructor = () => {
       newCards.splice(dragIndex, 1);
       newCards.splice(hoverIndex, 0, dragCard);
 
-      dispatch({
-        type: UPDATE_SELECTED_INGREDIENTS_LIST,
-        payload: newCards,
-      });
+      updateSelectedIngredients(newCards);
     },
-    [selectedIngredients, dispatch]
+    [selectedIngredients, updateSelectedIngredients]
   );
 
   if (isRequestError) {

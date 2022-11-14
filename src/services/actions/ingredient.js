@@ -35,13 +35,13 @@ export const RESET_CONSTRUCTOR = "RESET_CONSTRUCTOR";
 //   };
 // }
 
-export const addIngredient = (dispatch, item) => {
-  if (item.type === _BUN) {
-    dispatch({ type: ADD_BUN, item: item });
-    dispatch({ type: GET_TOTAL_PRICE });
-  } else {
-    item.uid = nanoid(8);
-    dispatch({ type: ADD_INGREDIENT, item: item });
-    dispatch({ type: GET_TOTAL_PRICE });
-  }
-};
+// export const addIngredient = (dispatch, item) => {
+//   if (item.type === _BUN) {
+//     dispatch({ type: ADD_BUN, item: item });
+//     dispatch({ type: GET_TOTAL_PRICE });
+//   } else {
+//     item.uid = nanoid(8);
+//     dispatch({ type: ADD_INGREDIENT, item: item });
+//     dispatch({ type: GET_TOTAL_PRICE });
+//   }
+// };

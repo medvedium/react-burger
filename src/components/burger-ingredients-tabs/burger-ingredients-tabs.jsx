@@ -9,11 +9,9 @@ import { useAppSelector } from "../../hooks/redux";
 
 const BurgerIngredientsTabs = () => {
   const { activeTab } = useAppSelector((state) => state.ingredients);
-  const dispatch = useDispatch();
   const { chooseTab } = useActions();
 
   const handleTabToggle = (e) => {
-    // dispatch({ type: CHOOSE_TAB, value: e });
     chooseTab(e);
     const activeTarget = document.querySelector(`[data-tab-target="${e}"]`);
     const list = document.querySelector(

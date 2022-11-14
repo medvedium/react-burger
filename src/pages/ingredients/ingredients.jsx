@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../components/ingredient-details/ingredient-details.module.css";
 import IngredientDetailsProperties from "../../components/ingredient-details-properties/ingredient-details-properties";
-import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
 

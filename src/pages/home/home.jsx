@@ -14,15 +14,9 @@ import { useAppSelector } from "../../hooks/redux";
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { isIngredientModalOpen, selectedIngredient } = useAppSelector(
-    (store) => store.ingredients
-  );
   const { isOrderModalOpen, orderName, orderNumber } = useSelector(
     (store) => store.rootReducer.burgerConstructor
   );
-  const onCloseIngredientModal = () => {
-    dispatch({ type: CLOSE_INGREDIENT_MODAL });
-  };
 
   const onCloseOrderModal = () => {
     dispatch({ type: CLOSE_ORDER_MODAL });
@@ -32,23 +26,13 @@ const HomePage = () => {
       <div className={styles.home_container}>
         <DndProvider backend={HTML5Backend}>
           <BurgerIngredients />
-          {/*<BurgerConstructor />*/}
+          <BurgerConstructor />
         </DndProvider>
       </div>
 
       {isOrderModalOpen && (
         <Modal onClose={onCloseOrderModal} isOpened={isOrderModalOpen}>
           <OrderDetails name={orderName} number={orderNumber} />
-        </Modal>
-      )}
-
-      {isIngredientModalOpen && (
-        <Modal
-          onClose={onCloseIngredientModal}
-          isOpened={isIngredientModalOpen}
-          header={"Детали ингредиента"}
-        >
-          <IngredientDetails item={selectedIngredient} />
         </Modal>
       )}
     </>

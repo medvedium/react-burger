@@ -5,15 +5,18 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postOrderData } from "../../services/actions/burger-constructor";
 import { useHistory } from "react-router-dom";
+import { useAppSelector } from "../../hooks/redux";
+import { useActions } from "../../hooks/actions";
 
 const ConstructorTotal = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { isAuth } = useSelector((state) => state.rootReducer.userData);
 
-  const { selectedIngredients, selectedBun, total } = useSelector(
-    (state) => state.rootReducer.ingredientsList
+  const { selectedIngredients, selectedBun, total } = useAppSelector(
+    (state) => state.ingredients
   );
+  const { resetConstructor } = useActions();
 
   const addedIds = useMemo(() => {
     return (
@@ -28,6 +31,7 @@ const ConstructorTotal = () => {
   const handleOrder = () => {
     if (isAuth) {
       if (selectedBun._id && selectedIngredients.length) {
+        resetConstructor();
         dispatch(postOrderData(addedIds));
       }
     } else {

@@ -17,10 +17,6 @@ import IngredientsPage from "../../pages/ingredients/ingredients";
 import PageNotFound404 from "../../pages/page-not-found-404/page-not-found-404";
 import ProtectedRoute from "../protected-route/protected-route";
 import OrdersPage from "../../pages/orders/orders";
-import {
-  GET_INGREDIENTS_SUCCESS,
-  getIngredients,
-} from "../../services/actions/ingredient";
 import { useDispatch } from "react-redux";
 import Modal from "../modal/modal";
 import { MODAL_CLOSE, MODAL_OPEN } from "../../services/actions/modal";
@@ -28,26 +24,25 @@ import { useGetIngredientsQuery } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 
 function App() {
-  const { getIngredients } = useActions();
+  const { getIngredients, getIngredientsFailed } = useActions();
 
   const dispatch = useDispatch();
   const {
-    isLoading: isIngredientsLoading,
     isError: isIngredientsError,
-    data,
-    isSuccess,
+    data: ingredients,
+    isSuccess: isIngredientsGetSuccess,
   } = useGetIngredientsQuery();
 
   useEffect(() => {
-    isSuccess && getIngredients(data);
-    // dispatch({
-    //   type: GET_INGREDIENTS_SUCCESS,
-    //   payload: data,
-    // });
-  }, [dispatch, data]);
-  // useEffect(() => {
-  //   dispatch(getIngredients(data));
-  // }, [dispatch]);
+    isIngredientsGetSuccess && getIngredients(ingredients);
+    isIngredientsError && getIngredientsFailed();
+  }, [
+    ingredients,
+    isIngredientsGetSuccess,
+    isIngredientsError,
+    getIngredients,
+    getIngredientsFailed,
+  ]);
   const history = useHistory();
   const location = useLocation();
   const background = location.state && location.state.background;
@@ -68,34 +63,28 @@ function App() {
       <React.StrictMode>
         <AppHeader />
         <main className="app_container">
-          <Switch location={background || location}>
+          <Switch location={background || location || ""}>
+            <Route path="/" exact component={HomePage} />
+            <Route path="/login" exact component={LoginPage} />
+            <Route path="/register" exact component={RegisterPage} />
             <Route
-              path="/"
+              path="/forgot-password"
               exact
-              component={HomePage}
-              isIngredientsLoading
-              isIngredientsError
+              component={ForgotPasswordPage}
             />
-            {/*<Route path="/login" exact component={LoginPage} />*/}
-            {/*<Route path="/register" exact component={RegisterPage} />*/}
-            {/*<Route*/}
-            {/*  path="/forgot-password"*/}
-            {/*  exact*/}
-            {/*  component={ForgotPasswordPage}*/}
-            {/*/>*/}
-            {/*<Route path="/reset-password" exact component={ResetPasswordPage} />*/}
-            {/*<ProtectedRoute path="/profile" exact component={ProfilePage} />*/}
-            {/*<ProtectedRoute*/}
-            {/*  path="/profile/orders"*/}
-            {/*  exact*/}
-            {/*  component={OrdersPage}*/}
-            {/*/>*/}
+            <Route path="/reset-password" exact component={ResetPasswordPage} />
+            <ProtectedRoute path="/profile" exact component={ProfilePage} />
+            <ProtectedRoute
+              path="/profile/orders"
+              exact
+              component={OrdersPage}
+            />
             <Route
               path="/ingredients/:ingredientId"
               exact
               component={IngredientsPage}
             />
-            {/*<Route component={PageNotFound404} />*/}
+            <Route component={PageNotFound404} />
           </Switch>
 
           {background && (
