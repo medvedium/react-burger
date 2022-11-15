@@ -1,6 +1,6 @@
 import styles from "./burger-ingredients-list.module.css";
 import BurgerIngredientsItem from "../burger-ingredients-item/burger-ingredients-item";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { _BUN, _MAIN, _SAUCE } from "../../utils/constants";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
@@ -16,10 +16,6 @@ const BurgerIngredientsList = () => {
   const bunRef = useRef();
   const sauceRef = useRef();
   const mainRef = useRef();
-
-  useEffect(() => {
-    chooseTab(_BUN);
-  }, [chooseTab]);
 
   function highlightActiveTab(listRef, bunRef, sauceRef, mainRef) {
     const bunPos = Math.abs(

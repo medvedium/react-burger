@@ -10,15 +10,20 @@ export const api = createApi({
     getIngredients: build.query<IIngredient[], string>({
       query: () => ({
         url: `ingredients`,
-        // method: 'POST',
+      }),
+      transformResponse: (response: ServerResponse) => response.data,
+    }),
+    postOrderData: build.mutation<any, any>({
+      query: (addedIds: string[]) => ({
+        url: `orders`,
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        // body: JSON.stringify({ ingredients: orderData }),
+        body: JSON.stringify({ ingredients: addedIds }),
       }),
-      transformResponse: (response: ServerResponse) => response.data,
     }),
   }),
 });
 
-export const { useGetIngredientsQuery } = api;
+export const { useGetIngredientsQuery, usePostOrderDataMutation } = api;

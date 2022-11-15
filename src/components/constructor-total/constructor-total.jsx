@@ -7,9 +7,13 @@ import { postOrderData } from "../../services/actions/burger-constructor";
 import { useHistory } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
+import { usePostOrderDataMutation } from "../../store/api";
+import Loader from "../loader/loader";
 
 const ConstructorTotal = () => {
-  const dispatch = useDispatch();
+  const [makeOrder, { isLoading, isSuccess, isError, error, data }] =
+    usePostOrderDataMutation();
+
   const history = useHistory();
   const { isAuth } = useSelector((state) => state.rootReducer.userData);
 
@@ -32,26 +36,31 @@ const ConstructorTotal = () => {
     if (isAuth) {
       if (selectedBun._id && selectedIngredients.length) {
         resetConstructor();
-        dispatch(postOrderData(addedIds));
+        // dispatch(postOrderData(addedIds));
+        makeOrder(addedIds);
+        isSuccess && alert(data);
       }
-    } else {
+    } else if (!isAuth) {
       history.replace("/login");
     }
   };
 
-  return (
-    <div className={`${styles.total_block} mt-10`}>
-      <p className="text text_type_digits-medium pr-2">{total || 0}</p>
-      <CurrencyIcon type={"primary"} />
-      <Button
-        htmlType={"submit"}
-        type="primary"
-        size="large"
-        onClick={() => handleOrder()}
-      >
-        Оформить заказ
-      </Button>
-    </div>
-  );
+  if (isLoading) return <Loader />;
+  else if (isError) return <p>Ошибка {error.originalStatus}</p>;
+  else
+    return (
+      <div className={`${styles.total_block} mt-10`}>
+        <p className="text text_type_digits-medium pr-2">{total || 0}</p>
+        <CurrencyIcon type={"primary"} />
+        <Button
+          htmlType={"submit"}
+          type="primary"
+          size="large"
+          onClick={() => handleOrder()}
+        >
+          Оформить заказ
+        </Button>
+      </div>
+    );
 };
 export default ConstructorTotal;

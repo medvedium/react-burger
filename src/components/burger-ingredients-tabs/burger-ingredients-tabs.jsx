@@ -2,8 +2,6 @@ import React from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients-tabs.module.css";
 import { _BUN, _SAUCE, _MAIN } from "../../utils/constants";
-import { useDispatch, useSelector } from "react-redux";
-import { CHOOSE_TAB } from "../../services/actions/ingredient";
 import { useActions } from "../../hooks/actions";
 import { useAppSelector } from "../../hooks/redux";
 

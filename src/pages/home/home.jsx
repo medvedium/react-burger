@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./home.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { CLOSE_INGREDIENT_MODAL } from "../../services/actions/ingredient";
 import { CLOSE_ORDER_MODAL } from "../../services/actions/burger-constructor";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -9,8 +8,6 @@ import BurgerIngredients from "../../components/burger-ingredients/burger-ingred
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import Modal from "../../components/modal/modal";
 import OrderDetails from "../../components/order-details/order-details";
-import IngredientDetails from "../../components/ingredient-details/ingredient-details";
-import { useAppSelector } from "../../hooks/redux";
 
 const HomePage = () => {
   const dispatch = useDispatch();
