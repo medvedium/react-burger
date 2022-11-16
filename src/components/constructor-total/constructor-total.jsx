@@ -10,17 +10,15 @@ import { usePostOrderDataMutation } from "../../store/api";
 import Loader from "../loader/loader";
 
 const ConstructorTotal = () => {
-  const [makeOrder, { isLoading, isError, error }] =
-    usePostOrderDataMutation();
-
+  const [makeOrder, { isLoading, isError, error }] = usePostOrderDataMutation();
 
   const history = useHistory();
-  const { isAuth } = useSelector((state) => state.rootReducer.userData);
+  const { isAuth } = useAppSelector((state) => state.auth);
 
   const { selectedIngredients, selectedBun, total } = useAppSelector(
     (state) => state.ingredients
   );
-  const { resetConstructor, getOrderData, openOrderModal, openModal } = useActions();
+  const { resetConstructor, getOrderData, openModal } = useActions();
 
   const addedIds = useMemo(() => {
     return (
@@ -36,10 +34,12 @@ const ConstructorTotal = () => {
     if (isAuth) {
       if (selectedBun._id && selectedIngredients.length) {
         resetConstructor();
-        makeOrder(addedIds).unwrap().then(res => {
-          getOrderData(res)
-          openModal()
-        })
+        makeOrder(addedIds)
+          .unwrap()
+          .then((res) => {
+            getOrderData(res);
+            openModal();
+          });
       }
     } else if (!isAuth) {
       history.replace("/login");

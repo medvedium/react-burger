@@ -1,23 +1,46 @@
 import styles from "./profile-nav.module.css";
 import React, { useEffect } from "react";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
-import { checkUser, logout } from "../../services/actions/auth";
+// import {
+//   checkUser,
+//   LOGOUT_SUCCESS,
+//   RESET_USER,
+// } from "../../services/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { getCookie } from "../../utils/api";
+import { deleteCookie, getCookie } from "../../utils/api";
+import { useLogoutMutation } from "../../store/api";
+import { useAppSelector } from "../../hooks/redux";
 
 const ProfileNav = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   const token = document.cookie ? getCookie("refreshToken") : "";
-  const { isAuth } = useSelector((state) => state.rootReducer.userData);
+  const { isAuth } = useAppSelector((state) => state.auth);
+  const [logout] = useLogoutMutation();
 
-  useEffect(() => {
-    dispatch(checkUser(token));
-  }, [dispatch, isAuth, token]);
+  // useEffect(() => {
+  //   dispatch(checkUser(token));
+  // }, [dispatch, isAuth, token]);
 
   const handleLogout = () => {
-    dispatch(logout(token, history));
+    logout(token)
+      .then(() => {
+        const oldTokenCookie = getCookie("refreshToken");
+        const oldAccessTokenCookie = getCookie("token");
+        deleteCookie("refreshToken", oldTokenCookie);
+        deleteCookie("token", oldAccessTokenCookie);
+      })
+      .then(() => {
+        history.replace("/login");
+      })
+      .then(() => {
+        // dispatch({ type: RESET_USER });
+        // dispatch({ type: LOGOUT_SUCCESS });
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   };
 
   if (isAuth) {

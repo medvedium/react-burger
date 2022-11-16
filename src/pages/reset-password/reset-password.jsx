@@ -5,23 +5,26 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, Redirect, useLocation } from "react-router-dom";
-import { getCookie, setNewPasswordPost } from "../../utils/api";
-import { _PASSWORD_RESET_URL } from "../../utils/constants";
+import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
+import { getCookie } from "../../utils/api";
 import { useDispatch, useSelector } from "react-redux";
-import { checkUser } from "../../services/actions/auth";
+import { useResetPasswordMutation } from "../../store/api";
+import { useAppSelector } from "../../hooks/redux";
 
 const ResetPasswordPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const history = useHistory();
   const token = document.cookie ? getCookie("token") : "";
-  const { isAuth } = useSelector((state) => state.rootReducer.userData);
+  const { isAuth } = useAppSelector((state) => state.auth);
 
-  useEffect(() => {
-    dispatch(checkUser(token));
-  }, [dispatch, token]);
+  // useEffect(() => {
+  //   dispatch(checkUser(token));
+  // }, [dispatch, token]);
 
   const [state, setState] = React.useState({ password: "", token: "" });
+  const [resetPassword] = useResetPasswordMutation();
+
   const onChange = (e) => {
     const { target } = e;
     const value = target.value;
@@ -35,9 +38,16 @@ const ResetPasswordPage = () => {
 
   const setNewPassword = (e) => {
     e.preventDefault();
-    setNewPasswordPost(_PASSWORD_RESET_URL, state.password, state.token).catch(
-      (err) => console.log(err)
-    );
+    resetPassword(state)
+      .unwrap()
+      .then(() => {
+        history.replace({
+          pathname: "/login",
+          state: {
+            from: location,
+          },
+        });
+      });
   };
 
   if (!isAuth && location?.state?.from.pathname === "/forgot-password") {

@@ -15,6 +15,13 @@ export interface IIngredient {
   uid?: string;
 }
 
+export interface IUser {
+  name?: string;
+  email?: string;
+  password?: string;
+  isAuth?: boolean;
+}
+
 export interface ServerResponse {
   success: boolean;
   data: IIngredient[];

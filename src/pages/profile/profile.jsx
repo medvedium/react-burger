@@ -4,17 +4,18 @@ import ProfileNav from "../../components/profile-nav/profile-nav";
 import ProfilePersonal from "../../components/profile-personal/profile-personal";
 import { getCookie } from "../../utils/api";
 import { Redirect, useLocation } from "react-router-dom";
-import { checkUser } from "../../services/actions/auth";
+// import { checkUser } from "../../services/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
+import { useAppSelector } from "../../hooks/redux";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const token = document.cookie ? getCookie("token") : "";
-  const { isAuth } = useSelector((state) => state.rootReducer.userData);
+  const { isAuth } = useAppSelector((state) => state.auth);
 
-  useEffect(() => {
-    dispatch(checkUser(token));
-  }, [dispatch, isAuth, token]);
+  // useEffect(() => {
+  //   dispatch(checkUser(token));
+  // }, [dispatch, isAuth, token]);
 
   const location = useLocation();
 

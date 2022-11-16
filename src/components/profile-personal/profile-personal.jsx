@@ -6,14 +6,15 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormAndValidation } from "../../hooks/useFormAndValidation";
-import { patchUserData } from "../../services/actions/auth";
+// import { patchUserData } from "../../services/actions/auth";
+import { useAppSelector } from "../../hooks/redux";
+import { getCookie } from "../../utils/api";
 
 const ProfilePersonal = () => {
   const dispatch = useDispatch();
-  const { name, email, password, token } = useSelector(
-    (store) => store.rootReducer.userData
-  );
+  const { name, email, password } = useAppSelector((store) => store.auth);
   const [isChanged, setChanged] = useState(false);
+  const token = document.cookie ? getCookie("token") : "";
 
   const { values, handleChange, errors, isValid, resetForm } =
     useFormAndValidation({
@@ -34,7 +35,7 @@ const ProfilePersonal = () => {
 
   const submitForm = (event) => {
     event.preventDefault();
-    dispatch(patchUserData(values, token));
+    // dispatch(patchUserData(values, token));
   };
 
   return (

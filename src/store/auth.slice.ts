@@ -1,10 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IAuthState {
   name: string;
   email: string;
   password: string;
-  token: string;
   isAuth: boolean;
 }
 
@@ -12,7 +11,6 @@ const initialState: IAuthState = {
   name: "",
   email: "",
   password: "",
-  token: "",
   isAuth: false,
 };
 
@@ -20,7 +18,20 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-
+    setUser(state, action: PayloadAction<any>) {
+      state.email = action.payload.email;
+      state.name = action.payload.name;
+      state.password = action.payload.password;
+      state.isAuth = true;
+    },
+    loginSuccess(state) {
+      state.isAuth = true;
+    },
+    refreshUser(state, action: PayloadAction<any>) {
+      state.name = action.payload.user.name;
+      state.email = action.payload.user.email;
+      state.isAuth = true;
+    },
   },
 });
 

@@ -7,10 +7,10 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
-import { getCookie, registerPost } from "../../utils/api";
-import { _REGISTER_URL } from "../../utils/constants";
+import { getCookie } from "../../utils/api";
 import { useDispatch, useSelector } from "react-redux";
-import { checkUser } from "../../services/actions/auth";
+// import { checkUser } from "../../services/actions/auth";
+import { useRegisterMutation } from "../../store/api";
 
 const RegisterPage = () => {
   const history = useHistory();
@@ -20,9 +20,11 @@ const RegisterPage = () => {
 
   const token = document.cookie ? getCookie("token") : "";
 
-  useEffect(() => {
-    dispatch(checkUser(token));
-  }, [dispatch, isAuth, token]);
+  // useEffect(() => {
+  //   dispatch(checkUser(token));
+  // }, [dispatch, isAuth, token]);
+
+  const [registerPost] = useRegisterMutation();
 
   const [state, setState] = React.useState({
     email: "",
@@ -41,8 +43,8 @@ const RegisterPage = () => {
   };
   const register = (e) => {
     e.preventDefault();
-    registerPost(_REGISTER_URL, state.email, state.password, state.name)
-      .then(() => history.replace("/"))
+    registerPost(state)
+      .then(() => history.replace("/login"))
       .catch((res) => console.log(res));
   };
 

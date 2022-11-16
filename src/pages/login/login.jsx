@@ -5,23 +5,48 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
-import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
-import { checkUser, login } from "../../services/actions/auth";
+import { Link, Redirect, useLocation } from "react-router-dom";
+// import { checkUser, SET_USER } from "../../services/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { getCookie } from "../../utils/api";
+import { deleteCookie, getCookie, setCookie } from "../../utils/api";
 import { useForm } from "../../hooks/useForm";
+import {
+  useGetUserQuery,
+  useLoginMutation,
+  useRefreshTokenMutation,
+} from "../../store/api";
+import { useAppSelector } from "../../hooks/redux";
+import { useActions } from "../../hooks/actions";
 
 const LoginPage = () => {
-  const history = useHistory();
-  const location = useLocation();
-  const { isAuth } = useSelector((state) => state.rootReducer.userData);
-  const dispatch = useDispatch();
-
   const token = document.cookie ? getCookie("token") : "";
+  const location = useLocation();
+  const { isAuth } = useAppSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const [login] = useLoginMutation();
+  const { setUser, loginSuccess, refreshUser } = useActions();
+  const { data, isSuccess, isError } = useGetUserQuery(token);
+  const [refreshToken] = useRefreshTokenMutation();
 
   useEffect(() => {
-    dispatch(checkUser(token));
-  }, [dispatch, isAuth, token]);
+    isSuccess && loginSuccess();
+    if (isError) {
+      refreshToken(token)
+        .unwrap()
+        .then((res) => {
+          let accessToken = null;
+          deleteCookie("refreshToken", token);
+          if (res.accessToken.indexOf("Bearer") === 0) {
+            accessToken = res.accessToken.split("Bearer ")[1];
+          } else {
+            accessToken = res.accessToken;
+          }
+          refreshUser(res.user);
+          setCookie("refreshToken", res.refreshToken);
+          return accessToken;
+        });
+    }
+  }, [isAuth, token]);
 
   const { values, handleChange } = useForm({
     email: "",
@@ -30,7 +55,25 @@ const LoginPage = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    dispatch(login(values, history));
+    login(values)
+      .unwrap()
+      .then((res) => {
+        let accessToken;
+        if (res.accessToken.indexOf("Bearer") === 0)
+          accessToken = res.accessToken.split("Bearer ")[1];
+        else accessToken = res.accessToken;
+        // dispatch({
+        //   type: SET_USER,
+        //   user: { ...res.user, password: values.password },
+        //   isAuth: true,
+        // });
+        setUser({ ...res.user, password: values.password });
+        setCookie("refreshToken", res.refreshToken);
+        setCookie("token", accessToken);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   if (!isAuth) {
@@ -53,7 +96,7 @@ const LoginPage = () => {
           Войти
         </Button>
         <p className="text text_type_main-default mb-4">
-          Вы — новый пользователь?{" "}
+          Вы — новый пользователь?{" "}
           <Link to="/register">Зарегистрироваться</Link>
         </p>
         <p className="text text_type_main-default">
