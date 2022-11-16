@@ -1,17 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface IBurgerConstructorState {
-  // isRequest: boolean,
-  // isRequestError: boolean,
-  isOrderModalOpen: boolean;
   orderName: string;
   orderNumber: number;
 }
 
 const initialState: IBurgerConstructorState = {
-  // isRequest: false,
-  // isRequestError: false,
-  isOrderModalOpen: false,
   orderName: "",
   orderNumber: 0,
 };
@@ -20,12 +14,10 @@ export const burgerConstructorSlice = createSlice({
   name: "ingredients",
   initialState,
   reducers: {
-    openOrderModal(state) {
-      state.isOrderModalOpen = true;
-    },
-    closeOrderModal(state) {
-      state.isOrderModalOpen = false;
-    },
+    getOrderData(state, action: PayloadAction<any>) {
+      state.orderName = action.payload.name;
+      state.orderNumber = action.payload.order.number;
+    }
   },
 });
 

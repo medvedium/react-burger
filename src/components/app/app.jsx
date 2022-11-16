@@ -19,14 +19,12 @@ import ProtectedRoute from "../protected-route/protected-route";
 import OrdersPage from "../../pages/orders/orders";
 import { useDispatch } from "react-redux";
 import Modal from "../modal/modal";
-import { MODAL_CLOSE, MODAL_OPEN } from "../../services/actions/modal";
 import { useGetIngredientsQuery } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 
 function App() {
-  const { getIngredients, getIngredientsFailed } = useActions();
+  const { getIngredients, getIngredientsFailed, openModal, closeModal } = useActions();
 
-  const dispatch = useDispatch();
   const {
     isError: isIngredientsError,
     data: ingredients,
@@ -50,13 +48,14 @@ function App() {
   const ModalSwitch = () => {
     useEffect(() => {
       if (background) {
-        dispatch({ type: MODAL_OPEN });
+        openModal()
       }
     });
 
     const handleModalClose = () => {
       history.goBack();
-      dispatch({ type: MODAL_CLOSE });
+      window.history.replaceState(null, null, "/");
+      closeModal()
     };
 
     return (

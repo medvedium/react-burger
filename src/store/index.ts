@@ -3,6 +3,8 @@ import { api } from "./api";
 import { rootReducer } from "../services/reducers";
 import { ingredientsReducer } from "./ingredients.slice";
 import { burgerConstructorReducer } from "./burgerConstructor.slice";
+import {modalReducer} from "./modal.slice";
+import {authReducer} from "./auth.slice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ export const store = configureStore({
     rootReducer,
     ingredients: ingredientsReducer,
     burgerConstructor: burgerConstructorReducer,
+    modal: modalReducer,
+    auth: authReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),

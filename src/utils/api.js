@@ -16,15 +16,15 @@ function request(url, options) {
 //   });
 // };
 
-export const fetchPost = (url, orderData) => {
-  return request(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ ingredients: orderData }),
-  });
-};
+// export const fetchPost = (url, orderData) => {
+//   return request(url, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({ ingredients: orderData }),
+//   });
+// };
 
 export const resetPasswordPost = (url, email) => {
   return request(url, {

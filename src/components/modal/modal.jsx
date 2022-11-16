@@ -4,9 +4,10 @@ import ModalHeader from "../modal-header/modal-header";
 import styles from "./modal.module.css";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
+import {useAppSelector} from "../../hooks/redux";
 
 const Modal = ({ header, onClose, children }) => {
-  const modalIsOpen = useSelector((store) => store.rootReducer.modalReducer);
+  const modalIsOpen = useAppSelector((store) => store.modal);
   useEffect(() => {
     if (!modalIsOpen) return;
 

@@ -2,8 +2,7 @@ import styles from "./constructor-total.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { postOrderData } from "../../services/actions/burger-constructor";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
@@ -11,8 +10,9 @@ import { usePostOrderDataMutation } from "../../store/api";
 import Loader from "../loader/loader";
 
 const ConstructorTotal = () => {
-  const [makeOrder, { isLoading, isSuccess, isError, error, data }] =
+  const [makeOrder, { isLoading, isError, error }] =
     usePostOrderDataMutation();
+
 
   const history = useHistory();
   const { isAuth } = useSelector((state) => state.rootReducer.userData);
@@ -20,7 +20,7 @@ const ConstructorTotal = () => {
   const { selectedIngredients, selectedBun, total } = useAppSelector(
     (state) => state.ingredients
   );
-  const { resetConstructor } = useActions();
+  const { resetConstructor, getOrderData, openOrderModal, openModal } = useActions();
 
   const addedIds = useMemo(() => {
     return (
@@ -36,9 +36,10 @@ const ConstructorTotal = () => {
     if (isAuth) {
       if (selectedBun._id && selectedIngredients.length) {
         resetConstructor();
-        // dispatch(postOrderData(addedIds));
-        makeOrder(addedIds);
-        isSuccess && alert(data);
+        makeOrder(addedIds).unwrap().then(res => {
+          getOrderData(res)
+          openModal()
+        })
       }
     } else if (!isAuth) {
       history.replace("/login");
