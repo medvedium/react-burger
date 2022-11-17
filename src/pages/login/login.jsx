@@ -5,10 +5,8 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
-import { Link, Redirect, useLocation } from "react-router-dom";
-// import { checkUser, SET_USER } from "../../services/actions/auth";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteCookie, getCookie, setCookie } from "../../utils/api";
+import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
+import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
 import {
   useGetUserQuery,
@@ -20,33 +18,50 @@ import { useActions } from "../../hooks/actions";
 
 const LoginPage = () => {
   const token = document.cookie ? getCookie("token") : "";
+  const history = useHistory();
   const location = useLocation();
   const { isAuth } = useAppSelector((state) => state.auth);
-  const dispatch = useDispatch();
   const [login] = useLoginMutation();
   const { setUser, loginSuccess, refreshUser } = useActions();
-  const { data, isSuccess, isError } = useGetUserQuery(token);
+  const { isSuccess, isError, data } = useGetUserQuery(token);
   const [refreshToken] = useRefreshTokenMutation();
 
   useEffect(() => {
-    isSuccess && loginSuccess();
-    if (isError) {
-      refreshToken(token)
-        .unwrap()
-        .then((res) => {
-          let accessToken = null;
-          deleteCookie("refreshToken", token);
-          if (res.accessToken.indexOf("Bearer") === 0) {
-            accessToken = res.accessToken.split("Bearer ")[1];
-          } else {
-            accessToken = res.accessToken;
-          }
-          refreshUser(res.user);
-          setCookie("refreshToken", res.refreshToken);
-          return accessToken;
-        });
+    if (token) {
+      if (isSuccess) {
+        loginSuccess();
+        refreshUser(data);
+      }
+      if (isError) {
+        refreshToken(token)
+          .unwrap()
+          .then((res) => {
+            let accessToken;
+            deleteCookie("refreshToken", token);
+            if (res.accessToken.indexOf("Bearer") === 0) {
+              accessToken = res.accessToken.split("Bearer ")[1];
+            } else {
+              accessToken = res.accessToken;
+            }
+            refreshUser(res.user);
+            setCookie("refreshToken", res.refreshToken);
+            return accessToken;
+          })
+          .catch(() => {
+            console.log("refresh token failed");
+          });
+      }
     }
-  }, [isAuth, token]);
+  }, [
+    token,
+    history,
+    isSuccess,
+    isError,
+    loginSuccess,
+    refreshToken,
+    refreshUser,
+    data,
+  ]);
 
   const { values, handleChange } = useForm({
     email: "",
@@ -62,11 +77,6 @@ const LoginPage = () => {
         if (res.accessToken.indexOf("Bearer") === 0)
           accessToken = res.accessToken.split("Bearer ")[1];
         else accessToken = res.accessToken;
-        // dispatch({
-        //   type: SET_USER,
-        //   user: { ...res.user, password: values.password },
-        //   isAuth: true,
-        // });
         setUser({ ...res.user, password: values.password });
         setCookie("refreshToken", res.refreshToken);
         setCookie("token", accessToken);

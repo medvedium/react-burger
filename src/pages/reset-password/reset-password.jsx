@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import styles from "../forgot-password/forgot-password.module.css";
 import {
   Button,
@@ -6,21 +6,13 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
-import { getCookie } from "../../utils/api";
-import { useDispatch, useSelector } from "react-redux";
 import { useResetPasswordMutation } from "../../store/api";
 import { useAppSelector } from "../../hooks/redux";
 
 const ResetPasswordPage = () => {
-  const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
-  const token = document.cookie ? getCookie("token") : "";
   const { isAuth } = useAppSelector((state) => state.auth);
-
-  // useEffect(() => {
-  //   dispatch(checkUser(token));
-  // }, [dispatch, token]);
 
   const [state, setState] = React.useState({ password: "", token: "" });
   const [resetPassword] = useResetPasswordMutation();
@@ -34,7 +26,6 @@ const ResetPasswordPage = () => {
       [name]: value,
     });
   };
-  const inputRef = useRef();
 
   const setNewPassword = (e) => {
     e.preventDefault();
@@ -71,7 +62,6 @@ const ResetPasswordPage = () => {
           value={state.token}
           name={"token"}
           error={false}
-          ref={inputRef}
           errorText={"Ошибка"}
           size={"default"}
           extraClass="mb-6"

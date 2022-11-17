@@ -24,13 +24,19 @@ export const authSlice = createSlice({
       state.password = action.payload.password;
       state.isAuth = true;
     },
-    loginSuccess(state) {
-      state.isAuth = true;
-    },
     refreshUser(state, action: PayloadAction<any>) {
       state.name = action.payload.user.name;
       state.email = action.payload.user.email;
       state.isAuth = true;
+    },
+    loginSuccess(state) {
+      state.isAuth = true;
+    },
+    logout(state) {
+      state.name = "";
+      state.email = "";
+      state.password = "";
+      state.isAuth = false;
     },
   },
 });

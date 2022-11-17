@@ -5,14 +5,7 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
-import {
-  deleteCookie,
-  getCookie,
-  refreshTokenRequest,
-  setCookie,
-} from "../../utils/api";
-import { useDispatch } from "react-redux";
-// import { REFRESH_USER, refreshUserData } from "../../services/actions/auth";
+import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
 import { useFormAndValidation } from "../../hooks/useFormAndValidation";
 import {
   useForgotPasswordMutation,
@@ -23,29 +16,25 @@ import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
 
 const ForgotPasswordPage = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const token = document.cookie ? getCookie("token") : "";
   const { isAuth } = useAppSelector((state) => state.auth);
-  const [getUser] = useGetUserQuery();
+  const token = document.cookie ? getCookie("token") : "";
+  const { isSuccess, isError, data } = useGetUserQuery(token);
   const { loginSuccess, refreshUser } = useActions();
   const [refreshToken] = useRefreshTokenMutation();
 
   useEffect(() => {
-    getUser(token)
-      .unwrap()
-      .then(() => {
+    if (token) {
+      if (isSuccess) {
         loginSuccess();
-      })
-      .catch(() => {
-        const refreshData = {
-          token: token,
-        };
-        refreshToken(refreshData)
+        refreshUser(data);
+      }
+      if (isError) {
+        refreshToken(token)
           .unwrap()
           .then((res) => {
-            let accessToken = null;
+            let accessToken;
             deleteCookie("refreshToken", token);
             if (res.accessToken.indexOf("Bearer") === 0) {
               accessToken = res.accessToken.split("Bearer ")[1];
@@ -55,9 +44,22 @@ const ForgotPasswordPage = () => {
             refreshUser(res.user);
             setCookie("refreshToken", res.refreshToken);
             return accessToken;
+          })
+          .catch(() => {
+            console.log("refresh token failed");
           });
-      });
-  }, [isAuth, token]);
+      }
+    }
+  }, [
+    token,
+    history,
+    isSuccess,
+    isError,
+    loginSuccess,
+    refreshToken,
+    refreshUser,
+    data,
+  ]);
 
   const { values, handleChange, errors, isValid } = useFormAndValidation({});
   const [remindPassword] = useForgotPasswordMutation();

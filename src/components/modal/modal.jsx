@@ -3,8 +3,7 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 import ModalHeader from "../modal-header/modal-header";
 import styles from "./modal.module.css";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import {useAppSelector} from "../../hooks/redux";
+import { useAppSelector } from "../../hooks/redux";
 
 const Modal = ({ header, onClose, children }) => {
   const modalIsOpen = useAppSelector((store) => store.modal);

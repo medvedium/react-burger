@@ -17,13 +17,13 @@ import IngredientsPage from "../../pages/ingredients/ingredients";
 import PageNotFound404 from "../../pages/page-not-found-404/page-not-found-404";
 import ProtectedRoute from "../protected-route/protected-route";
 import OrdersPage from "../../pages/orders/orders";
-import { useDispatch } from "react-redux";
 import Modal from "../modal/modal";
 import { useGetIngredientsQuery } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 
 function App() {
-  const { getIngredients, getIngredientsFailed, openModal, closeModal } = useActions();
+  const { getIngredients, getIngredientsFailed, openModal, closeModal } =
+    useActions();
 
   const {
     isError: isIngredientsError,
@@ -48,14 +48,14 @@ function App() {
   const ModalSwitch = () => {
     useEffect(() => {
       if (background) {
-        openModal()
+        openModal();
       }
     });
 
     const handleModalClose = () => {
       history.goBack();
       window.history.replaceState(null, null, "/");
-      closeModal()
+      closeModal();
     };
 
     return (

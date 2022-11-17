@@ -7,22 +7,60 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
-import { getCookie } from "../../utils/api";
-import { useDispatch, useSelector } from "react-redux";
-// import { checkUser } from "../../services/actions/auth";
-import { useRegisterMutation } from "../../store/api";
+import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
+import {
+  useGetUserQuery,
+  useRefreshTokenMutation,
+  useRegisterMutation,
+} from "../../store/api";
+import { useAppSelector } from "../../hooks/redux";
+import { useActions } from "../../hooks/actions";
 
 const RegisterPage = () => {
   const history = useHistory();
   const location = useLocation();
-  const { isAuth } = useSelector((state) => state.rootReducer.userData);
-  const dispatch = useDispatch();
-
+  const { isAuth } = useAppSelector((state) => state.auth);
   const token = document.cookie ? getCookie("token") : "";
+  const { isSuccess, isError, data } = useGetUserQuery(token);
+  const { loginSuccess, refreshUser } = useActions();
+  const [refreshToken] = useRefreshTokenMutation();
 
-  // useEffect(() => {
-  //   dispatch(checkUser(token));
-  // }, [dispatch, isAuth, token]);
+  useEffect(() => {
+    if (token) {
+      if (isSuccess) {
+        loginSuccess();
+        refreshUser(data);
+      }
+      if (isError) {
+        refreshToken(token)
+          .unwrap()
+          .then((res) => {
+            let accessToken;
+            deleteCookie("refreshToken", token);
+            if (res.accessToken.indexOf("Bearer") === 0) {
+              accessToken = res.accessToken.split("Bearer ")[1];
+            } else {
+              accessToken = res.accessToken;
+            }
+            refreshUser(res.user);
+            setCookie("refreshToken", res.refreshToken);
+            return accessToken;
+          })
+          .catch(() => {
+            console.log("refresh token failed");
+          });
+      }
+    }
+  }, [
+    token,
+    history,
+    isSuccess,
+    isError,
+    loginSuccess,
+    refreshToken,
+    refreshUser,
+    data,
+  ]);
 
   const [registerPost] = useRegisterMutation();
 

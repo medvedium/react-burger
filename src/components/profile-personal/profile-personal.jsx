@@ -4,17 +4,18 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
 import { useFormAndValidation } from "../../hooks/useFormAndValidation";
-// import { patchUserData } from "../../services/actions/auth";
 import { useAppSelector } from "../../hooks/redux";
-import { getCookie } from "../../utils/api";
+import { getCookie } from "../../utils/cookie";
+import { usePatchUserDataMutation } from "../../store/api";
+import { useActions } from "../../hooks/actions";
 
 const ProfilePersonal = () => {
-  const dispatch = useDispatch();
   const { name, email, password } = useAppSelector((store) => store.auth);
   const [isChanged, setChanged] = useState(false);
   const token = document.cookie ? getCookie("token") : "";
+  const [patchUserData] = usePatchUserDataMutation();
+  const { refreshUser } = useActions();
 
   const { values, handleChange, errors, isValid, resetForm } =
     useFormAndValidation({
@@ -35,7 +36,15 @@ const ProfilePersonal = () => {
 
   const submitForm = (event) => {
     event.preventDefault();
-    // dispatch(patchUserData(values, token));
+    const userData = {
+      token,
+      ...values,
+    };
+    patchUserData(userData)
+      .then(() => {
+        refreshUser(values);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

@@ -20,9 +20,28 @@ export interface IUser {
   email?: string;
   password?: string;
   isAuth?: boolean;
+  token?: string;
 }
 
 export interface ServerResponse {
   success: boolean;
   data: IIngredient[];
+}
+
+export interface IOrder {
+  number: number;
+}
+
+export interface IOrderResponse {
+  success: boolean;
+  name: string;
+  order: IOrder;
+}
+
+export interface IUserResponse {
+  success: boolean;
+  message?: string;
+  user?: IUser;
+  accessToken?: string;
+  refreshToken?: string;
 }

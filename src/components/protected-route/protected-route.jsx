@@ -1,19 +1,55 @@
 import React, { useEffect } from "react";
-import { Redirect, Route, useLocation } from "react-router-dom";
-import { getCookie } from "../../utils/api";
-import { useDispatch, useSelector } from "react-redux";
-// import { checkUser } from "../../services/actions/auth";
+import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
+import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
 import { useAppSelector } from "../../hooks/redux";
+import { useGetUserQuery, useRefreshTokenMutation } from "../../store/api";
+import { useActions } from "../../hooks/actions";
 
 const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
-  const dispatch = useDispatch();
   const location = useLocation();
+  const history = useHistory();
   const token = document.cookie ? getCookie("token") : "";
   const { isAuth } = useAppSelector((state) => state.auth);
+  const { isSuccess, isError, data } = useGetUserQuery(token);
+  const { loginSuccess, refreshUser } = useActions();
+  const [refreshToken] = useRefreshTokenMutation();
 
-  // useEffect(() => {
-  //   dispatch(checkUser(token));
-  // }, [dispatch, isAuth, token]);
+  useEffect(() => {
+    if (token) {
+      if (isSuccess) {
+        loginSuccess();
+        refreshUser(data);
+      }
+      if (isError) {
+        refreshToken(token)
+          .unwrap()
+          .then((res) => {
+            let accessToken;
+            deleteCookie("refreshToken", token);
+            if (res.accessToken.indexOf("Bearer") === 0) {
+              accessToken = res.accessToken.split("Bearer ")[1];
+            } else {
+              accessToken = res.accessToken;
+            }
+            refreshUser(res.user);
+            setCookie("refreshToken", res.refreshToken);
+            return accessToken;
+          })
+          .catch(() => {
+            console.log("refresh token failed");
+          });
+      }
+    }
+  }, [
+    token,
+    history,
+    isSuccess,
+    isError,
+    loginSuccess,
+    refreshToken,
+    refreshUser,
+    data,
+  ]);
 
   return (
     <Route

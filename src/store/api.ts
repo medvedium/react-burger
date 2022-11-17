@@ -1,5 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IIngredient, ServerResponse } from "../models/models";
+import {
+  IIngredient,
+  IOrderResponse,
+  IUser,
+  IUserResponse,
+  ServerResponse,
+} from "../models/models";
 
 export const api = createApi({
   reducerPath: "api",
@@ -13,7 +19,7 @@ export const api = createApi({
       }),
       transformResponse: (response: ServerResponse) => response.data,
     }),
-    postOrderData: build.mutation<any, any>({
+    postOrderData: build.mutation<IOrderResponse, string[]>({
       query: (addedIds: string[]) => ({
         url: `orders`,
         method: "POST",
@@ -23,7 +29,10 @@ export const api = createApi({
         body: JSON.stringify({ ingredients: addedIds }),
       }),
     }),
-    forgotPassword: build.mutation<any, any>({
+    forgotPassword: build.mutation<
+      { success: boolean; message: string },
+      string
+    >({
       query: (email: string) => ({
         url: `password-reset`,
         method: `POST`,
@@ -33,8 +42,14 @@ export const api = createApi({
         body: JSON.stringify({ email: email }),
       }),
     }),
-    resetPassword: build.mutation<any, any>({
-      query: (userData: { password: string; token: string }) => ({
+    resetPassword: build.mutation<
+      {
+        success: boolean;
+        message: string;
+      },
+      IUser
+    >({
+      query: (userData) => ({
         url: `password-reset/reset`,
         method: "POST",
         headers: {
@@ -43,7 +58,7 @@ export const api = createApi({
         body: JSON.stringify(userData),
       }),
     }),
-    register: build.mutation<any, any>({
+    register: build.mutation<IUserResponse, IUser>({
       query: (userData: { email: string; password: string; name: string }) => ({
         url: `auth/register`,
         method: "POST",
@@ -53,7 +68,7 @@ export const api = createApi({
         body: JSON.stringify(userData),
       }),
     }),
-    login: build.mutation<any, any>({
+    login: build.mutation<IUserResponse, IUser>({
       query: (userData: { email: string; password: string }) => ({
         url: `auth/login`,
         method: "POST",
@@ -63,7 +78,13 @@ export const api = createApi({
         body: JSON.stringify(userData),
       }),
     }),
-    logout: build.mutation<any, any>({
+    logout: build.mutation<
+      {
+        success: boolean;
+        message: string;
+      },
+      string
+    >({
       query: (token: string) => ({
         url: `auth/logout`,
         method: "POST",
@@ -73,7 +94,7 @@ export const api = createApi({
         body: JSON.stringify({ token: token }),
       }),
     }),
-    getUser: build.query<any, any>({
+    getUser: build.query<IUserResponse, string>({
       query: (token: string) => ({
         url: `auth/user`,
         headers: {
@@ -82,7 +103,7 @@ export const api = createApi({
         },
       }),
     }),
-    refreshToken: build.mutation<any, any>({
+    refreshToken: build.mutation<IUserResponse, string>({
       query: (token: string) => ({
         url: `auth/token`,
         method: "POST",
@@ -90,6 +111,21 @@ export const api = createApi({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ token: token }),
+      }),
+    }),
+    patchUserData: build.mutation<IUserResponse, IUser>({
+      query: (userData: IUser) => ({
+        url: `auth/user`,
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${userData.token}`,
+        },
+        body: JSON.stringify({
+          email: userData.email,
+          password: userData.password,
+          name: userData.name,
+        }),
       }),
     }),
   }),
@@ -105,4 +141,5 @@ export const {
   useLogoutMutation,
   useGetUserQuery,
   useRefreshTokenMutation,
+  usePatchUserDataMutation,
 } = api;

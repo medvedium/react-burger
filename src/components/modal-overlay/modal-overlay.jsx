@@ -2,11 +2,10 @@ import React from "react";
 import styles from "./modal-overlay.module.css";
 import Portal from "../portal/portal";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import {useAppSelector} from "../../hooks/redux";
+import { useAppSelector } from "../../hooks/redux";
 
 const ModalOverlay = ({ children, onClose }) => {
-  const {modalIsOpen} = useAppSelector((store) => store.modal);
+  const { modalIsOpen } = useAppSelector((store) => store.modal);
   if (!modalIsOpen) {
     return null;
   }
