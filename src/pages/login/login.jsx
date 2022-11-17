@@ -5,7 +5,7 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
-import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
+import { Link, Redirect, useLocation } from "react-router-dom";
 import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
 import {
@@ -17,7 +17,6 @@ import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
 
 const LoginPage = () => {
-  const history = useHistory();
   const location = useLocation();
   const { isAuth } = useAppSelector((state) => state.auth);
   const [login] = useLoginMutation();
@@ -26,7 +25,7 @@ const LoginPage = () => {
   const refreshToken = document.cookie ? getCookie("refreshToken") : "";
   const [
     getUser,
-    { isSuccess: isGetUserSuccess, isError: isGetUserError, data: userData },
+    { isSuccess: isGetUserSuccess, isLoading: isGetUserLoading, isError: isGetUserError, data: userData },
   ] = useLazyGetUserQuery();
   const [
     refreshTokenPost,
@@ -34,16 +33,16 @@ const LoginPage = () => {
   ] = useRefreshTokenMutation();
 
   useEffect(() => {
-    if (token !== undefined && token !== "" && !isAuth) {
-      console.log(`login`);
+    if (!isGetUserError) {
       getUser(token);
       if (isGetUserSuccess) {
         loginSuccess();
         refreshUser(userData);
       }
-      if (isGetUserError) {
+      if (isGetUserError && refreshToken !== undefined && refreshToken !== '') {
         refreshTokenPost(refreshToken);
         if (isRefreshSuccess) {
+          console.log(isRefreshSuccess);
           let accessToken;
           deleteCookie("refreshToken", token);
           if (userData.accessToken.indexOf("Bearer") === 0) {
@@ -60,7 +59,7 @@ const LoginPage = () => {
         }
       }
     }
-  }, [token, history, loginSuccess, refreshTokenPost, refreshUser]);
+  }, [getUser, isAuth, isGetUserLoading, isGetUserSuccess, isGetUserError, isRefreshError, isRefreshSuccess, loginSuccess, refreshToken, refreshTokenPost, refreshUser, token, userData]);
 
   const { values, handleChange } = useForm({
     email: "",

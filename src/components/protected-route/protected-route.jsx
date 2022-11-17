@@ -1,20 +1,20 @@
 import React, { useEffect } from "react";
-import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
+import {Redirect, Route, useHistory, useLocation} from "react-router-dom";
 import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
 import { useAppSelector } from "../../hooks/redux";
 import { useLazyGetUserQuery, useRefreshTokenMutation } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 
 const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
+  const history = useHistory()
   const location = useLocation();
-  const history = useHistory();
   const { isAuth } = useAppSelector((state) => state.auth);
-  const { loginSuccess, refreshUser } = useActions();
+  const { loginSuccess, refreshUser, logout } = useActions();
   const token = document.cookie ? getCookie("token") : "";
   const refreshToken = document.cookie ? getCookie("refreshToken") : "";
   const [
     getUser,
-    { isSuccess: isGetUserSuccess, isError: isGetUserError, data: userData },
+    { isSuccess: isGetUserSuccess, isLoading: isGetUserLoading, isError: isGetUserError, data: userData },
   ] = useLazyGetUserQuery();
   const [
     refreshTokenPost,
@@ -22,16 +22,16 @@ const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
   ] = useRefreshTokenMutation();
 
   useEffect(() => {
-    if (token !== undefined && !isAuth) {
-      console.log(`protected route`);
+    if (!isGetUserError) {
       getUser(token);
       if (isGetUserSuccess) {
         loginSuccess();
         refreshUser(userData);
       }
-      if (isGetUserError) {
+      if (isGetUserError && refreshToken !== undefined && refreshToken !== '') {
         refreshTokenPost(refreshToken);
         if (isRefreshSuccess) {
+          console.log(isRefreshSuccess);
           let accessToken;
           deleteCookie("refreshToken", token);
           if (userData.accessToken.indexOf("Bearer") === 0) {
@@ -48,7 +48,16 @@ const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
         }
       }
     }
-  }, [token, history, loginSuccess, refreshTokenPost, refreshUser]);
+    if (isGetUserError) {
+      logout();
+      history.replace({
+        pathname: "/login",
+        state: {
+          from: location,
+        },
+      });
+    }
+  }, [getUser, isAuth, isGetUserLoading, isGetUserSuccess, isGetUserError, isRefreshError, isRefreshSuccess, loginSuccess, refreshToken, refreshTokenPost, refreshUser, token, userData]);
 
   return (
     <Route

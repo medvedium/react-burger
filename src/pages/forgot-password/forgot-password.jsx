@@ -19,12 +19,12 @@ const ForgotPasswordPage = () => {
   const history = useHistory();
   const location = useLocation();
   const { isAuth } = useAppSelector((state) => state.auth);
-  const { loginSuccess, refreshUser } = useActions();
+  const { loginSuccess, refreshUser, logout } = useActions();
   const token = document.cookie ? getCookie("token") : "";
   const refreshToken = document.cookie ? getCookie("refreshToken") : "";
   const [
     getUser,
-    { isSuccess: isGetUserSuccess, isError: isGetUserError, data: userData },
+    { isSuccess: isGetUserSuccess, isLoading: isGetUserLoading, isError: isGetUserError, data: userData },
   ] = useLazyGetUserQuery();
   const [
     refreshTokenPost,
@@ -32,16 +32,17 @@ const ForgotPasswordPage = () => {
   ] = useRefreshTokenMutation();
 
   useEffect(() => {
-    if (token !== undefined && !isAuth) {
-      console.log(`forgot password`);
+    if (!isGetUserError) {
+      console.log('login')
       getUser(token);
       if (isGetUserSuccess) {
         loginSuccess();
         refreshUser(userData);
       }
-      if (isGetUserError) {
+      if (isGetUserError && refreshToken !== undefined && refreshToken !== '') {
         refreshTokenPost(refreshToken);
         if (isRefreshSuccess) {
+          console.log(isRefreshSuccess);
           let accessToken;
           deleteCookie("refreshToken", token);
           if (userData.accessToken.indexOf("Bearer") === 0) {
@@ -58,7 +59,16 @@ const ForgotPasswordPage = () => {
         }
       }
     }
-  }, [token, history, loginSuccess, refreshTokenPost, refreshUser]);
+    if (isGetUserError) {
+      logout();
+      history.replace({
+        pathname: "/login",
+        state: {
+          from: location,
+        },
+      });
+    }
+  }, [getUser, isAuth, isGetUserLoading, isGetUserSuccess, isGetUserError, isRefreshError, isRefreshSuccess, loginSuccess, refreshToken, refreshTokenPost, refreshUser, token, userData]);
 
   const { values, handleChange, errors, isValid } = useFormAndValidation({});
   const [remindPassword] = useForgotPasswordMutation();
