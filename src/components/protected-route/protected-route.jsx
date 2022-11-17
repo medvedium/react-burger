@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import {Redirect, Route, useHistory, useLocation} from "react-router-dom";
+import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
 import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
 import { useAppSelector } from "../../hooks/redux";
 import { useLazyGetUserQuery, useRefreshTokenMutation } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 
 const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
-  const history = useHistory()
+  const history = useHistory();
   const location = useLocation();
   const { isAuth } = useAppSelector((state) => state.auth);
   const { loginSuccess, refreshUser, logout } = useActions();
@@ -14,7 +14,12 @@ const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
   const refreshToken = document.cookie ? getCookie("refreshToken") : "";
   const [
     getUser,
-    { isSuccess: isGetUserSuccess, isLoading: isGetUserLoading, isError: isGetUserError, data: userData },
+    {
+      isSuccess: isGetUserSuccess,
+      isLoading: isGetUserLoading,
+      isError: isGetUserError,
+      data: userData,
+    },
   ] = useLazyGetUserQuery();
   const [
     refreshTokenPost,
@@ -22,13 +27,13 @@ const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
   ] = useRefreshTokenMutation();
 
   useEffect(() => {
-    if (!isGetUserError) {
+    if (!isGetUserError && !isGetUserSuccess) {
       getUser(token);
       if (isGetUserSuccess) {
         loginSuccess();
         refreshUser(userData);
       }
-      if (isGetUserError && refreshToken !== undefined && refreshToken !== '') {
+      if (isGetUserError && refreshToken !== undefined && refreshToken !== "") {
         refreshTokenPost(refreshToken);
         if (isRefreshSuccess) {
           console.log(isRefreshSuccess);
@@ -57,7 +62,24 @@ const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
         },
       });
     }
-  }, [getUser, isAuth, isGetUserLoading, isGetUserSuccess, isGetUserError, isRefreshError, isRefreshSuccess, loginSuccess, refreshToken, refreshTokenPost, refreshUser, token, userData]);
+  }, [
+    getUser,
+    isAuth,
+    isGetUserLoading,
+    isGetUserSuccess,
+    isGetUserError,
+    isRefreshError,
+    isRefreshSuccess,
+    loginSuccess,
+    refreshToken,
+    refreshTokenPost,
+    refreshUser,
+    token,
+    userData,
+    history,
+    location,
+    logout,
+  ]);
 
   return (
     <Route

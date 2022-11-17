@@ -5,12 +5,11 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
-import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
+import { getCookie } from "../../utils/cookie";
 import { useFormAndValidation } from "../../hooks/useFormAndValidation";
 import {
   useForgotPasswordMutation,
   useLazyGetUserQuery,
-  useRefreshTokenMutation,
 } from "../../store/api";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
@@ -19,56 +18,30 @@ const ForgotPasswordPage = () => {
   const history = useHistory();
   const location = useLocation();
   const { isAuth } = useAppSelector((state) => state.auth);
-  const { loginSuccess, refreshUser, logout } = useActions();
+  const { loginSuccess, refreshUser } = useActions();
   const token = document.cookie ? getCookie("token") : "";
-  const refreshToken = document.cookie ? getCookie("refreshToken") : "";
   const [
     getUser,
-    { isSuccess: isGetUserSuccess, isLoading: isGetUserLoading, isError: isGetUserError, data: userData },
+    { isSuccess: isGetUserSuccess, isError: isGetUserError, data: userData },
   ] = useLazyGetUserQuery();
-  const [
-    refreshTokenPost,
-    { isSuccess: isRefreshSuccess, isError: isRefreshError },
-  ] = useRefreshTokenMutation();
 
   useEffect(() => {
     if (!isGetUserError) {
-      console.log('login')
       getUser(token);
       if (isGetUserSuccess) {
         loginSuccess();
         refreshUser(userData);
       }
-      if (isGetUserError && refreshToken !== undefined && refreshToken !== '') {
-        refreshTokenPost(refreshToken);
-        if (isRefreshSuccess) {
-          console.log(isRefreshSuccess);
-          let accessToken;
-          deleteCookie("refreshToken", token);
-          if (userData.accessToken.indexOf("Bearer") === 0) {
-            accessToken = userData.accessToken.split("Bearer ")[1];
-          } else {
-            accessToken = userData.accessToken;
-          }
-          refreshUser(userData.user);
-          setCookie("refreshToken", userData.refreshToken);
-          return accessToken;
-        }
-        if (isRefreshError) {
-          console.log("refresh token failed");
-        }
-      }
     }
-    if (isGetUserError) {
-      logout();
-      history.replace({
-        pathname: "/login",
-        state: {
-          from: location,
-        },
-      });
-    }
-  }, [getUser, isAuth, isGetUserLoading, isGetUserSuccess, isGetUserError, isRefreshError, isRefreshSuccess, loginSuccess, refreshToken, refreshTokenPost, refreshUser, token, userData]);
+  }, [
+    getUser,
+    isGetUserSuccess,
+    isGetUserError,
+    loginSuccess,
+    refreshUser,
+    token,
+    userData,
+  ]);
 
   const { values, handleChange, errors, isValid } = useFormAndValidation({});
   const [remindPassword] = useForgotPasswordMutation();

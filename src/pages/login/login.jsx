@@ -25,7 +25,7 @@ const LoginPage = () => {
   const refreshToken = document.cookie ? getCookie("refreshToken") : "";
   const [
     getUser,
-    { isSuccess: isGetUserSuccess, isLoading: isGetUserLoading, isError: isGetUserError, data: userData },
+    { isSuccess: isGetUserSuccess, isError: isGetUserError, data: userData },
   ] = useLazyGetUserQuery();
   const [
     refreshTokenPost,
@@ -39,10 +39,9 @@ const LoginPage = () => {
         loginSuccess();
         refreshUser(userData);
       }
-      if (isGetUserError && refreshToken !== undefined && refreshToken !== '') {
+      if (isGetUserError && refreshToken !== undefined && refreshToken !== "") {
         refreshTokenPost(refreshToken);
         if (isRefreshSuccess) {
-          console.log(isRefreshSuccess);
           let accessToken;
           deleteCookie("refreshToken", token);
           if (userData.accessToken.indexOf("Bearer") === 0) {
@@ -50,7 +49,7 @@ const LoginPage = () => {
           } else {
             accessToken = userData.accessToken;
           }
-          refreshUser(userData.user);
+          refreshUser(userData);
           setCookie("refreshToken", userData.refreshToken);
           return accessToken;
         }
@@ -59,7 +58,19 @@ const LoginPage = () => {
         }
       }
     }
-  }, [getUser, isAuth, isGetUserLoading, isGetUserSuccess, isGetUserError, isRefreshError, isRefreshSuccess, loginSuccess, refreshToken, refreshTokenPost, refreshUser, token, userData]);
+  }, [
+    getUser,
+    isGetUserSuccess,
+    isGetUserError,
+    isRefreshError,
+    isRefreshSuccess,
+    loginSuccess,
+    refreshToken,
+    refreshTokenPost,
+    refreshUser,
+    token,
+    userData,
+  ]);
 
   const { values, handleChange } = useForm({
     email: "",
