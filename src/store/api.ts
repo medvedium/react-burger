@@ -139,7 +139,7 @@ export const {
   useRegisterMutation,
   useLoginMutation,
   useLogoutMutation,
-  useGetUserQuery,
+  useLazyGetUserQuery,
   useRefreshTokenMutation,
   usePatchUserDataMutation,
 } = api;

@@ -9,7 +9,7 @@ import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
 import {
-  useGetUserQuery,
+  useLazyGetUserQuery,
   useLoginMutation,
   useRefreshTokenMutation,
 } from "../../store/api";
@@ -17,51 +17,50 @@ import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
 
 const LoginPage = () => {
-  const token = document.cookie ? getCookie("token") : "";
   const history = useHistory();
   const location = useLocation();
   const { isAuth } = useAppSelector((state) => state.auth);
   const [login] = useLoginMutation();
   const { setUser, loginSuccess, refreshUser } = useActions();
-  const { isSuccess, isError, data } = useGetUserQuery(token);
-  const [refreshToken] = useRefreshTokenMutation();
+  const token = document.cookie ? getCookie("token") : "";
+  const refreshToken = document.cookie ? getCookie("refreshToken") : "";
+  const [
+    getUser,
+    { isSuccess: isGetUserSuccess, isError: isGetUserError, data: userData },
+  ] = useLazyGetUserQuery();
+  const [
+    refreshTokenPost,
+    { isSuccess: isRefreshSuccess, isError: isRefreshError },
+  ] = useRefreshTokenMutation();
 
   useEffect(() => {
-    if (token) {
-      if (isSuccess) {
+    if (token !== undefined && token !== "" && !isAuth) {
+      console.log(`login`);
+      getUser(token);
+      if (isGetUserSuccess) {
         loginSuccess();
-        refreshUser(data);
+        refreshUser(userData);
       }
-      if (isError) {
-        refreshToken(token)
-          .unwrap()
-          .then((res) => {
-            let accessToken;
-            deleteCookie("refreshToken", token);
-            if (res.accessToken.indexOf("Bearer") === 0) {
-              accessToken = res.accessToken.split("Bearer ")[1];
-            } else {
-              accessToken = res.accessToken;
-            }
-            refreshUser(res.user);
-            setCookie("refreshToken", res.refreshToken);
-            return accessToken;
-          })
-          .catch(() => {
-            console.log("refresh token failed");
-          });
+      if (isGetUserError) {
+        refreshTokenPost(refreshToken);
+        if (isRefreshSuccess) {
+          let accessToken;
+          deleteCookie("refreshToken", token);
+          if (userData.accessToken.indexOf("Bearer") === 0) {
+            accessToken = userData.accessToken.split("Bearer ")[1];
+          } else {
+            accessToken = userData.accessToken;
+          }
+          refreshUser(userData.user);
+          setCookie("refreshToken", userData.refreshToken);
+          return accessToken;
+        }
+        if (isRefreshError) {
+          console.log("refresh token failed");
+        }
       }
     }
-  }, [
-    token,
-    history,
-    isSuccess,
-    isError,
-    loginSuccess,
-    refreshToken,
-    refreshUser,
-    data,
-  ]);
+  }, [token, history, loginSuccess, refreshTokenPost, refreshUser]);
 
   const { values, handleChange } = useForm({
     email: "",
