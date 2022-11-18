@@ -1,85 +1,40 @@
 import React, { useEffect } from "react";
-import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
-import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
+import { Redirect, Route, useLocation } from "react-router-dom";
+import { getCookie, setCookie } from "../../utils/cookie";
 import { useAppSelector } from "../../hooks/redux";
 import { useLazyGetUserQuery, useRefreshTokenMutation } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 
 const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
-  const history = useHistory();
   const location = useLocation();
   const { isAuth } = useAppSelector((state) => state.auth);
-  const { loginSuccess, refreshUser, logout } = useActions();
+  const { loginSuccess, refreshUser } = useActions();
   const token = document.cookie ? getCookie("token") : "";
   const refreshToken = document.cookie ? getCookie("refreshToken") : "";
-  const [
-    getUser,
-    {
-      isSuccess: isGetUserSuccess,
-      isLoading: isGetUserLoading,
-      isError: isGetUserError,
-      data: userData,
-    },
-  ] = useLazyGetUserQuery();
-  const [
-    refreshTokenPost,
-    { isSuccess: isRefreshSuccess, isError: isRefreshError },
-  ] = useRefreshTokenMutation();
+  const [getUser] = useLazyGetUserQuery();
+  const [refreshTokenPost] = useRefreshTokenMutation();
 
   useEffect(() => {
-    if (!isGetUserError && !isGetUserSuccess) {
-      getUser(token);
-      if (isGetUserSuccess) {
+    getUser(token)
+      .unwrap()
+      .then((res) => {
         loginSuccess();
-        refreshUser(userData);
-      }
-      if (isGetUserError && refreshToken !== undefined && refreshToken !== "") {
-        refreshTokenPost(refreshToken);
-        if (isRefreshSuccess) {
-          console.log(isRefreshSuccess);
-          let accessToken;
-          deleteCookie("refreshToken", token);
-          if (userData.accessToken.indexOf("Bearer") === 0) {
-            accessToken = userData.accessToken.split("Bearer ")[1];
-          } else {
-            accessToken = userData.accessToken;
-          }
-          refreshUser(userData.user);
-          setCookie("refreshToken", userData.refreshToken);
-          return accessToken;
-        }
-        if (isRefreshError) {
-          console.log("refresh token failed");
-        }
-      }
-    }
-    if (isGetUserError) {
-      logout();
-      history.replace({
-        pathname: "/login",
-        state: {
-          from: location,
-        },
+        refreshUser(res);
+      })
+      .catch(() => {
+        refreshTokenPost(refreshToken)
+          .unwrap()
+          .then((res) => {
+            const authToken = res.accessToken.split("Bearer ")[1];
+            if (authToken) {
+              setCookie("token", authToken);
+              setCookie("refreshToken", res.refreshToken);
+            }
+            refreshUser(res);
+          })
+          .catch((err) => console.log(err));
       });
-    }
-  }, [
-    getUser,
-    isAuth,
-    isGetUserLoading,
-    isGetUserSuccess,
-    isGetUserError,
-    isRefreshError,
-    isRefreshSuccess,
-    loginSuccess,
-    refreshToken,
-    refreshTokenPost,
-    refreshUser,
-    token,
-    userData,
-    history,
-    location,
-    logout,
-  ]);
+  });
 
   return (
     <Route

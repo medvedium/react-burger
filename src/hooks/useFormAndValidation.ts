@@ -1,14 +1,16 @@
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
+import { IFormUser } from "../models/models";
 
-export function useFormAndValidation(props) {
+export function useFormAndValidation(props: IFormUser) {
   const [values, setValues] = useState({ ...props });
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(true);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: e.target.validationMessage });
+    // @ts-ignore
     setIsValid(e.target.closest("form").checkValidity());
   };
 

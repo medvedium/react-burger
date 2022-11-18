@@ -23,6 +23,12 @@ export interface IUser {
   token?: string;
 }
 
+export interface IFormUser {
+  name?: string;
+  email?: string;
+  password?: string;
+}
+
 export interface ServerResponse {
   success: boolean;
   data: IIngredient[];

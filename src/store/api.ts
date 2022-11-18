@@ -6,6 +6,7 @@ import {
   IUserResponse,
   ServerResponse,
 } from "../models/models";
+import { getCookie } from "../utils/cookie";
 
 export const api = createApi({
   reducerPath: "api",
@@ -97,6 +98,7 @@ export const api = createApi({
     getUser: build.query<IUserResponse, string>({
       query: (token: string) => ({
         url: `auth/user`,
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${token}`,
@@ -107,10 +109,17 @@ export const api = createApi({
       query: (token: string) => ({
         url: `auth/token`,
         method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token: token }),
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify({
+          token: getCookie("refreshToken"),
+        }),
       }),
     }),
     patchUserData: build.mutation<IUserResponse, IUser>({
