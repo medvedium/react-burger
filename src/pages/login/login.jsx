@@ -23,29 +23,39 @@ const LoginPage = () => {
   const { setUser, loginSuccess, refreshUser } = useActions();
   const token = document.cookie ? getCookie("token") : "";
   const refreshToken = document.cookie ? getCookie("refreshToken") : "";
-  const [getUser] = useLazyGetUserQuery();
-  const [refreshTokenPost] = useRefreshTokenMutation();
+  const [getUser, { isError: isGetUserError, isSuccess: isGetUserSuccess }] =
+    useLazyGetUserQuery();
+  const [
+    refreshTokenPost,
+    {
+      isError: isRefreshError,
+      isLoading: isRefreshLoading,
+      isSuccess: isRefreshSuccess,
+    },
+  ] = useRefreshTokenMutation();
 
   useEffect(() => {
-    getUser(token)
-      .unwrap()
-      .then((res) => {
-        loginSuccess();
-        refreshUser(res);
-      })
-      .catch(() => {
-        refreshTokenPost(refreshToken)
-          .unwrap()
-          .then((res) => {
-            const authToken = res.accessToken.split("Bearer ")[1];
-            if (authToken) {
-              setCookie("token", authToken);
-              setCookie("refreshToken", res.refreshToken);
-              refreshUser(res);
-            }
-          })
-          .catch((err) => console.log(err));
-      });
+    if (!isGetUserError && !isGetUserSuccess) {
+      getUser(token)
+        .unwrap()
+        .then((res) => {
+          loginSuccess();
+          refreshUser(res);
+        })
+        .catch(() => {});
+    } else if (!isRefreshError && !isRefreshLoading && !isRefreshSuccess) {
+      refreshTokenPost(refreshToken)
+        .unwrap()
+        .then((res) => {
+          const authToken = res.accessToken.split("Bearer ")[1];
+          if (authToken) {
+            setCookie("token", authToken);
+            setCookie("refreshToken", res.refreshToken);
+          }
+          refreshUser(res);
+        })
+        .catch(() => {});
+    }
   });
 
   const { values, handleChange } = useForm({
