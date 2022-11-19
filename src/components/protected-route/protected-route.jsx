@@ -18,23 +18,14 @@ const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
   } = useGetUserQuery(token);
   const [
     refreshTokenPost,
-    {
-      isError: isRefreshError,
-      isLoading: isRefreshLoading,
-      isSuccess: isRefreshSuccess,
-    },
+    { isError: isRefreshError, isLoading: isRefreshLoading },
   ] = useRefreshTokenMutation();
 
   useEffect(() => {
     isGetUserSuccess && loginSuccess();
     isGetUserSuccess && refreshUser(userData);
 
-    if (
-      !isRefreshError &&
-      !isRefreshLoading &&
-      !isRefreshSuccess &&
-      isGetUserError
-    ) {
+    if (!isRefreshError && !isRefreshLoading && isGetUserError) {
       refreshTokenPost(refreshToken)
         .unwrap()
         .then((res) => {

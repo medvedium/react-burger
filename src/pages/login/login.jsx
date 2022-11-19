@@ -30,23 +30,14 @@ const LoginPage = () => {
   } = useGetUserQuery(token);
   const [
     refreshTokenPost,
-    {
-      isError: isRefreshError,
-      isLoading: isRefreshLoading,
-      isSuccess: isRefreshSuccess,
-    },
+    { isError: isRefreshError, isLoading: isRefreshLoading },
   ] = useRefreshTokenMutation();
 
   useEffect(() => {
     isGetUserSuccess && loginSuccess();
     isGetUserSuccess && refreshUser(userData);
 
-    if (
-      !isRefreshError &&
-      !isRefreshLoading &&
-      !isRefreshSuccess &&
-      isGetUserError
-    ) {
+    if (!isRefreshError && !isRefreshLoading && isGetUserError) {
       refreshTokenPost(refreshToken)
         .then((res) => {
           const authToken = res.accessToken.split("Bearer ")[1];

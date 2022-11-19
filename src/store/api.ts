@@ -6,7 +6,6 @@ import {
   IUserResponse,
   ServerResponse,
 } from "../models/models";
-import { getCookie } from "../utils/cookie";
 
 export const api = createApi({
   reducerPath: "api",
@@ -106,19 +105,14 @@ export const api = createApi({
       }),
     }),
     refreshToken: build.mutation<IUserResponse, string>({
-      query: () => ({
+      query: (token: string) => ({
         url: `auth/token`,
         method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
         },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
         body: JSON.stringify({
-          token: getCookie("refreshToken"),
+          token: token,
         }),
       }),
     }),
