@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Redirect, Route, useLocation } from "react-router-dom";
 import { getCookie, setCookie } from "../../utils/cookie";
 import { useAppSelector } from "../../hooks/redux";
-import { useLazyGetUserQuery, useRefreshTokenMutation } from "../../store/api";
+import { useGetUserQuery, useRefreshTokenMutation } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 
 const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
@@ -11,8 +11,11 @@ const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
   const { loginSuccess, refreshUser } = useActions();
   const token = document.cookie ? getCookie("token") : "";
   const refreshToken = document.cookie ? getCookie("refreshToken") : "";
-  const [getUser, { isError: isGetUserError, isSuccess: isGetUserSuccess }] =
-    useLazyGetUserQuery();
+  const {
+    isSuccess: isGetUserSuccess,
+    isError: isGetUserError,
+    data: userData,
+  } = useGetUserQuery(token);
   const [
     refreshTokenPost,
     {
@@ -23,15 +26,15 @@ const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
   ] = useRefreshTokenMutation();
 
   useEffect(() => {
-    if (!isGetUserError && !isGetUserSuccess) {
-      getUser(token)
-        .unwrap()
-        .then((res) => {
-          loginSuccess();
-          refreshUser(res);
-        })
-        .catch(() => {});
-    } else if (!isRefreshError && !isRefreshLoading && !isRefreshSuccess) {
+    isGetUserSuccess && loginSuccess();
+    isGetUserSuccess && refreshUser(userData);
+
+    if (
+      !isRefreshError &&
+      !isRefreshLoading &&
+      !isRefreshSuccess &&
+      isGetUserError
+    ) {
       refreshTokenPost(refreshToken)
         .unwrap()
         .then((res) => {

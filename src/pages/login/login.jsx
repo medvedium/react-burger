@@ -9,7 +9,7 @@ import { Link, Redirect, useLocation } from "react-router-dom";
 import { getCookie, setCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
 import {
-  useLazyGetUserQuery,
+  useGetUserQuery,
   useLoginMutation,
   useRefreshTokenMutation,
 } from "../../store/api";
@@ -23,8 +23,11 @@ const LoginPage = () => {
   const { setUser, loginSuccess, refreshUser } = useActions();
   const token = document.cookie ? getCookie("token") : "";
   const refreshToken = document.cookie ? getCookie("refreshToken") : "";
-  const [getUser, { isError: isGetUserError, isSuccess: isGetUserSuccess }] =
-    useLazyGetUserQuery();
+  const {
+    isSuccess: isGetUserSuccess,
+    isError: isGetUserError,
+    data: userData,
+  } = useGetUserQuery(token);
   const [
     refreshTokenPost,
     {
@@ -35,17 +38,16 @@ const LoginPage = () => {
   ] = useRefreshTokenMutation();
 
   useEffect(() => {
-    if (!isGetUserError && !isGetUserSuccess) {
-      getUser(token)
-        .unwrap()
-        .then((res) => {
-          loginSuccess();
-          refreshUser(res);
-        })
-        .catch(() => {});
-    } else if (!isRefreshError && !isRefreshLoading && !isRefreshSuccess) {
+    isGetUserSuccess && loginSuccess();
+    isGetUserSuccess && refreshUser(userData);
+
+    if (
+      !isRefreshError &&
+      !isRefreshLoading &&
+      !isRefreshSuccess &&
+      isGetUserError
+    ) {
       refreshTokenPost(refreshToken)
-        .unwrap()
         .then((res) => {
           const authToken = res.accessToken.split("Bearer ")[1];
           if (authToken) {

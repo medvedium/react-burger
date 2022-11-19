@@ -106,7 +106,7 @@ export const api = createApi({
       }),
     }),
     refreshToken: build.mutation<IUserResponse, string>({
-      query: (token: string) => ({
+      query: () => ({
         url: `auth/token`,
         method: "POST",
         mode: "cors",
@@ -149,6 +149,7 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useLazyGetUserQuery,
+  useGetUserQuery,
   useRefreshTokenMutation,
   usePatchUserDataMutation,
 } = api;
