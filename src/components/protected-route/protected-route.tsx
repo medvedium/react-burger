@@ -6,7 +6,7 @@ import { useGetUserQuery, useRefreshTokenMutation } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 
 const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
-  const location = useLocation();
+  const location = useLocation<ILocationState>();
   const { isAuth } = useAppSelector((state) => state.auth);
   const { loginSuccess, refreshUser } = useActions();
   const token = document.cookie ? getCookie("token") : "";

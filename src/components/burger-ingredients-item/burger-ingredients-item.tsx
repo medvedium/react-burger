@@ -6,9 +6,14 @@ import styles from "./burger-ingredients-item.module.css";
 import { ingredientItem } from "../../utils/constants";
 import { useDrag } from "react-dnd";
 import { Link, useLocation } from "react-router-dom";
+import { IIngredient, ILocationState } from "../../models/models";
 
-const BurgerIngredientsItem = ({ item }) => {
-  const location = useLocation();
+interface BurgerIngredientsItemProps {
+  item: IIngredient;
+}
+
+const BurgerIngredientsItem = ({ item }: BurgerIngredientsItemProps) => {
+  const location = useLocation<ILocationState>();
 
   const ingredientId = item["_id"];
 

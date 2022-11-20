@@ -14,7 +14,7 @@ import { useActions } from "../../hooks/actions";
 
 const RegisterPage = () => {
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation<ILocationState>();
   const { isAuth } = useAppSelector((state) => state.auth);
   const { loginSuccess, refreshUser } = useActions();
   const token = document.cookie ? getCookie("token") : "";

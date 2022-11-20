@@ -5,11 +5,14 @@ import { deleteCookie, getCookie } from "../../utils/cookie";
 import { useLogoutMutation } from "../../store/api";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
+import { ILocationState } from "../../models/models";
 
 const ProfileNav = () => {
   const history = useHistory();
-  const location = useLocation();
-  const token = document.cookie ? getCookie("refreshToken") : "";
+  const location = useLocation<ILocationState>();
+  const token: string | undefined = document.cookie
+    ? getCookie("refreshToken")
+    : undefined;
   const { isAuth } = useAppSelector((state) => state.auth);
   const [logoutRequest] = useLogoutMutation();
   const { logout } = useActions();
@@ -17,8 +20,8 @@ const ProfileNav = () => {
   const handleLogout = () => {
     logoutRequest(token)
       .then(() => {
-        const oldTokenCookie = getCookie("refreshToken");
-        const oldAccessTokenCookie = getCookie("token");
+        const oldTokenCookie: string | undefined = getCookie("refreshToken");
+        const oldAccessTokenCookie: string | undefined = getCookie("token");
         deleteCookie("refreshToken", oldTokenCookie);
         deleteCookie("token", oldAccessTokenCookie);
       })

@@ -83,7 +83,7 @@ export const api = createApi({
         success: boolean;
         message: string;
       },
-      string
+      string | undefined
     >({
       query: (token: string) => ({
         url: `auth/logout`,
@@ -94,7 +94,7 @@ export const api = createApi({
         body: JSON.stringify({ token: token }),
       }),
     }),
-    getUser: build.query<IUserResponse, string>({
+    getUser: build.query<IUserResponse, string | undefined>({
       query: (token: string) => ({
         url: `auth/user`,
         method: "GET",

@@ -20,6 +20,7 @@ import OrdersPage from "../../pages/orders/orders";
 import Modal from "../modal/modal";
 import { useGetIngredientsQuery } from "../../store/api";
 import { useActions } from "../../hooks/actions";
+import { ILocationState } from "../../models/models";
 
 function App() {
   const { getIngredients, getIngredientsFailed, openModal, closeModal } =
@@ -29,7 +30,7 @@ function App() {
     isError: isIngredientsError,
     data: ingredients,
     isSuccess: isIngredientsGetSuccess,
-  } = useGetIngredientsQuery();
+  } = useGetIngredientsQuery("");
 
   useEffect(() => {
     isIngredientsGetSuccess && getIngredients(ingredients);
@@ -42,7 +43,7 @@ function App() {
     getIngredientsFailed,
   ]);
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation<ILocationState>();
   const background = location.state && location.state.background;
 
   const ModalSwitch = () => {

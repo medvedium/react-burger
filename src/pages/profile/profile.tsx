@@ -4,11 +4,12 @@ import ProfileNav from "../../components/profile-nav/profile-nav";
 import ProfilePersonal from "../../components/profile-personal/profile-personal";
 import { Redirect, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
+import { ILocationState } from "../../models/models";
 
 const ProfilePage = () => {
   const { isAuth } = useAppSelector((state) => state.auth);
 
-  const location = useLocation();
+  const location = useLocation<ILocationState>();
 
   if (isAuth) {
     return (

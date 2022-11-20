@@ -6,7 +6,7 @@ import styles from "./app-header-nav.module.css";
 import { Link, useLocation } from "react-router-dom";
 
 function AppHeaderNav() {
-  const location = useLocation();
+  const location = useLocation<ILocationState>();
 
   return (
     <nav>

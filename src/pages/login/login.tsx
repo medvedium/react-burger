@@ -17,7 +17,7 @@ import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
 
 const LoginPage = () => {
-  const location = useLocation();
+  const location = useLocation<ILocationState>();
   const { isAuth } = useAppSelector((state) => state.auth);
   const [login] = useLoginMutation();
   const { setUser, loginSuccess, refreshUser } = useActions();

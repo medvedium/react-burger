@@ -51,3 +51,10 @@ export interface IUserResponse {
   accessToken?: string;
   refreshToken?: string;
 }
+
+export interface ILocationState {
+  from: {
+    pathname: string;
+  };
+  background?: string;
+}

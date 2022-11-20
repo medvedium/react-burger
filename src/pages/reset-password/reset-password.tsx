@@ -8,9 +8,10 @@ import {
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 import { useResetPasswordMutation } from "../../store/api";
 import { useAppSelector } from "../../hooks/redux";
+import { ILocationState } from "../../models/models";
 
 const ResetPasswordPage = () => {
-  const location = useLocation();
+  const location = useLocation<ILocationState>();
   const history = useHistory();
   const { isAuth } = useAppSelector((state) => state.auth);
 

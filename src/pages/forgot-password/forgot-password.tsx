@@ -10,13 +10,16 @@ import { useFormAndValidation } from "../../hooks/useFormAndValidation";
 import { useForgotPasswordMutation, useGetUserQuery } from "../../store/api";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
+import { ILocationState } from "../../models/models";
 
 const ForgotPasswordPage = () => {
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation<ILocationState>();
   const { isAuth } = useAppSelector((state) => state.auth);
   const { loginSuccess, refreshUser } = useActions();
-  const token = document.cookie ? getCookie("token") : "";
+  const token: string | undefined = document.cookie
+    ? getCookie("token")
+    : undefined;
   const { isSuccess: isGetUserSuccess, data: userData } =
     useGetUserQuery(token);
 
@@ -25,12 +28,14 @@ const ForgotPasswordPage = () => {
     isGetUserSuccess && refreshUser(userData);
   }, [isGetUserSuccess, loginSuccess, refreshUser, userData]);
 
-  const { values, handleChange, errors, isValid } = useFormAndValidation({});
+  const { values, handleChange, errors, isValid } = useFormAndValidation({
+    email: "",
+  });
   const [remindPassword] = useForgotPasswordMutation();
 
   const email = values.email;
 
-  const submitForm = (e, email) => {
+  const submitForm = (e, email: string) => {
     e.preventDefault();
     remindPassword(email)
       .unwrap()
@@ -55,7 +60,7 @@ const ForgotPasswordPage = () => {
           size={"default"}
           onChange={(e) => handleChange(e)}
           value={values.email || ""}
-          error={isValid === false}
+          error={!isValid}
           errorText={errors.email || ""}
           name={"email"}
           placeholder={"Укажите e-mail"}

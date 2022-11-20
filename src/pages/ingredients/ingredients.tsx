@@ -8,7 +8,7 @@ const IngredientsPage = () => {
   const { items } = useAppSelector((store) => store.ingredients);
   const { ingredientId } = useParams();
   const [item, setItem] = useState({});
-  const location = useLocation();
+  const location = useLocation<ILocationState>();
   const background = location.state && location.state.background;
   useEffect(() => {
     const neededItem = {

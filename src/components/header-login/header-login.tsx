@@ -3,7 +3,7 @@ import styles from "./header-login.module.css";
 import { Link, useLocation } from "react-router-dom";
 
 const HeaderLogin = () => {
-  const location = useLocation();
+  const location = useLocation<ILocationState>();
   const pageIsActive = location.pathname.includes("profile");
 
   return (

@@ -9,6 +9,14 @@ import { useAppSelector } from "../../hooks/redux";
 import { _BUN } from "../../utils/constants";
 import { nanoid } from "nanoid";
 import { useActions } from "../../hooks/actions";
+import { IIngredient } from "../../models/models";
+
+interface IStore {
+  selectedBun: IIngredient;
+  selectedIngredients: IIngredient[];
+  isRequest: boolean;
+  isRequestError: boolean;
+}
 
 const BurgerConstructor = () => {
   const { selectedBun, selectedIngredients, isRequest, isRequestError } =
@@ -19,7 +27,7 @@ const BurgerConstructor = () => {
 
   const [{ isHover }, ingredientDropTarget] = useDrop({
     accept: "ingredient",
-    drop(item) {
+    drop(item: IIngredient) {
       const newItem = { ...item };
       if (item.type === _BUN) {
         addBun(item);
@@ -36,7 +44,7 @@ const BurgerConstructor = () => {
   });
 
   const moveCard = useCallback(
-    (dragIndex, hoverIndex) => {
+    (dragIndex: number, hoverIndex: number) => {
       const dragCard = selectedIngredients[dragIndex];
       const newCards = [...selectedIngredients];
 
@@ -60,7 +68,7 @@ const BurgerConstructor = () => {
       >
         <div className={"pl-8"}>
           <ConstructorElement
-            className={styles.constructor_element}
+            extraClass={styles.constructor_element}
             type="top"
             isLocked={true}
             text={
