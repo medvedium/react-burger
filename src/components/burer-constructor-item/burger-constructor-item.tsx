@@ -8,16 +8,27 @@ import { useDrag, useDrop } from "react-dnd";
 import PropTypes from "prop-types";
 import { ingredientItem } from "../../utils/constants";
 import { useActions } from "../../hooks/actions";
+import { IIngredient } from "../../models/models";
 
-function BurgerConstructorItem({ item, index, moveCard }) {
+interface BurgerConstructorItemProps {
+  item: IIngredient;
+  index: number;
+  moveCard: void;
+}
+
+export default function BurgerConstructorItem({
+  item,
+  index,
+  moveCard,
+}: BurgerConstructorItemProps) {
   const { removeIngredient, getTotalPrice } = useActions();
 
-  const handleIngredientRemove = (item) => {
+  const handleIngredientRemove = (item: IIngredient) => {
     removeIngredient(item);
     getTotalPrice();
   };
 
-  const ref = useRef(null);
+  const ref = useRef<HTMLInputElement>(null);
   const [{ handlerId }, drop] = useDrop({
     accept: "component",
     collect(monitor) {
@@ -29,12 +40,12 @@ function BurgerConstructorItem({ item, index, moveCard }) {
       if (!ref.current) {
         return;
       }
-      const dragIndex = item.index;
+      const dragIndex = item?.index;
       const hoverIndex = index;
       if (dragIndex === hoverIndex) {
         return;
       }
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverBoundingRect = ref.current.getBoundingClientRect();
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
@@ -59,14 +70,13 @@ function BurgerConstructorItem({ item, index, moveCard }) {
   });
 
   drag(drop(ref));
-  const preventDefault = (e) => e.preventDefault();
 
   return (
     <div
       className={`${styles.item} ${isDragging && styles.dragging}`}
       ref={ref}
       data-handler-id={handlerId}
-      onDrop={preventDefault}
+      onDrop={(e) => e.preventDefault()}
     >
       <DragIcon type="primary" />
       <ConstructorElement
@@ -78,11 +88,3 @@ function BurgerConstructorItem({ item, index, moveCard }) {
     </div>
   );
 }
-
-BurgerConstructorItem.propTypes = {
-  item: ingredientItem.isRequired,
-  index: PropTypes.number.isRequired,
-  moveCard: PropTypes.func.isRequired,
-};
-
-export default BurgerConstructorItem;

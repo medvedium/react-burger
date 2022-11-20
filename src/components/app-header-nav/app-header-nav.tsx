@@ -15,7 +15,6 @@ function AppHeaderNav() {
           <Link to="/" className="d-flex">
             <BurgerIcon
               type={location.pathname === "/" ? "primary" : "secondary"}
-              className={"mr-2"}
             />
             <p
               className={`text text_type_main-default ml-2 ${
@@ -29,7 +28,7 @@ function AppHeaderNav() {
 
         <li>
           <Link to="/" className="d-flex">
-            <ListIcon type={"secondary"} className={"mr-2"} />
+            <ListIcon type={"secondary"} />
             <p className="text text_type_main-default ml-2 text_color_inactive">
               Лента заказов
             </p>
