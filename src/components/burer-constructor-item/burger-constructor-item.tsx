@@ -4,7 +4,7 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDrag, useDrop } from "react-dnd";
+import { DragObjectFactory, useDrag, useDrop } from "react-dnd";
 import PropTypes from "prop-types";
 import { ingredientItem } from "../../utils/constants";
 import { useActions } from "../../hooks/actions";
@@ -36,7 +36,7 @@ export default function BurgerConstructorItem({
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover: (item, monitor) => {
+    hover: (item: unknown, monitor) => {
       if (!ref.current) {
         return;
       }

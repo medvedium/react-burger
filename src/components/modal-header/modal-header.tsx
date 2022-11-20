@@ -1,9 +1,14 @@
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import styles from "./modal-header.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 
-const ModalHeader = ({ header, onClose }) => {
+interface ModalProps {
+  header?: string;
+  onClose: MouseEventHandler<HTMLDivElement>;
+}
+
+const ModalHeader = ({ header, onClose }: ModalProps) => {
   return (
     <div className={styles.modal_header}>
       <p className="text text_type_main-large">{header}</p>

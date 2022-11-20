@@ -12,12 +12,17 @@ const BurgerIngredientsList = () => {
   );
   const { chooseTab } = useActions();
 
-  const listRef = useRef();
-  const bunRef = useRef();
-  const sauceRef = useRef();
-  const mainRef = useRef();
+  const listRef = useRef<HTMLInputElement>(null);
+  const bunRef = useRef<HTMLInputElement>(null);
+  const sauceRef = useRef<HTMLInputElement>(null);
+  const mainRef = useRef<HTMLInputElement>(null);
 
-  function highlightActiveTab(listRef, bunRef, sauceRef, mainRef) {
+  function highlightActiveTab(
+    listRef: any,
+    bunRef: any,
+    sauceRef: any,
+    mainRef: any
+  ) {
     const bunPos = Math.abs(
       bunRef?.current.getBoundingClientRect().top -
         listRef?.current.getBoundingClientRect().top
@@ -47,7 +52,7 @@ const BurgerIngredientsList = () => {
       <div
         className={`${styles.list} custom-scroll`}
         ref={listRef}
-        onScroll={(e) => highlightActiveTab(listRef, bunRef, sauceRef, mainRef)}
+        onScroll={() => highlightActiveTab(listRef, bunRef, sauceRef, mainRef)}
       >
         <p
           className="text text_type_main-medium"

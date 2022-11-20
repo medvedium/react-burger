@@ -9,19 +9,21 @@ const BurgerIngredientsTabs = () => {
   const { activeTab } = useAppSelector((state) => state.ingredients);
   const { chooseTab } = useActions();
 
-  const handleTabToggle = (e) => {
+  const handleTabToggle = (e: string) => {
     chooseTab(e);
     const activeTarget = document.querySelector(`[data-tab-target="${e}"]`);
     const list = document.querySelector(
       "div[class^='burger-ingredients-list_list']"
     );
-    list.scrollTo({
-      top:
-        activeTarget.getBoundingClientRect().top -
-        list.getBoundingClientRect().top +
-        list.scrollTop,
-      behavior: "smooth",
-    });
+    if (list && activeTarget) {
+      list.scrollTo({
+        top:
+          activeTarget.getBoundingClientRect().top -
+          list.getBoundingClientRect().top +
+          list.scrollTop,
+        behavior: "smooth",
+      });
+    }
   };
 
   return (

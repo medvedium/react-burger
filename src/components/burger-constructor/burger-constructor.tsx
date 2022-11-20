@@ -10,6 +10,8 @@ import { _BUN } from "../../utils/constants";
 import { nanoid } from "nanoid";
 import { useActions } from "../../hooks/actions";
 import { IIngredient } from "../../models/models";
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
 
 interface IStore {
   selectedBun: IIngredient;
@@ -20,7 +22,7 @@ interface IStore {
 
 const BurgerConstructor = () => {
   const { selectedBun, selectedIngredients, isRequest, isRequestError } =
-    useAppSelector((state) => state.ingredients);
+    useSelector((store: RootState) => store.ingredients);
 
   const { addBun, getTotalPrice, addIngredient, updateSelectedIngredients } =
     useActions();
@@ -56,10 +58,25 @@ const BurgerConstructor = () => {
     [selectedIngredients, updateSelectedIngredients]
   );
 
+  const renderItems = useCallback(
+    (item: IIngredient, index: number) => {
+      return (
+        <BurgerConstructorItem
+          item={item}
+          index={index}
+          key={item.uid}
+          // @ts-ignore
+          moveCard={moveCard}
+        />
+      );
+    },
+    [moveCard]
+  );
+
   if (isRequestError) {
-    return "Error";
+    return <p>Error</p>;
   } else if (isRequest) {
-    return "Loading...";
+    return <p>Loading...</p>;
   } else if (selectedIngredients) {
     return (
       <section
@@ -80,16 +97,9 @@ const BurgerConstructor = () => {
         </div>
         <div className={`${styles.ingredients_list}  custom-scroll mt-4 mb-4`}>
           {selectedIngredients &&
-            selectedIngredients.map((item, index) => {
-              return (
-                <BurgerConstructorItem
-                  item={item}
-                  index={index}
-                  key={item.uid}
-                  moveCard={moveCard}
-                />
-              );
-            })}
+            selectedIngredients.map((item: IIngredient, index: number) =>
+              renderItems(item, index)
+            )}
         </div>
         <div className={"pl-8"}>
           <ConstructorElement
@@ -105,6 +115,8 @@ const BurgerConstructor = () => {
         <ConstructorTotal />
       </section>
     );
+  } else {
+    return <></>;
   }
 };
 

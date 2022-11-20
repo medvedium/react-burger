@@ -46,7 +46,7 @@ const ConstructorTotal = () => {
   };
 
   if (isLoading) return <Loader />;
-  else if (isError) return <p>Ошибка {error.originalStatus}</p>;
+  else if (isError) return <p>Ошибка</p>;
   else
     return (
       <div className={`${styles.total_block} mt-10`}>

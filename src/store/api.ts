@@ -31,7 +31,7 @@ export const api = createApi({
     }),
     forgotPassword: build.mutation<
       { success: boolean; message: string },
-      string
+      string | undefined
     >({
       query: (email: string) => ({
         url: `password-reset`,
@@ -104,7 +104,7 @@ export const api = createApi({
         },
       }),
     }),
-    refreshToken: build.mutation<IUserResponse, string>({
+    refreshToken: build.mutation<IUserResponse, string | undefined>({
       query: (token: string) => ({
         url: `auth/token`,
         method: "POST",

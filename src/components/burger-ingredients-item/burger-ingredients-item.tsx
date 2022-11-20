@@ -22,8 +22,8 @@ const BurgerIngredientsItem = ({ item }: BurgerIngredientsItemProps) => {
     item: item,
   });
 
-  return (
-    !isDrag && (
+  if (!isDrag) {
+    return (
       <Link
         to={{
           pathname: `/ingredients/${ingredientId}`,
@@ -43,8 +43,10 @@ const BurgerIngredientsItem = ({ item }: BurgerIngredientsItemProps) => {
           {item.count > 0 && <Counter count={item.count} size="default" />}
         </div>
       </Link>
-    )
-  );
+    );
+  } else {
+    return <></>;
+  }
 };
 
 BurgerIngredientsItem.propTypes = {

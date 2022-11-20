@@ -15,6 +15,7 @@ import {
 } from "../../store/api";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
+import { ILocationState } from "../../models/models";
 
 const LoginPage = () => {
   const location = useLocation<ILocationState>();
@@ -40,12 +41,14 @@ const LoginPage = () => {
     if (!isRefreshError && !isRefreshLoading && isGetUserError) {
       refreshTokenPost(refreshToken)
         .then((res) => {
-          const authToken = res.accessToken.split("Bearer ")[1];
-          if (authToken) {
-            setCookie("token", authToken);
-            setCookie("refreshToken", res.refreshToken);
+          if (res) {
+            const authToken = res.accessToken.split("Bearer ")[1];
+            if (authToken) {
+              setCookie("token", authToken);
+              setCookie("refreshToken", res.refreshToken);
+            }
+            refreshUser(res);
           }
-          refreshUser(res);
         })
         .catch(() => {});
     }

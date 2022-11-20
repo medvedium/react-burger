@@ -1,9 +1,13 @@
 import React from "react";
 import styles from "./ingredient-details.module.css";
 import IngredientDetailsProperties from "../ingredient-details-properties/ingredient-details-properties";
-import { ingredientItem } from "../../utils/constants";
+import { IIngredient } from "../../models/models";
 
-const IngredientDetails = ({ item }) => {
+interface IngredientDetailsProps {
+  item: IIngredient;
+}
+
+const IngredientDetails = ({ item }: IngredientDetailsProps) => {
   return (
     <div className={styles.ingredient}>
       <img src={item.image_large} alt={item.name} className="mb-4" />
@@ -11,10 +15,6 @@ const IngredientDetails = ({ item }) => {
       <IngredientDetailsProperties ingredient={item} />
     </div>
   );
-};
-
-IngredientDetails.propTypes = {
-  item: ingredientItem.isRequired,
 };
 
 export default IngredientDetails;

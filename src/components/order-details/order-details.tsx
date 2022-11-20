@@ -1,9 +1,13 @@
 import React from "react";
 import styles from "./order-details.module.css";
 import done from "../../images/done.svg";
-import PropTypes from "prop-types";
 
-const OrderDetails = ({ name, number }) => {
+interface OrderDetailsProps {
+  name: string;
+  number: number;
+}
+
+const OrderDetails = ({ name, number }: OrderDetailsProps) => {
   return (
     <div className={styles.order_details}>
       <p className="text text_type_digits-large mb-8">{number}</p>
@@ -19,11 +23,6 @@ const OrderDetails = ({ name, number }) => {
       </p>
     </div>
   );
-};
-
-OrderDetails.propTypes = {
-  name: PropTypes.string.isRequired,
-  number: PropTypes.number.isRequired,
 };
 
 export default OrderDetails;

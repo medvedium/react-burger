@@ -9,7 +9,7 @@ export const getCookie = (cookieName: string) => {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 };
 
-export const setCookie = (name: string, value: string) => {
+export const setCookie = (name: string, value: string | undefined) => {
   document.cookie = `${name}=${value}`;
 };
 

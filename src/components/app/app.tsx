@@ -55,7 +55,7 @@ function App() {
 
     const handleModalClose = () => {
       history.goBack();
-      window.history.replaceState(null, null, "/");
+      window.history.replaceState(null, "", "/");
       closeModal();
     };
 

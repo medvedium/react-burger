@@ -1,8 +1,15 @@
 import React from "react";
 import styles from "./ingredient-details-properties-item.module.css";
-import PropTypes from "prop-types";
 
-const IngredientDetailsPropertiesItem = ({ title, value }) => {
+interface IngredientDetailsPropertiesItemProps {
+  title: string;
+  value?: number;
+}
+
+const IngredientDetailsPropertiesItem = ({
+  title,
+  value,
+}: IngredientDetailsPropertiesItemProps) => {
   return (
     <div className={styles.properties_item}>
       <div className={styles.properties_title}>
@@ -17,11 +24,6 @@ const IngredientDetailsPropertiesItem = ({ title, value }) => {
       </div>
     </div>
   );
-};
-
-IngredientDetailsPropertiesItem.propTypes = {
-  title: PropTypes.string.isRequired,
-  value: PropTypes.number,
 };
 
 export default IngredientDetailsPropertiesItem;

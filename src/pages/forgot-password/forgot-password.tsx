@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FormEvent, useEffect } from "react";
 import styles from "./forgot-password.module.css";
 import {
   Button,
@@ -35,7 +35,10 @@ const ForgotPasswordPage = () => {
 
   const email = values.email;
 
-  const submitForm = (e, email: string) => {
+  const submitForm = (
+    e: FormEvent<HTMLFormElement>,
+    email: string | undefined
+  ) => {
     e.preventDefault();
     remindPassword(email)
       .unwrap()

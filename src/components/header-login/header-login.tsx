@@ -1,6 +1,7 @@
 import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./header-login.module.css";
 import { Link, useLocation } from "react-router-dom";
+import { ILocationState } from "../../models/models";
 
 const HeaderLogin = () => {
   const location = useLocation<ILocationState>();

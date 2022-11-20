@@ -4,6 +4,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header-nav.module.css";
 import { Link, useLocation } from "react-router-dom";
+import { ILocationState } from "../../models/models";
 
 function AppHeaderNav() {
   const location = useLocation<ILocationState>();

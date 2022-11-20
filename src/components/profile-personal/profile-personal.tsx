@@ -56,7 +56,7 @@ const ProfilePersonal = () => {
           onChange={(e) => handleChange(e)}
           value={values.name || ""}
           name={"name"}
-          error={isValid === false}
+          error={!isValid}
           errorText={errors.name || ""}
           extraClass="mb-6"
         />
@@ -66,7 +66,7 @@ const ProfilePersonal = () => {
           onChange={(e) => handleChange(e)}
           value={values.email || ""}
           name={"email"}
-          error={isValid === false}
+          error={!isValid}
           errorText={errors.email || ""}
           extraClass="mb-6"
         />
@@ -76,7 +76,7 @@ const ProfilePersonal = () => {
           onChange={(e) => handleChange(e)}
           value={values.password || ""}
           name={"password"}
-          error={isValid === false}
+          error={!isValid}
           errorText={errors.password || ""}
           extraClass={"mb-6"}
           autoComplete={"off"}

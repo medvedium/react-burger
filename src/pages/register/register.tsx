@@ -11,6 +11,7 @@ import { getCookie } from "../../utils/cookie";
 import { useLazyGetUserQuery, useRegisterMutation } from "../../store/api";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
+import { ILocationState } from "../../models/models";
 
 const RegisterPage = () => {
   const history = useHistory();
@@ -65,8 +66,6 @@ const RegisterPage = () => {
       .catch((res) => console.log(res));
   };
 
-  const inputRef = useRef();
-
   if (!isAuth) {
     return (
       <form className={styles.register_wrap} onSubmit={(e) => register(e)}>
@@ -78,7 +77,6 @@ const RegisterPage = () => {
           value={state.name}
           name={"name"}
           error={false}
-          ref={inputRef}
           errorText={"Ошибка"}
           size={"default"}
           extraClass="mb-6"

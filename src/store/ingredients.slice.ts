@@ -2,6 +2,23 @@ import { _BUN, _MAIN, _SAUCE } from "../utils/constants";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IIngredient } from "../models/models";
 
+export const emptyIngredient: IIngredient = {
+  _id: "",
+  name: "",
+  type: "",
+  proteins: 0,
+  fat: 0,
+  carbohydrates: 0,
+  calories: 0,
+  price: 0,
+  image: "",
+  image_mobile: "",
+  image_large: "",
+  __v: 0,
+  count: 0,
+  uid: "",
+};
+
 interface IngredientsState {
   items: object[];
   bun: object[];
@@ -9,9 +26,9 @@ interface IngredientsState {
   main: object[];
   isRequest: boolean;
   isRequestError: boolean;
-  selectedIngredient: object;
+  selectedIngredient: IIngredient;
   selectedIngredients: IIngredient[];
-  selectedBun: object;
+  selectedBun: IIngredient;
   activeTab: string;
   total: number;
 }
@@ -23,9 +40,9 @@ const initialState: IngredientsState = {
   main: [],
   isRequest: true,
   isRequestError: false,
-  selectedIngredient: {},
+  selectedIngredient: emptyIngredient,
   selectedIngredients: [],
-  selectedBun: {},
+  selectedBun: emptyIngredient,
   activeTab: _BUN,
   total: 0,
 };
@@ -125,7 +142,6 @@ export const ingredientsSlice = createSlice({
         state.selectedIngredients &&
         state.selectedIngredients.reduce(
           (a, b) => a + b.price,
-          // @ts-ignore
           state.selectedBun.price * 2 || 0
         );
     },
@@ -134,7 +150,7 @@ export const ingredientsSlice = createSlice({
     },
     resetConstructor(state) {
       state.selectedIngredients = [];
-      state.selectedBun = {};
+      state.selectedBun = emptyIngredient;
       state.total = 0;
       state.bun = state.bun.map((item) => ({ ...item, count: 0 }));
       state.sauce = state.sauce.map((item) => ({ ...item, count: 0 }));

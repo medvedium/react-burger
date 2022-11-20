@@ -1,8 +1,11 @@
 import PortalReactDOM from "react-dom";
-import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { ReactElement, useEffect, useState } from "react";
 
-const Portal = ({ children }) => {
+interface PortalProps {
+  children: ReactElement;
+}
+
+const Portal = ({ children }: PortalProps) => {
   const [modalContainer] = useState(() => document.createElement("div"));
 
   useEffect(() => {
@@ -13,10 +16,6 @@ const Portal = ({ children }) => {
   }, [modalContainer]);
 
   return PortalReactDOM.createPortal(children, modalContainer);
-};
-
-Portal.propTypes = {
-  children: PropTypes.element.isRequired,
 };
 
 export default Portal;

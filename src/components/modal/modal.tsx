@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import ModalHeader from "../modal-header/modal-header";
 import styles from "./modal.module.css";
-import PropTypes from "prop-types";
 
-const Modal = ({ header, onClose, children }) => {
+interface ModalProps {
+  header?: string;
+  onClose: () => void;
+  children: ReactElement;
+}
+
+const Modal = ({ header, onClose, children }: ModalProps) => {
   useEffect(() => {
-    const escapeListener = (event) => {
+    const escapeListener = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
       }
@@ -26,12 +31,6 @@ const Modal = ({ header, onClose, children }) => {
       </div>
     </ModalOverlay>
   );
-};
-
-Modal.propTypes = {
-  header: PropTypes.string,
-  onClose: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired,
 };
 
 export default Modal;
