@@ -6,20 +6,18 @@ import BurgerIngredients from "../../components/burger-ingredients/burger-ingred
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import Modal from "../../components/modal/modal";
 import OrderDetails from "../../components/order-details/order-details";
-import {useAppSelector} from "../../hooks/redux";
-import {useActions} from "../../hooks/actions";
+import { useAppSelector } from "../../hooks/redux";
+import { useActions } from "../../hooks/actions";
 
 const HomePage = () => {
-  const { orderName, orderNumber } = useAppSelector(
+  const { orderName, orderNumber, modalIsOpen } = useAppSelector(
     (store) => store.burgerConstructor
   );
 
-  const modalIsOpen = useAppSelector(store => store.modal)
-
-  const {closeModal} = useActions()
+  const { closeOrderModal } = useActions();
 
   const onCloseOrderModal = () => {
-    closeModal()
+    closeOrderModal();
   };
   return (
     <>
@@ -31,7 +29,7 @@ const HomePage = () => {
       </div>
 
       {modalIsOpen && (
-        <Modal onClose={onCloseOrderModal} isOpened={modalIsOpen}>
+        <Modal onClose={onCloseOrderModal}>
           <OrderDetails name={orderName} number={orderNumber} />
         </Modal>
       )}

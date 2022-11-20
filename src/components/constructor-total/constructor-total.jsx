@@ -2,7 +2,6 @@ import styles from "./constructor-total.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
@@ -18,7 +17,7 @@ const ConstructorTotal = () => {
   const { selectedIngredients, selectedBun, total } = useAppSelector(
     (state) => state.ingredients
   );
-  const { resetConstructor, getOrderData, openModal } = useActions();
+  const { resetConstructor, getOrderData, openOrderModal } = useActions();
 
   const addedIds = useMemo(() => {
     return (
@@ -38,7 +37,7 @@ const ConstructorTotal = () => {
           .unwrap()
           .then((res) => {
             getOrderData(res);
-            openModal();
+            openOrderModal();
           });
       }
     } else if (!isAuth) {

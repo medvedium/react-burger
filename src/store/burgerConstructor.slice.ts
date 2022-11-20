@@ -1,13 +1,15 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IBurgerConstructorState {
   orderName: string;
   orderNumber: number;
+  modalIsOpen: boolean;
 }
 
 const initialState: IBurgerConstructorState = {
   orderName: "",
   orderNumber: 0,
+  modalIsOpen: false,
 };
 
 export const burgerConstructorSlice = createSlice({
@@ -17,7 +19,13 @@ export const burgerConstructorSlice = createSlice({
     getOrderData(state, action: PayloadAction<any>) {
       state.orderName = action.payload.name;
       state.orderNumber = action.payload.order.number;
-    }
+    },
+    openOrderModal(state) {
+      state.modalIsOpen = true;
+    },
+    closeOrderModal(state) {
+      state.modalIsOpen = false;
+    },
   },
 });
 
