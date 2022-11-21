@@ -1,6 +1,6 @@
 import styles from "./burger-ingredients-list.module.css";
 import BurgerIngredientsItem from "../burger-ingredients-item/burger-ingredients-item";
-import { useRef } from "react";
+import { Ref, useRef } from "react";
 import { _BUN, _MAIN, _SAUCE } from "../../utils/constants";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";

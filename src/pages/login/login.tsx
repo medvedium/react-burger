@@ -15,7 +15,7 @@ import {
 } from "../../store/api";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
-import { ILocationState } from "../../models/models";
+import { ILocationState, IUserResponse } from "../../models/models";
 import { RootState } from "../../store";
 
 const LoginPage = () => {
@@ -32,33 +32,29 @@ const LoginPage = () => {
   } = useGetUserQuery(token);
   const [
     refreshTokenPost,
-    { isError: isRefreshError, isLoading: isRefreshLoading },
+    {
+      isLoading: isRefreshLoading,
+      isSuccess: isRefreshSuccess,
+      data: refreshData,
+    },
   ] = useRefreshTokenMutation();
 
   useEffect(() => {
     isGetUserSuccess && loginSuccess();
     isGetUserSuccess && refreshUser(userData);
 
-    if (
-      !isRefreshError &&
-      !isRefreshLoading &&
-      isGetUserError &&
-      refreshToken
-    ) {
-      refreshTokenPost(refreshToken)
-        .then((res) => {
-          if (res) {
-            const authToken = res.accessToken.split("Bearer ")[1];
-            if (authToken) {
-              setCookie("token", authToken);
-              setCookie("refreshToken", res.refreshToken);
-            }
-            refreshUser(res);
-          }
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
+    if (!isRefreshLoading && isGetUserError && refreshToken) {
+      refreshTokenPost(refreshToken);
+      if (isRefreshSuccess && refreshData) {
+        let authToken;
+        if (refreshData.accessToken) {
+          authToken = refreshData.accessToken.split("Bearer ")[1];
+        }
+        if (authToken) {
+          setCookie("token", authToken);
+          setCookie("refreshToken", refreshData.refreshToken);
+        }
+      }
     }
   });
 
@@ -74,9 +70,11 @@ const LoginPage = () => {
       .then((res) => {
         if (res) {
           let accessToken;
-          if (res.accessToken.indexOf("Bearer") === 0)
-            accessToken = res.accessToken.split("Bearer ")[1];
-          else accessToken = res.accessToken;
+          if (res.accessToken) {
+            if (res.accessToken.indexOf("Bearer") === 0)
+              accessToken = res.accessToken.split("Bearer ")[1];
+            else accessToken = res.accessToken;
+          }
           setUser({ ...res.user, password: values.password });
           setCookie("refreshToken", res.refreshToken);
           setCookie("token", accessToken);

@@ -4,11 +4,13 @@ import IngredientDetailsProperties from "../../components/ingredient-details-pro
 import { useLocation, useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
 import { IIngredient, ILocationState } from "../../models/models";
+import { RootState } from "../../store";
+import { emptyIngredient } from "../../store/ingredients.slice";
 
 const IngredientsPage = () => {
-  const { items } = useAppSelector((store) => store.ingredients);
-  const { ingredientId } = useParams();
-  const [item, setItem] = useState<IIngredient>({});
+  const { items } = useAppSelector((store: RootState) => store.ingredients);
+  const { ingredientId } = useParams<{ ingredientId?: string }>();
+  const [item, setItem] = useState<IIngredient>(emptyIngredient);
   const location = useLocation<ILocationState>();
   const background = location.state && location.state.background;
   useEffect(() => {

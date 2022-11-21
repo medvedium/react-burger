@@ -13,6 +13,7 @@ export interface IIngredient {
   __v: number;
   count: number;
   uid?: string;
+  index: number;
 }
 
 export interface IUser {

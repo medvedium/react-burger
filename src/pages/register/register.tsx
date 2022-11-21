@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useRef } from "react";
+import React, { ChangeEvent, FormEvent, useEffect } from "react";
 import styles from "./register.module.css";
 import {
   Button,

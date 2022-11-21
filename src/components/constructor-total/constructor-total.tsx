@@ -9,7 +9,7 @@ import { usePostOrderDataMutation } from "../../store/api";
 import Loader from "../loader/loader";
 
 const ConstructorTotal = () => {
-  const [makeOrder, { isLoading, isError, error }] = usePostOrderDataMutation();
+  const [makeOrder, { isLoading, isError }] = usePostOrderDataMutation();
 
   const history = useHistory();
   const { isAuth } = useAppSelector((state) => state.auth);

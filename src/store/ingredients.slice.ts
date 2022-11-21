@@ -17,6 +17,7 @@ export const emptyIngredient: IIngredient = {
   __v: 0,
   count: 0,
   uid: "",
+  index: 0,
 };
 
 interface IngredientsState {

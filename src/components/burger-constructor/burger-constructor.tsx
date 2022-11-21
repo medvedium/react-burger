@@ -12,13 +12,6 @@ import { useActions } from "../../hooks/actions";
 import { IIngredient } from "../../models/models";
 import { RootState } from "../../store";
 
-interface IStore {
-  selectedBun: IIngredient;
-  selectedIngredients: IIngredient[];
-  isRequest: boolean;
-  isRequestError: boolean;
-}
-
 const BurgerConstructor = () => {
   const { selectedBun, selectedIngredients, isRequest, isRequestError } =
     useAppSelector((store: RootState) => store.ingredients);

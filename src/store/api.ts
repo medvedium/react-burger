@@ -114,6 +114,7 @@ export const api = createApi({
         body: JSON.stringify({
           token: token,
         }),
+        transformResponse: (response: ServerResponse) => response.data,
       }),
     }),
     patchUserData: build.mutation<IUserResponse, IUser>({
