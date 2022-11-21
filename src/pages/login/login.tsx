@@ -15,7 +15,7 @@ import {
 } from "../../store/api";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
-import { ILocationState, IUserResponse } from "../../models/models";
+import { ILocationState } from "../../models/models";
 import { RootState } from "../../store";
 
 const LoginPage = () => {

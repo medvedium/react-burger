@@ -2,7 +2,6 @@ import React, { FormEvent, useEffect } from "react";
 import styles from "./forgot-password.module.css";
 import {
   Button,
-  EmailInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";

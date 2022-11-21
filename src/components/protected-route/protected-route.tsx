@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor, ReactElement, useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { Redirect, Route, useLocation } from "react-router-dom";
 import { getCookie, setCookie } from "../../utils/cookie";
 import { useAppSelector } from "../../hooks/redux";
@@ -8,8 +8,8 @@ import { ILocationState } from "../../models/models";
 import { RootState } from "../../store";
 
 interface ProtectedRouteProps {
-  component: ReactElement<any, string | JSXElementConstructor<any>>;
-  // Comp: ReactElement;
+  component: () => ReactElement;
+  exact: boolean;
   path: string;
 }
 
@@ -65,6 +65,7 @@ const ProtectedRoute = ({
       {...rest}
       render={(props) => {
         return isAuth ? (
+        // @ts-ignore
           <Comp {...props} />
         ) : (
           <Redirect

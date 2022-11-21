@@ -43,7 +43,7 @@ function App() {
     getIngredientsFailed,
   ]);
   const history = useHistory();
-  const location = useLocation<ILocationState | Location>();
+  const location = useLocation<ILocationState>();
   const background = location.state && location.state.background;
 
   const ModalSwitch = () => {
@@ -74,11 +74,7 @@ function App() {
             />
             <Route path="/reset-password" exact component={ResetPasswordPage} />
             <ProtectedRoute path="/profile" exact component={ProfilePage} />
-            <ProtectedRoute
-              path="/profile/orders"
-              exact
-              component={OrdersPage}
-            />
+            <ProtectedRoute path="/profile/orders" exact component={OrdersPage} />
             <Route
               path="/ingredients/:ingredientId"
               exact
