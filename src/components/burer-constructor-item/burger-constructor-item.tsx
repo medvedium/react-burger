@@ -4,16 +4,14 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DragObjectFactory, useDrag, useDrop } from "react-dnd";
-import PropTypes from "prop-types";
-import { ingredientItem } from "../../utils/constants";
+import { useDrag, useDrop } from "react-dnd";
 import { useActions } from "../../hooks/actions";
 import { IIngredient } from "../../models/models";
 
 interface BurgerConstructorItemProps {
   item: IIngredient;
   index: number;
-  moveCard: void;
+  moveCard: () => void;
 }
 
 export default function BurgerConstructorItem({

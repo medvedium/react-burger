@@ -3,7 +3,6 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients-item.module.css";
-import { ingredientItem } from "../../utils/constants";
 import { useDrag } from "react-dnd";
 import { Link, useLocation } from "react-router-dom";
 import { IIngredient, ILocationState } from "../../models/models";
@@ -47,10 +46,6 @@ const BurgerIngredientsItem = ({ item }: BurgerIngredientsItemProps) => {
   } else {
     return <></>;
   }
-};
-
-BurgerIngredientsItem.propTypes = {
-  item: ingredientItem.isRequired,
 };
 
 export default BurgerIngredientsItem;

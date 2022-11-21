@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FormEvent, useEffect } from "react";
 import {
   Button,
   EmailInput,
@@ -16,10 +16,11 @@ import {
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
 import { ILocationState } from "../../models/models";
+import { RootState } from "../../store";
 
 const LoginPage = () => {
   const location = useLocation<ILocationState>();
-  const { isAuth } = useAppSelector((state) => state.auth);
+  const { isAuth } = useAppSelector((state: RootState) => state.auth);
   const [login] = useLoginMutation();
   const { setUser, loginSuccess, refreshUser } = useActions();
   const token = document.cookie ? getCookie("token") : "";
@@ -38,7 +39,12 @@ const LoginPage = () => {
     isGetUserSuccess && loginSuccess();
     isGetUserSuccess && refreshUser(userData);
 
-    if (!isRefreshError && !isRefreshLoading && isGetUserError) {
+    if (
+      !isRefreshError &&
+      !isRefreshLoading &&
+      isGetUserError &&
+      refreshToken
+    ) {
       refreshTokenPost(refreshToken)
         .then((res) => {
           if (res) {
@@ -50,7 +56,9 @@ const LoginPage = () => {
             refreshUser(res);
           }
         })
-        .catch(() => {});
+        .catch((error) => {
+          console.log(error.message);
+        });
     }
   });
 
@@ -59,18 +67,20 @@ const LoginPage = () => {
     password: "",
   });
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: FormEvent) => {
     e.preventDefault();
     login(values)
       .unwrap()
       .then((res) => {
-        let accessToken;
-        if (res.accessToken.indexOf("Bearer") === 0)
-          accessToken = res.accessToken.split("Bearer ")[1];
-        else accessToken = res.accessToken;
-        setUser({ ...res.user, password: values.password });
-        setCookie("refreshToken", res.refreshToken);
-        setCookie("token", accessToken);
+        if (res) {
+          let accessToken;
+          if (res.accessToken.indexOf("Bearer") === 0)
+            accessToken = res.accessToken.split("Bearer ")[1];
+          else accessToken = res.accessToken;
+          setUser({ ...res.user, password: values.password });
+          setCookie("refreshToken", res.refreshToken);
+          setCookie("token", accessToken);
+        }
       })
       .catch((err) => {
         console.log(err);

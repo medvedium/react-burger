@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import styles from "../forgot-password/forgot-password.module.css";
 import {
   Button,
@@ -18,7 +18,7 @@ const ResetPasswordPage = () => {
   const [state, setState] = React.useState({ password: "", token: "" });
   const [resetPassword] = useResetPasswordMutation();
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
     const value = target.value;
     const { name } = target;
@@ -28,7 +28,7 @@ const ResetPasswordPage = () => {
     });
   };
 
-  const setNewPassword = (e) => {
+  const setNewPassword = (e: FormEvent) => {
     e.preventDefault();
     resetPassword(state)
       .unwrap()

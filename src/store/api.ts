@@ -104,7 +104,7 @@ export const api = createApi({
         },
       }),
     }),
-    refreshToken: build.mutation<IUserResponse, string | undefined>({
+    refreshToken: build.mutation<IUserResponse, string>({
       query: (token: string) => ({
         url: `auth/token`,
         method: "POST",

@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./ingredient-details-properties.module.css";
 import IngredientDetailsPropertiesItem from "../ingredient-details-properties-item/ingredient-details-properties-item";
-import { ingredientItem } from "../../utils/constants";
 import { IIngredient } from "../../models/models";
 
 interface IngredientDetailsPropertiesProps {

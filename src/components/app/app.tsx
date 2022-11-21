@@ -43,7 +43,7 @@ function App() {
     getIngredientsFailed,
   ]);
   const history = useHistory();
-  const location = useLocation<ILocationState>();
+  const location = useLocation<ILocationState | Location>();
   const background = location.state && location.state.background;
 
   const ModalSwitch = () => {
@@ -63,7 +63,7 @@ function App() {
       <React.StrictMode>
         <AppHeader />
         <main className="app_container">
-          <Switch location={background || location || ""}>
+          <Switch location={background || location}>
             <Route path="/" exact component={HomePage} />
             <Route path="/login" exact component={LoginPage} />
             <Route path="/register" exact component={RegisterPage} />

@@ -1,5 +1,5 @@
 import styles from "./profile-personal.module.css";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import {
   Button,
   Input,
@@ -9,10 +9,13 @@ import { useAppSelector } from "../../hooks/redux";
 import { getCookie } from "../../utils/cookie";
 import { usePatchUserDataMutation } from "../../store/api";
 import { useActions } from "../../hooks/actions";
+import { RootState } from "../../store";
 
 const ProfilePersonal = () => {
-  const { name, email, password } = useAppSelector((store) => store.auth);
-  const [isChanged, setChanged] = useState(false);
+  const { name, email, password } = useAppSelector(
+    (store: RootState) => store.auth
+  );
+  const [isChanged, setChanged] = useState<boolean>(false);
   const token = document.cookie ? getCookie("token") : "";
   const [patchUserData] = usePatchUserDataMutation();
   const { refreshUser } = useActions();
@@ -34,7 +37,7 @@ const ProfilePersonal = () => {
     } else setChanged(true);
   }, [values, name, email, password, isChanged]);
 
-  const submitForm = (event) => {
+  const submitForm = (event: FormEvent) => {
     event.preventDefault();
     const userData = {
       token,

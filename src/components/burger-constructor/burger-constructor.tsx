@@ -11,7 +11,6 @@ import { nanoid } from "nanoid";
 import { useActions } from "../../hooks/actions";
 import { IIngredient } from "../../models/models";
 import { RootState } from "../../store";
-import { useSelector } from "react-redux";
 
 interface IStore {
   selectedBun: IIngredient;
@@ -22,7 +21,7 @@ interface IStore {
 
 const BurgerConstructor = () => {
   const { selectedBun, selectedIngredients, isRequest, isRequestError } =
-    useSelector((store: RootState) => store.ingredients);
+    useAppSelector((store: RootState) => store.ingredients);
 
   const { addBun, getTotalPrice, addIngredient, updateSelectedIngredients } =
     useActions();
@@ -65,7 +64,6 @@ const BurgerConstructor = () => {
           item={item}
           index={index}
           key={item.uid}
-          // @ts-ignore
           moveCard={moveCard}
         />
       );

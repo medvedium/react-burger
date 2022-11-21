@@ -56,5 +56,5 @@ export interface ILocationState {
   from: {
     pathname: string;
   };
-  background?: string;
+  background: Location;
 }

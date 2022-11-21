@@ -1,14 +1,15 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { JSXElementConstructor, ReactElement, useEffect } from "react";
 import { Redirect, Route, useLocation } from "react-router-dom";
 import { getCookie, setCookie } from "../../utils/cookie";
 import { useAppSelector } from "../../hooks/redux";
 import { useGetUserQuery, useRefreshTokenMutation } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 import { ILocationState } from "../../models/models";
+import { RootState } from "../../store";
 
 interface ProtectedRouteProps {
-  component: ReactElement;
-  Comp: ReactElement;
+  component: ReactElement<any, string | JSXElementConstructor<any>>;
+  // Comp: ReactElement;
   path: string;
 }
 
@@ -18,7 +19,7 @@ const ProtectedRoute = ({
   ...rest
 }: ProtectedRouteProps) => {
   const location = useLocation<ILocationState>();
-  const { isAuth } = useAppSelector((state) => state.auth);
+  const { isAuth } = useAppSelector((state: RootState) => state.auth);
   const { loginSuccess, refreshUser } = useActions();
   const token = document.cookie ? getCookie("token") : "";
   const refreshToken = document.cookie ? getCookie("refreshToken") : "";
@@ -36,7 +37,12 @@ const ProtectedRoute = ({
     isGetUserSuccess && loginSuccess();
     isGetUserSuccess && refreshUser(userData);
 
-    if (!isRefreshError && !isRefreshLoading && isGetUserError) {
+    if (
+      !isRefreshError &&
+      !isRefreshLoading &&
+      isGetUserError &&
+      refreshToken
+    ) {
       refreshTokenPost(refreshToken)
         .unwrap()
         .then((res) => {
@@ -59,7 +65,6 @@ const ProtectedRoute = ({
       {...rest}
       render={(props) => {
         return isAuth ? (
-          // @ts-ignore
           <Comp {...props} />
         ) : (
           <Redirect

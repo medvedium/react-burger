@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useRef } from "react";
 import styles from "./register.module.css";
 import {
   Button,
@@ -50,7 +50,7 @@ const RegisterPage = () => {
     name: "",
   });
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
     const value = target.value;
     const { name } = target;
@@ -59,7 +59,7 @@ const RegisterPage = () => {
       [name]: value,
     });
   };
-  const register = (e) => {
+  const register = (e: FormEvent) => {
     e.preventDefault();
     registerPost(state)
       .then(() => history.replace("/login"))

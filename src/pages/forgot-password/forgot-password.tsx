@@ -3,6 +3,7 @@ import styles from "./forgot-password.module.css";
 import {
   Button,
   EmailInput,
+  Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 import { getCookie } from "../../utils/cookie";
@@ -56,10 +57,10 @@ const ForgotPasswordPage = () => {
     return (
       <form
         className={styles.forgot_password_wrap}
-        onSubmit={(e) => submitForm(e, email)}
+        onSubmit={(e: FormEvent<HTMLFormElement>) => submitForm(e, email)}
       >
         <p className="text text_type_main-medium mb-6">Восстановление пароля</p>
-        <EmailInput
+        <Input
           size={"default"}
           onChange={(e) => handleChange(e)}
           value={values.email || ""}
