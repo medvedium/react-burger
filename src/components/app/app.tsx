@@ -21,6 +21,7 @@ import Modal from "../modal/modal";
 import { useGetIngredientsQuery } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 import { ILocationState } from "../../models/models";
+import {Location} from 'history'
 
 function App() {
   const { getIngredients, getIngredientsFailed, openModal, closeModal } =
@@ -43,7 +44,7 @@ function App() {
     getIngredientsFailed,
   ]);
   const history = useHistory();
-  const location = useLocation<ILocationState>();
+  const location = useLocation<ILocationState | Location<any> | any>()
   const background = location.state && location.state.background;
 
   const ModalSwitch = () => {

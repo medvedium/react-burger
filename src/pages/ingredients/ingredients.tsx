@@ -14,7 +14,7 @@ const IngredientsPage = () => {
   const location = useLocation<ILocationState>();
   const background = location.state && location.state.background;
   useEffect(() => {
-    const neededItem = {
+    const neededItem: IIngredient = {
       ...items.filter((item) => item._id === ingredientId)[0],
     };
     setItem(neededItem);

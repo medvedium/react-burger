@@ -21,10 +21,10 @@ export const emptyIngredient: IIngredient = {
 };
 
 interface IngredientsState {
-  items: object[];
-  bun: object[];
-  sauce: object[];
-  main: object[];
+  items: IIngredient[];
+  bun: IIngredient[];
+  sauce: IIngredient[];
+  main: IIngredient[];
   isRequest: boolean;
   isRequestError: boolean;
   selectedIngredient: IIngredient;
@@ -54,6 +54,7 @@ export const ingredientsSlice = createSlice({
   reducers: {
     getIngredients(state, action: PayloadAction<IIngredient[]>) {
       state.items = action.payload;
+      // @ts-ignore
       state.bun = action.payload
         .filter((item) => {
           const type = item.type;
@@ -62,6 +63,7 @@ export const ingredientsSlice = createSlice({
         .map((item: object) => {
           return { ...item, count: 0, uid: "" };
         });
+      // @ts-ignore
       state.sauce = action.payload
         .filter((item) => {
           const type = item.type;
@@ -70,6 +72,7 @@ export const ingredientsSlice = createSlice({
         .map((item: object) => {
           return { ...item, count: 0, uid: "" };
         });
+      // @ts-ignore
       state.main = action.payload
         .filter((item) => {
           const type = item.type;
