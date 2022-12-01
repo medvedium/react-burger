@@ -15,6 +15,8 @@ const OrdersList = () => {
     }
   }, [data]);
 
+  console.log(data);
+
   return (
     <section className={`${styles.orders_list} custom-scroll`}>
 			{!!data && !!data[0] && data[0].orders.map((item: any) => <OrdersItem key={item._id} item={item}/>)}

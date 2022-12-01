@@ -4,6 +4,7 @@ import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation} from "react-router-dom";
 import {ILocationState} from "../../models/models";
 import {useAppSelector} from "../../hooks/redux";
+import moment from "moment/moment";
 
 export interface IOrder {
   _id: string;
@@ -22,6 +23,8 @@ const OrdersItem = ({item}: OrdersItemProps) => {
   const location = useLocation<ILocationState>()
 
   const {items} = useAppSelector(state => state.ingredients)
+  moment.updateLocale('ru', null)
+  const date = moment(item.createdAt).format('LLLL')
 
   return (
     <Link to={{
@@ -32,15 +35,20 @@ const OrdersItem = ({item}: OrdersItemProps) => {
         <div className={`${styles.top} mb-6`}>
           <p className="text text_type_digits-default">#{item.number}</p>
           <p className="text text_type_main-default text_color_inactive">
-            {item.createdAt.toString()}
+            {/*{item.createdAt.toString()}*/}
+            {/*  {moment().subtract(6, 'days').calendar()}*/}
+            {date.toString()}
           </p>
         </div>
-        <div className="mb-6">
+        <div className="mb-2">
           <p className="text text_type_main-medium">
             {item.name}
           </p>
         </div>
-        <div className={styles.main}>
+        {location.pathname === "/profile/orders" && <p className={`${item.status === 'done' && 'text_color_success'} text text_type_main-default`}>
+          {item.status === 'done' && 'Выполнен'}
+        </p>}
+        <div className={`${styles.main} mt-6`}>
           <div className={styles.list}>
             {item && items && item.ingredients.map((neededId, index) => {
               const find = items.find(ingr => ingr._id === neededId)
