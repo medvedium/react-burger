@@ -9,7 +9,7 @@ import { emptyIngredient } from "../../store/ingredients.slice";
 
 const IngredientsPage = () => {
   const { items } = useAppSelector((store: RootState) => store.ingredients);
-  const { ingredientId } = useParams<{ ingredientId?: string }>();
+  const { ingredientId } = useParams<{ ingredientId: string }>();
   const [item, setItem] = useState<IIngredient>(emptyIngredient);
   const location = useLocation<ILocationState>();
   const background = location.state && location.state.background;
