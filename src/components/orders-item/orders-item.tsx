@@ -4,7 +4,7 @@ import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation} from "react-router-dom";
 import {ILocationState} from "../../models/models";
 import {useAppSelector} from "../../hooks/redux";
-import moment from "moment/moment";
+import moment, {locale} from "moment/moment";
 
 export interface IOrder {
   _id: string;
@@ -23,8 +23,9 @@ const OrdersItem = ({item}: OrdersItemProps) => {
   const location = useLocation<ILocationState>()
 
   const {items} = useAppSelector(state => state.ingredients)
-  moment.updateLocale('ru', null)
-  const date = moment(item.createdAt).format('LLLL')
+  moment.locale('ru')
+  console.log(item.createdAt);
+  const date = moment(item.createdAt).format('')
 
   return (
     <Link to={{
@@ -35,9 +36,7 @@ const OrdersItem = ({item}: OrdersItemProps) => {
         <div className={`${styles.top} mb-6`}>
           <p className="text text_type_digits-default">#{item.number}</p>
           <p className="text text_type_main-default text_color_inactive">
-            {/*{item.createdAt.toString()}*/}
-            {/*  {moment().subtract(6, 'days').calendar()}*/}
-            {date.toString()}
+            {date}
           </p>
         </div>
         <div className="mb-2">
