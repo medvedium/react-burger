@@ -4,13 +4,10 @@ import styles from "./orders-list.module.css";
 import { useSubscribeToEventsQuery } from "../../store/api";
 
 const OrdersList = () => {
-  const { data, isError } = useSubscribeToEventsQuery();
+  const { data } = useSubscribeToEventsQuery();
 
-  if (isError) {
-    console.log(isError);
-  }
 
-	let orders: any = [];
+  let orders: any = [];
 
   useEffect(() => {
     if (!!data && !!data[0]) {

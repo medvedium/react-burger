@@ -134,40 +134,28 @@ export const api = createApi({
     }),
     subscribeToEvents: build.query<any, void>({
       queryFn: () => ({ data: [] }),
-
       async onCacheEntryAdded(
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
-        // create a websocket connection when the cache subscription starts
-        const ws = new WebSocket('wss://norma.nomoreparties.space/orders/all')
+        const ws = new WebSocket("wss://norma.nomoreparties.space/orders/all");
         try {
-          // wait for the initial query to resolve before proceeding
-          await cacheDataLoaded
-
-          // when data is received from the socket connection to the server,
-          // if it is a message and for the appropriate channel,
-          // update our query result with the received message
+          await cacheDataLoaded;
           const listener = (event: MessageEvent) => {
-            const data = JSON.parse(event.data)
-            // if (!isMessage(data) || data.channel !== arg) return
-
+            const data = JSON.parse(event.data);
             updateCachedData((draft) => {
-              draft = [data]
-              return draft
-            })
-          }
+              draft = [data];
+              return draft;
+            });
+          };
 
-          ws.addEventListener('message', listener)
+          ws.addEventListener("message", listener);
         } catch {
-          // no-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
-          // in which case `cacheDataLoaded` will throw
+          console.log('error')
         }
-        // cacheEntryRemoved will resolve when the cache subscription is no longer active
-        await cacheEntryRemoved
-        // perform cleanup steps once the `cacheEntryRemoved` promise resolves
-        console.log('connection closed')
-        ws.close()
+        await cacheEntryRemoved;
+        console.log("connection closed");
+        ws.close();
       },
     }),
   }),
@@ -185,5 +173,5 @@ export const {
   useGetUserQuery,
   useRefreshTokenMutation,
   usePatchUserDataMutation,
-  useSubscribeToEventsQuery
+  useSubscribeToEventsQuery,
 } = api;

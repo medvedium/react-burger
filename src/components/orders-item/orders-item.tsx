@@ -44,7 +44,12 @@ const OrdersItem = ({item}: OrdersItemProps) => {
           <div className={styles.list}>
             {item && items && item.ingredients.map((neededId, index) => {
               const find = items.find(ingr => ingr._id === neededId)
-              return <div key={index} className={styles.element}><img src={`${find?.image_mobile}`} alt={`${find?.name}`}/></div>
+              if (index < 5) {
+                return <div key={index} className={styles.element}><img src={`${find?.image_mobile}`} alt={`${find?.name}`}/></div>
+              }
+              if (index === 5) {
+                return <div key={index} className={styles.element}><img src={`${find?.image_mobile}`} alt={`${find?.name}`}/><p className="text text_type_main-default">+{item.ingredients.length - 5}</p></div>
+              }
             })}
           </div>
           <div className={styles.price}>

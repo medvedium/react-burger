@@ -10,8 +10,8 @@
   inset: 0;
   padding: 40px;
   box-sizing: border-box;
-  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 99;
 }
