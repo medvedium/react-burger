@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
-  IIngredient, IOrder,
+  IIngredient,
+  IOrder,
   IOrderResponse,
   IUser,
   IUserResponse,
   ServerResponse,
 } from "../models/models";
-import {getCookie} from "../utils/cookie";
+import { getCookie } from "../utils/cookie";
 
 export const api = createApi({
   reducerPath: "api",
@@ -26,7 +27,7 @@ export const api = createApi({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer ${getCookie('token')}`,
+          authorization: `Bearer ${getCookie("token")}`,
         },
         body: JSON.stringify({ ingredients: addedIds }),
       }),
@@ -153,7 +154,7 @@ export const api = createApi({
 
           ws.addEventListener("message", listener);
         } catch {
-          console.log('error')
+          console.log("error");
         }
         await cacheEntryRemoved;
         console.log("connection closed");
@@ -166,8 +167,10 @@ export const api = createApi({
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
-        const accessToken = getCookie('token')
-        const wsPersonal = new WebSocket(`wss://norma.nomoreparties.space/orders?token=${accessToken}`);
+        const accessToken = getCookie("token");
+        const wsPersonal = new WebSocket(
+          `wss://norma.nomoreparties.space/orders?token=${accessToken}`
+        );
         try {
           await cacheDataLoaded;
           const listener = (event: MessageEvent) => {
@@ -180,13 +183,25 @@ export const api = createApi({
 
           wsPersonal.addEventListener("message", listener);
         } catch {
-          console.log('error')
+          console.log("error");
         }
         await cacheEntryRemoved;
         console.log("connection closed");
         wsPersonal.close();
       },
     }),
+
+    // Пример из документации для отправки
+    // sendMessage: build.mutation<ChatMessage, string>({
+    //   queryFn: (chatMessageContent: string) => {
+    //     const socket = getSocket();
+    //     return new Promise(resolve => {
+    //       socket.emit(ChatEvent.SendMessage, chatMessageContent, (message: ChatMessage) => {
+    //         resolve({ data: message });
+    //       });
+    //     })
+    //   },
+    // }),
   }),
 });
 
@@ -203,5 +218,5 @@ export const {
   useRefreshTokenMutation,
   usePatchUserDataMutation,
   useGetOrdersQuery,
-  useGetPersonalOrdersQuery
+  useGetPersonalOrdersQuery,
 } = api;
