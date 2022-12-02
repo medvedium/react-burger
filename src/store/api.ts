@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
-  IIngredient,
+  IIngredient, IOrder,
   IOrderResponse,
   IUser,
   IUserResponse,
   ServerResponse,
 } from "../models/models";
+import {getCookie} from "../utils/cookie";
 
 export const api = createApi({
   reducerPath: "api",
@@ -25,6 +26,7 @@ export const api = createApi({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${getCookie('token')}`,
         },
         body: JSON.stringify({ ingredients: addedIds }),
       }),
@@ -132,7 +134,7 @@ export const api = createApi({
         }),
       }),
     }),
-    subscribeToEvents: build.query<any, void>({
+    getOrders: build.query<any, void>({
       queryFn: () => ({ data: [] }),
       async onCacheEntryAdded(
         arg,
@@ -158,6 +160,33 @@ export const api = createApi({
         ws.close();
       },
     }),
+    getPersonalOrders: build.query<any, void>({
+      queryFn: () => ({ data: [] as unknown | IOrder }),
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+      ) {
+        const accessToken = getCookie('token')
+        const wsPersonal = new WebSocket(`wss://norma.nomoreparties.space/orders?token=${accessToken}`);
+        try {
+          await cacheDataLoaded;
+          const listener = (event: MessageEvent) => {
+            const data = JSON.parse(event.data);
+            updateCachedData((draft) => {
+              draft = [data];
+              return draft;
+            });
+          };
+
+          wsPersonal.addEventListener("message", listener);
+        } catch {
+          console.log('error')
+        }
+        await cacheEntryRemoved;
+        console.log("connection closed");
+        wsPersonal.close();
+      },
+    }),
   }),
 });
 
@@ -173,5 +202,6 @@ export const {
   useGetUserQuery,
   useRefreshTokenMutation,
   usePatchUserDataMutation,
-  useSubscribeToEventsQuery,
+  useGetOrdersQuery,
+  useGetPersonalOrdersQuery
 } = api;

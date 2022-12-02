@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./orders-item.module.css";
-import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link, useLocation} from "react-router-dom";
-import {ILocationState} from "../../models/models";
-import {useAppSelector} from "../../hooks/redux";
-import moment, {locale} from "moment/moment";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Link, useLocation } from "react-router-dom";
+import { ILocationState } from "../../models/models";
+import { useAppSelector } from "../../hooks/redux";
+import moment from "moment/moment";
 
 export interface IOrder {
   _id: string;
@@ -17,21 +17,24 @@ export interface IOrder {
 }
 
 export interface OrdersItemProps {
-  item: IOrder
+  item: IOrder;
 }
-const OrdersItem = ({item}: OrdersItemProps) => {
-  const location = useLocation<ILocationState>()
+const OrdersItem = ({ item }: OrdersItemProps) => {
+  const location = useLocation<ILocationState>();
 
-  const {items} = useAppSelector(state => state.ingredients)
-  moment.locale('ru')
-  console.log(item.createdAt);
-  const date = moment(item.createdAt).format('')
+  const { items } = useAppSelector((state) => state.ingredients);
+  moment.locale("ru");
+  const date = moment(item.createdAt).format("LLLL");
+
+  
 
   return (
-    <Link to={{
-      pathname: `${location.pathname}/${item._id}`,
-      state: { background: location },
-    }}>
+    <Link
+      to={{
+        pathname: `${location.pathname}/${item._id}`,
+        state: { background: location },
+      }}
+    >
       <div className={`${styles.item} p-6 mb-4`}>
         <div className={`${styles.top} mb-6`}>
           <p className="text text_type_digits-default">#{item.number}</p>
@@ -40,28 +43,53 @@ const OrdersItem = ({item}: OrdersItemProps) => {
           </p>
         </div>
         <div className="mb-2">
-          <p className="text text_type_main-medium">
-            {item.name}
-          </p>
+          <p className="text text_type_main-medium">{item.name}</p>
         </div>
-        {location.pathname === "/profile/orders" && <p className={`${item.status === 'done' && 'text_color_success'} text text_type_main-default`}>
-          {item.status === 'done' && 'Выполнен'}
-        </p>}
+        {location.pathname === "/profile/orders" && (
+          <p
+            className={`${
+              item.status === "done" && "text_color_success"
+            } text text_type_main-default`}
+          >
+            {item.status === "created" && "Создан"}
+            {item.status === "pending" && "Готовится"}
+            {item.status === "done" && "Выполнен"}
+          </p>
+        )}
         <div className={`${styles.main} mt-6`}>
           <div className={styles.list}>
-            {item && items && item.ingredients.map((neededId, index) => {
-              const find = items.find(ingr => ingr._id === neededId)
-              if (index < 5) {
-                return <div key={index} className={styles.element}><img src={`${find?.image_mobile}`} alt={`${find?.name}`}/></div>
-              }
-              if (index === 5) {
-                return <div key={index} className={styles.element}><img src={`${find?.image_mobile}`} alt={`${find?.name}`}/><p className="text text_type_main-default">+{item.ingredients.length - 5}</p></div>
-              }
-            })}
+            {item &&
+              items &&
+              item.ingredients.map((neededId, index) => {
+                const find = items.find((ingr) => ingr._id === neededId);
+                if (index < 5) {
+                  return (
+                    <div key={index} className={styles.element}>
+                      <img
+                        src={`${find?.image_mobile}`}
+                        alt={`${find?.name}`}
+                      />
+                    </div>
+                  );
+                }
+                if (index === 5) {
+                  return (
+                    <div key={index} className={styles.element}>
+                      <img
+                        src={`${find?.image_mobile}`}
+                        alt={`${find?.name}`}
+                      />
+                      <p className="text text_type_main-default">
+                        +{item.ingredients.length - 5}
+                      </p>
+                    </div>
+                  );
+                }
+              })}
           </div>
           <div className={styles.price}>
             <p className="text text_type_digits-default mr-2">480</p>
-            <CurrencyIcon type={"primary"}/>
+            <CurrencyIcon type={"primary"} />
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from "react";
 import { Redirect, Route, useLocation } from "react-router-dom";
-import { getCookie, setCookie } from "../../utils/cookie";
+import {deleteCookie, getCookie, setCookie} from "../../utils/cookie";
 import { useAppSelector } from "../../hooks/redux";
 import { useGetUserQuery, useRefreshTokenMutation } from "../../store/api";
 import { useActions } from "../../hooks/actions";
@@ -49,6 +49,8 @@ const ProtectedRoute = ({
           if (res) {
             const authToken = res.accessToken?.split("Bearer ")[1];
             if (authToken) {
+              deleteCookie('token', getCookie("token"))
+              deleteCookie('refreshToken', getCookie("refreshToken"))
               setCookie("token", authToken);
               setCookie("refreshToken", res.refreshToken);
             }

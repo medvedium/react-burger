@@ -126,7 +126,6 @@ function App() {
                 children={
                   <Modal
                     onClose={() => handleModalClose()}
-                    header="Детали заказа"
                   >
                     <FeedDetails />
                   </Modal>

@@ -14,7 +14,7 @@ import { RootState } from "../../store";
 
 const BurgerConstructor = () => {
   const { selectedBun, selectedIngredients, isRequest, isRequestError } =
-    useAppSelector((store: RootState) => store.ingredients);
+    useAppSelector((state: RootState) => state.ingredients);
 
   const { addBun, getTotalPrice, addIngredient, updateSelectedIngredients } =
     useActions();

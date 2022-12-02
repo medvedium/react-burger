@@ -59,3 +59,20 @@ export interface ILocationState {
   };
   background: Location;
 }
+
+export interface IOrder {
+  _id: string;
+  ingredients: string[];
+  status: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  number: number;
+}
+
+export interface IOrderRequest {
+  success: boolean;
+  orders: IOrder[];
+  total: number;
+  totalToday: number;
+}

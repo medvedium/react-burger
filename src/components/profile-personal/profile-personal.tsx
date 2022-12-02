@@ -13,7 +13,7 @@ import { RootState } from "../../store";
 
 const ProfilePersonal = () => {
   const { name, email, password } = useAppSelector(
-    (store: RootState) => store.auth
+    (state: RootState) => state.auth
   );
   const [isChanged, setChanged] = useState<boolean>(false);
   const token = document.cookie ? getCookie("token") : "";
