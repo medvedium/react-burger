@@ -6,8 +6,6 @@ import { useGetPersonalOrdersQuery } from "../../store/api";
 const PersonalOrdersList = () => {
   const { data } = useGetPersonalOrdersQuery();
 
-  console.log(data);
-
   return (
     <section className={`${styles.orders_list} custom-scroll`}>
       {!!data && !!data[0] && data[0].orders?.length ? (

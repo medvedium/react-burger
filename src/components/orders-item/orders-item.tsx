@@ -1,10 +1,9 @@
 import React from "react";
 import styles from "./orders-item.module.css";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useLocation } from "react-router-dom";
 import { ILocationState } from "../../models/models";
 import { useAppSelector } from "../../hooks/redux";
-import moment from "moment/moment";
 
 export interface IOrder {
   _id: string;
@@ -21,12 +20,7 @@ export interface OrdersItemProps {
 }
 const OrdersItem = ({ item }: OrdersItemProps) => {
   const location = useLocation<ILocationState>();
-
   const { items } = useAppSelector((state) => state.ingredients);
-  moment.locale("ru");
-  const date = moment(item.createdAt).format("LLLL");
-
-  
 
   return (
     <Link
@@ -39,7 +33,7 @@ const OrdersItem = ({ item }: OrdersItemProps) => {
         <div className={`${styles.top} mb-6`}>
           <p className="text text_type_digits-default">#{item.number}</p>
           <p className="text text_type_main-default text_color_inactive">
-            {date}
+            <FormattedDate date={new Date(item.createdAt)} />
           </p>
         </div>
         <div className="mb-2">
@@ -85,6 +79,7 @@ const OrdersItem = ({ item }: OrdersItemProps) => {
                     </div>
                   );
                 }
+                return null
               })}
           </div>
           <div className={styles.price}>
