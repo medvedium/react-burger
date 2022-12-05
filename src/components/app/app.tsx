@@ -114,9 +114,7 @@ function App() {
               <Route
                 path="/feed/:id"
                 children={
-                  <Modal
-                    onClose={() => handleModalClose()}
-                  >
+                  <Modal onClose={() => handleModalClose()}>
                     <FeedDetails />
                   </Modal>
                 }
@@ -124,9 +122,7 @@ function App() {
               <Route
                 path="/profile/orders/:id"
                 children={
-                  <Modal
-                    onClose={() => handleModalClose()}
-                  >
+                  <Modal onClose={() => handleModalClose()}>
                     <FeedDetails />
                   </Modal>
                 }

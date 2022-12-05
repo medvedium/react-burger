@@ -1,6 +1,9 @@
 import React from "react";
 import styles from "./orders-item.module.css";
-import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  CurrencyIcon,
+  FormattedDate,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useLocation } from "react-router-dom";
 import { ILocationState } from "../../models/models";
 import { useAppSelector } from "../../hooks/redux";
@@ -22,11 +25,29 @@ const OrdersItem = ({ item }: OrdersItemProps) => {
   const location = useLocation<ILocationState>();
   const { items } = useAppSelector((state) => state.ingredients);
 
+  let total = 0;
+  items.map((ingr) => {
+    if (item.ingredients.indexOf(ingr._id) >= 0) {
+      let idx = item.ingredients.indexOf(ingr._id);
+      let indices = [];
+      while (idx !== -1) {
+        indices.push(idx);
+        idx = item.ingredients.indexOf(ingr._id, idx + 1);
+      }
+      if (ingr.type === "bun") {
+        total += ingr.price * 2;
+      } else {
+        total += +ingr.price * indices.length;
+      }
+    }
+    return null;
+  });
+
   return (
     <Link
       to={{
         pathname: `${location.pathname}/${item._id}`,
-        state: { background: location },
+        state: { background: location, total: total },
       }}
     >
       <div className={`${styles.item} p-6 mb-4`}>
@@ -79,11 +100,11 @@ const OrdersItem = ({ item }: OrdersItemProps) => {
                     </div>
                   );
                 }
-                return null
+                return null;
               })}
           </div>
           <div className={styles.price}>
-            <p className="text text_type_digits-default mr-2">480</p>
+            <p className="text text_type_digits-default mr-2">{total}</p>
             <CurrencyIcon type={"primary"} />
           </div>
         </div>

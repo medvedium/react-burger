@@ -1,11 +1,10 @@
 import React, { ReactElement, useEffect } from "react";
 import { Redirect, Route, useLocation } from "react-router-dom";
-import {deleteCookie, getCookie, setCookie} from "../../utils/cookie";
+import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
 import { useAppSelector } from "../../hooks/redux";
 import { useGetUserQuery, useRefreshTokenMutation } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 import { ILocationState } from "../../models/models";
-import { RootState } from "../../store";
 
 interface ProtectedRouteProps {
   component: () => ReactElement;
@@ -19,7 +18,7 @@ const ProtectedRoute = ({
   ...rest
 }: ProtectedRouteProps) => {
   const location = useLocation<ILocationState>();
-  const { isAuth } = useAppSelector((state: RootState) => state.auth);
+  const { isAuth } = useAppSelector((state) => state.auth);
   const { loginSuccess, refreshUser } = useActions();
   const token = document.cookie ? getCookie("token") : "";
   const refreshToken = document.cookie ? getCookie("refreshToken") : "";
@@ -49,8 +48,8 @@ const ProtectedRoute = ({
           if (res) {
             const authToken = res.accessToken?.split("Bearer ")[1];
             if (authToken) {
-              deleteCookie('token', getCookie("token"))
-              deleteCookie('refreshToken', getCookie("refreshToken"))
+              deleteCookie("token", getCookie("token"));
+              deleteCookie("refreshToken", getCookie("refreshToken"));
               setCookie("token", authToken);
               setCookie("refreshToken", res.refreshToken);
             }
@@ -67,7 +66,7 @@ const ProtectedRoute = ({
       {...rest}
       render={(props) => {
         return isAuth ? (
-        // @ts-ignore
+          // @ts-ignore
           <Comp {...props} />
         ) : (
           <Redirect

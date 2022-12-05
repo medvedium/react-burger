@@ -8,9 +8,3 @@
 .properties_item:not(:last-child) {
   margin-right: 20px;
 }
-
-.properties_title {
-}
-
-.properties_value {
-}

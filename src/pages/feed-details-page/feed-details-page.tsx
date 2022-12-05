@@ -1,10 +1,8 @@
-import React from 'react';
+import React from "react";
 import FeedDetails from "../../components/feed-details/feed-details";
 
 const FeedDetailsPage = () => {
-	return (
-		<FeedDetails />
-	);
+  return <FeedDetails />;
 };
 
 export default FeedDetailsPage;

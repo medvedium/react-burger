@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import OrdersItem from "../orders-item/orders-item";
 import styles from "../orders-list/orders-list.module.css";
 import { useGetPersonalOrdersQuery } from "../../store/api";
+import { useActions } from "../../hooks/actions";
 
 const PersonalOrdersList = () => {
   const { data } = useGetPersonalOrdersQuery();
+  const { addPersonalOrders } = useActions();
+
+  useEffect(() => {
+    !!data && !!data[0] && addPersonalOrders(data[0]);
+  }, [data, addPersonalOrders]);
 
   return (
     <section className={`${styles.orders_list} custom-scroll`}>

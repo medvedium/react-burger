@@ -44,7 +44,9 @@ const BurgerIngredientsItem = ({ item }: BurgerIngredientsItemProps) => {
           <p className={`${styles.name} text text_type_main-default`}>
             {item.name}
           </p>
-          {item.count > 0 && <Counter count={item.count} size="default" />}
+          {item.count && item.count > 0 && (
+            <Counter count={item.count} size="default" />
+          )}
         </div>
       </Link>
     );

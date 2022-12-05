@@ -55,14 +55,16 @@ export const ingredientsSlice = createSlice({
     getIngredients(state, action: PayloadAction<IIngredient[]>) {
       state.items = action.payload;
       // @ts-ignore
-      state.bun = action.payload
-        .filter((item) => {
-          const type = item.type;
-          return type === _BUN;
-        })
-        .map((item: object) => {
-          return { ...item, count: 0, uid: "" };
-        });
+      state.bun = [
+        ...action.payload
+          .filter((item) => {
+            const type = item.type;
+            return type === _BUN;
+          })
+          .map((item: object) => {
+            return { ...item, count: 0, uid: "" };
+          }),
+      ];
       // @ts-ignore
       state.sauce = action.payload
         .filter((item) => {
@@ -95,14 +97,14 @@ export const ingredientsSlice = createSlice({
         ...state.selectedIngredients,
         {
           ...action.payload,
-          count: action.payload.count++,
+          count: action.payload.count && action.payload.count++,
         },
       ];
       // @ts-ignore
       state[action.payload.type] = state[action.payload.type].map(
         (item: IIngredient) => {
           if (item._id === action.payload._id) {
-            return { ...item, count: item.count + 1 };
+            return { ...item, count: item.count && item.count + 1 };
           } else {
             return item;
           }
@@ -111,7 +113,6 @@ export const ingredientsSlice = createSlice({
     },
     addBun(state, action: PayloadAction<IIngredient>) {
       state.selectedBun = action.payload;
-      // @ts-ignore
       state.bun = state.bun.map((item: IIngredient) => {
         if (item._id === action.payload._id) {
           return {
@@ -134,7 +135,7 @@ export const ingredientsSlice = createSlice({
       state[action.payload.type] = state[action.payload.type].map(
         (item: IIngredient) => {
           if (item._id === action.payload._id) {
-            return { ...item, count: --item.count };
+            return { ...item, count: item.count && --item.count };
           } else {
             return item;
           }

@@ -11,7 +11,7 @@ export interface IIngredient {
   image_mobile: string;
   image_large: string;
   __v: number;
-  count: number;
+  count?: number;
   uid?: string;
   index: number;
 }
@@ -58,6 +58,7 @@ export interface ILocationState {
     pathname: string;
   };
   background: Location;
+  total?: number;
 }
 
 export interface IOrder {

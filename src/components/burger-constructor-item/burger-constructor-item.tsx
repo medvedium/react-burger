@@ -28,7 +28,11 @@ export default function BurgerConstructorItem({
   };
 
   const ref = useRef<HTMLInputElement>(null);
-  const [{ handlerId }, drop] = useDrop<IIngredient, void, { handlerId: Identifier | null }>({
+  const [{ handlerId }, drop] = useDrop<
+    IIngredient,
+    void,
+    { handlerId: Identifier | null }
+  >({
     accept: "component",
     collect(monitor) {
       return {
