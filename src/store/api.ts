@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   IIngredient,
-  IOrder,
   IOrderResponse,
   IUser,
   IUserResponse,
@@ -135,73 +134,6 @@ export const api = createApi({
         }),
       }),
     }),
-    getOrders: build.query<any, void>({
-      queryFn: () => ({ data: [] }),
-      async onCacheEntryAdded(
-        arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
-      ) {
-        const ws = new WebSocket("wss://norma.nomoreparties.space/orders/all");
-        try {
-          await cacheDataLoaded;
-          const listener = (event: MessageEvent) => {
-            const data = JSON.parse(event.data);
-            updateCachedData((draft) => {
-              draft = [data];
-              return draft;
-            });
-          };
-
-          ws.addEventListener("message", listener);
-        } catch {
-          console.log("error");
-        }
-        await cacheEntryRemoved;
-        console.log("connection closed");
-        ws.close();
-      },
-    }),
-    getPersonalOrders: build.query<any, void>({
-      queryFn: () => ({ data: [] as unknown | IOrder }),
-      async onCacheEntryAdded(
-        arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
-      ) {
-        const accessToken = getCookie("token");
-        const wsPersonal = new WebSocket(
-          `wss://norma.nomoreparties.space/orders?token=${accessToken}`
-        );
-        try {
-          await cacheDataLoaded;
-          const listener = (event: MessageEvent) => {
-            const data = JSON.parse(event.data);
-            updateCachedData((draft) => {
-              draft = [data];
-              return draft;
-            });
-          };
-
-          wsPersonal.addEventListener("message", listener);
-        } catch {
-          console.log("error");
-        }
-        await cacheEntryRemoved;
-        console.log("connection closed");
-        wsPersonal.close();
-      },
-    }),
-
-    // Пример из документации для отправки
-    // sendMessage: build.mutation<ChatMessage, string>({
-    //   queryFn: (chatMessageContent: string) => {
-    //     const socket = getSocket();
-    //     return new Promise(resolve => {
-    //       socket.emit(ChatEvent.SendMessage, chatMessageContent, (message: ChatMessage) => {
-    //         resolve({ data: message });
-    //       });
-    //     })
-    //   },
-    // }),
   }),
 });
 
@@ -217,6 +149,4 @@ export const {
   useGetUserQuery,
   useRefreshTokenMutation,
   usePatchUserDataMutation,
-  useGetOrdersQuery,
-  useGetPersonalOrdersQuery,
 } = api;

@@ -1,44 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./feed-details.module.css";
 import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import FeedDetailsItem from "../feed-details-item/feed-details-item";
-import { useLocation, useParams } from "react-router-dom";
-import { ILocationState } from "../../models/models";
+import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
-import { useGetOrdersQuery, useGetPersonalOrdersQuery } from "../../store/api";
-import { useActions } from "../../hooks/actions";
 
 const FeedDetails = () => {
-  const location = useLocation<ILocationState>();
   const { id } = useParams<{ id: string }>();
   const { items } = useAppSelector((state) => state.ingredients);
+  const { orders } = useAppSelector((state) => state.orders);
 
-  const { data: allOrders } = useGetOrdersQuery();
-  const { data: allPersonalOrders } = useGetPersonalOrdersQuery();
-  const { addOrders, addPersonalOrders } = useActions();
-  const { orders, personalOrders } = useAppSelector((state) => state.orders);
-
-  useEffect(() => {
-    if (location.pathname.includes("/feed")) {
-      !!allOrders && !!allOrders[0] && addOrders(allOrders[0]);
-    } else if (location.pathname.includes("/profile/orders")) {
-      !!allPersonalOrders &&
-        !!allPersonalOrders[0] &&
-        addPersonalOrders(allPersonalOrders[0]);
-    }
-  }, [allOrders, allPersonalOrders, addOrders, addPersonalOrders, location]);
-
-  let neededOrders;
-  if (location.pathname.includes("/feed")) {
-    neededOrders = orders;
-  } else if (location.pathname.includes("/profile/orders")) {
-    neededOrders = personalOrders;
-  }
-
-  const item = neededOrders && neededOrders.find((order) => order._id === id);
+  const item = orders && orders.find((order) => order._id === id);
 
   let total = 0;
   items.map((ingr) => {

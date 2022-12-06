@@ -1,5 +1,4 @@
 import styles from "./feed-history.module.css";
-
 import React from "react";
 import { useAppSelector } from "../../hooks/redux";
 
@@ -12,31 +11,36 @@ const FeedHistory = () => {
         <div className={`${styles.orders_ready} ${styles.orders}`}>
           <p className="text text_type_main-medium pb-6">Готовы:</p>
           <div className={styles.orders_inner}>
-            {orders.map(
-              (order, index) =>
-                order.status === "done" &&
-                index < 20 && (
-                  <p
-                    className="text text_type_digits-default text_color_success mb-2"
-                    key={index}
-                  >
-                    {order.number}
-                  </p>
-                )
-            )}
+            {orders &&
+              orders.map(
+                (order, index) =>
+                  order.status === "done" &&
+                  index < 20 && (
+                    <p
+                      className="text text_type_digits-default text_color_success mb-2"
+                      key={index}
+                    >
+                      {order.number}
+                    </p>
+                  )
+              )}
           </div>
         </div>
         <div className={`${styles.orders_ready} ${styles.orders}`}>
           <p className="text text_type_main-medium pb-6">В работе:</p>
           <div className={styles.orders_inner}>
-            {orders.map(
-              (order, index) =>
-                order.status !== "done" && (
-                  <p className="text text_type_digits-default mb-2" key={index}>
-                    {order.number}
-                  </p>
-                )
-            )}
+            {orders &&
+              orders.map(
+                (order, index) =>
+                  order.status !== "done" && (
+                    <p
+                      className="text text_type_digits-default mb-2"
+                      key={index}
+                    >
+                      {order.number}
+                    </p>
+                  )
+              )}
           </div>
         </div>
       </div>
