@@ -12,6 +12,7 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://norma.nomoreparties.space/api/",
+    // mode: "no-cors",
   }),
   endpoints: (build) => ({
     getIngredients: build.query<IIngredient[], string>({

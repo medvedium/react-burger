@@ -9,19 +9,19 @@ const socketMiddleware =
 
     return (next) => {
       return (action) => {
-        if (action.type === "ws/open") {
+        const { onMessage, open, close } = wsActions;
+
+        if (action.type === open.type) {
           socket = new WebSocket(action.payload.url);
         }
-
-        const { addOrders } = wsActions;
 
         if (socket) {
           socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            store.dispatch(addOrders(data));
+            store.dispatch(onMessage(data));
           };
 
-          if (action.type === "ws/close") {
+          if (action.type === close.type) {
             socket.close();
           }
         }

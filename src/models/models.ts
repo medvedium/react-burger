@@ -1,5 +1,4 @@
 import { wsActions } from "../store/ws.slice";
-import { ordersActions } from "../store/orders.slice";
 
 export interface IIngredient {
   _id: string;
@@ -81,4 +80,4 @@ export interface IOrderRequest {
   totalToday: number;
 }
 
-export type TWsActions = typeof wsActions & typeof ordersActions;
+export type TWsActions = typeof wsActions

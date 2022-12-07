@@ -3,7 +3,7 @@ import React from "react";
 import { useAppSelector } from "../../hooks/redux";
 
 const FeedHistory = () => {
-  const { total, totalToday, orders } = useAppSelector((state) => state.orders);
+  const { total, totalToday, orders } = useAppSelector((state) => state.ws.message);
 
   return (
     <section className={styles.history}>

@@ -4,7 +4,7 @@ import styles from "./orders-list.module.css";
 import { useAppSelector } from "../../hooks/redux";
 
 const OrdersList = () => {
-  const { orders } = useAppSelector((state) => state.orders);
+  const { orders } = useAppSelector((state) => state.ws.message);
 
   return (
     <section className={`${styles.orders_list} custom-scroll`}>

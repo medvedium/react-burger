@@ -11,7 +11,7 @@ import { useAppSelector } from "../../hooks/redux";
 const FeedDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { items } = useAppSelector((state) => state.ingredients);
-  const { orders } = useAppSelector((state) => state.orders);
+  const { orders } = useAppSelector((state) => state.ws.message);
 
   const item = orders && orders.find((order) => order._id === id);
 
