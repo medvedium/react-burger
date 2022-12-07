@@ -9,7 +9,7 @@ const OrdersList = () => {
   return (
     <section className={`${styles.orders_list} custom-scroll`}>
       {orders ? (
-        orders.map((item: any) => <OrdersItem key={item._id} item={item} />)
+        orders.map((item) => <OrdersItem key={item._id} item={item} />)
       ) : (
         <p className="text text_type_main-medium p-4">Заказов не найдено</p>
       )}

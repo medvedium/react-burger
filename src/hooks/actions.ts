@@ -5,12 +5,14 @@ import { modalActions } from "../store/modal.slice";
 import { authActions } from "../store/auth.slice";
 import { ordersActions } from "../store/orders.slice";
 import { useAppDispatch } from "../store";
+import { wsActions } from "../store/ws.slice";
 
 const actions = {
   ...ingredientsActions,
   ...burgerConstructorActions,
   ...modalActions,
   ...authActions,
+  ...wsActions,
   ...ordersActions,
 };
 

@@ -5,8 +5,14 @@ import { ingredientsReducer } from "./ingredients.slice";
 import { burgerConstructorReducer } from "./burgerConstructor.slice";
 import { modalReducer } from "./modal.slice";
 import { authReducer } from "./auth.slice";
-import { ordersReducer } from "./orders.slice";
+import { ordersActions, ordersReducer } from "./orders.slice";
 import socketMiddleware from "./socket-middleware";
+import { wsActions } from "./ws.slice";
+
+const wsArg = {
+  ...wsActions,
+  ...ordersActions,
+};
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +24,10 @@ export const store = configureStore({
     orders: ordersReducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat([api.middleware, socketMiddleware]);
+    return getDefaultMiddleware().concat([
+      api.middleware,
+      socketMiddleware(wsArg),
+    ]);
   },
 });
 

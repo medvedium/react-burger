@@ -25,18 +25,11 @@ import { ILocationState } from "../../models/models";
 import { Location } from "history";
 import FeedDetailsPage from "../../pages/feed-details-page/feed-details-page";
 import FeedDetails from "../feed-details/feed-details";
-import { getCookie } from "../../utils/cookie";
-import { _WS_URL } from "../../utils/constants";
+import OrderDetailsPage from "../../pages/order-details/order-details";
 
 function App() {
-  const {
-    getIngredients,
-    getIngredientsFailed,
-    openModal,
-    closeModal,
-    wsOpen,
-    wsClose,
-  } = useActions();
+  const { getIngredients, getIngredientsFailed, openModal, closeModal } =
+    useActions();
 
   const {
     isError: isIngredientsError,
@@ -57,17 +50,6 @@ function App() {
   const history = useHistory();
   const location = useLocation<ILocationState | Location<any> | any>();
   const background = location.state && location.state.background;
-  const accessToken = getCookie("token");
-
-  useEffect(() => {
-    if (location.pathname.includes("feed")) {
-      wsOpen(`${_WS_URL}/all`);
-    } else if (location.pathname.includes("orders")) {
-      wsOpen(`${_WS_URL}?token=${accessToken}`);
-    } else {
-      wsClose();
-    }
-  }, [location, accessToken, wsOpen, wsClose]);
 
   const ModalSwitch = () => {
     useEffect(() => {
@@ -105,7 +87,7 @@ function App() {
             <ProtectedRoute
               path="/profile/orders/:id"
               exact
-              component={FeedDetailsPage}
+              component={OrderDetailsPage}
             />
             <Route
               path="/ingredients/:ingredientId"
