@@ -1,3 +1,5 @@
+import { wsActions } from "../store/ws.slice";
+
 export interface IIngredient {
   _id: string;
   name: string;
@@ -58,4 +60,24 @@ export interface ILocationState {
     pathname: string;
   };
   background: Location;
+  total?: number;
 }
+
+export interface IOrder {
+  _id: string;
+  ingredients: string[];
+  status: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  number: number;
+}
+
+export interface IOrderRequest {
+  success: boolean;
+  orders: IOrder[];
+  total: number;
+  totalToday: number;
+}
+
+export type TWsActions = typeof wsActions

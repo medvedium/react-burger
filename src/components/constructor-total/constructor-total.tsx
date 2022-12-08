@@ -23,6 +23,7 @@ const ConstructorTotal = () => {
     return (
       selectedIngredients &&
       selectedBun && [
+        selectedBun._id,
         ...selectedIngredients.map((item) => item._id),
         selectedBun._id,
       ]

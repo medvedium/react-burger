@@ -6,11 +6,13 @@ import {
   IUserResponse,
   ServerResponse,
 } from "../models/models";
+import { getCookie } from "../utils/cookie";
 
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://norma.nomoreparties.space/api/",
+    // mode: "no-cors",
   }),
   endpoints: (build) => ({
     getIngredients: build.query<IIngredient[], string>({
@@ -25,6 +27,7 @@ export const api = createApi({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${getCookie("token")}`,
         },
         body: JSON.stringify({ ingredients: addedIds }),
       }),

@@ -16,11 +16,10 @@ import {
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
 import { ILocationState } from "../../models/models";
-import { RootState } from "../../store";
 
 const LoginPage = () => {
   const location = useLocation<ILocationState>();
-  const { isAuth } = useAppSelector((state: RootState) => state.auth);
+  const { isAuth } = useAppSelector((state) => state.auth);
   const [login] = useLoginMutation();
   const { setUser, loginSuccess, refreshUser } = useActions();
   const token = document.cookie ? getCookie("token") : "";

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IOrderResponse } from "../models/models";
 
 interface IBurgerConstructorState {
   orderName: string;
@@ -16,7 +17,7 @@ export const burgerConstructorSlice = createSlice({
   name: "ingredients",
   initialState,
   reducers: {
-    getOrderData(state, action: PayloadAction<any>) {
+    getOrderData(state, action: PayloadAction<IOrderResponse>) {
       state.orderName = action.payload.name;
       state.orderNumber = action.payload.order.number;
     },

@@ -9,12 +9,9 @@ import { useAppSelector } from "../../hooks/redux";
 import { getCookie } from "../../utils/cookie";
 import { usePatchUserDataMutation } from "../../store/api";
 import { useActions } from "../../hooks/actions";
-import { RootState } from "../../store";
 
 const ProfilePersonal = () => {
-  const { name, email, password } = useAppSelector(
-    (store: RootState) => store.auth
-  );
+  const { name, email, password } = useAppSelector((state) => state.auth);
   const [isChanged, setChanged] = useState<boolean>(false);
   const token = document.cookie ? getCookie("token") : "";
   const [patchUserData] = usePatchUserDataMutation();

@@ -95,6 +95,7 @@ export const ingredientsSlice = createSlice({
         ...state.selectedIngredients,
         {
           ...action.payload,
+          // @ts-ignore
           count: action.payload.count++,
         },
       ];
@@ -102,6 +103,7 @@ export const ingredientsSlice = createSlice({
       state[action.payload.type] = state[action.payload.type].map(
         (item: IIngredient) => {
           if (item._id === action.payload._id) {
+            // @ts-ignore
             return { ...item, count: item.count + 1 };
           } else {
             return item;
@@ -134,6 +136,7 @@ export const ingredientsSlice = createSlice({
       state[action.payload.type] = state[action.payload.type].map(
         (item: IIngredient) => {
           if (item._id === action.payload._id) {
+            // @ts-ignore
             return { ...item, count: --item.count };
           } else {
             return item;

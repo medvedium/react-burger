@@ -1,6 +1,6 @@
 import styles from "./profile-nav.module.css";
 import React from "react";
-import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
+import { NavLink, Redirect, useHistory, useLocation } from "react-router-dom";
 import { deleteCookie, getCookie } from "../../utils/cookie";
 import { useLogoutMutation } from "../../store/api";
 import { useAppSelector } from "../../hooks/redux";
@@ -31,15 +31,15 @@ const ProfileNav = () => {
       .then(() => {
         logout();
       })
-      .catch((res) => {
-        console.log(res);
+      .catch((err) => {
+        console.log(err);
       });
   };
 
   if (isAuth) {
     return (
       <div className={`${styles.profile_nav} mr-15`}>
-        <Link to="/profile">
+        <NavLink to="/profile">
           <p
             className={`${
               location.pathname === "/profile" ? "" : "text_color_inactive"
@@ -47,8 +47,8 @@ const ProfileNav = () => {
           >
             Профиль
           </p>
-        </Link>
-        <Link to="/profile/orders">
+        </NavLink>
+        <NavLink to="/profile/orders">
           <p
             className={`${
               location.pathname === "/profile/orders"
@@ -58,7 +58,7 @@ const ProfileNav = () => {
           >
             История заказов
           </p>
-        </Link>
+        </NavLink>
         <button
           className={`${styles.logout_button} mb-20`}
           onClick={handleLogout}

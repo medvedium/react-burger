@@ -17,11 +17,15 @@ import IngredientsPage from "../../pages/ingredients/ingredients";
 import PageNotFound404 from "../../pages/page-not-found-404/page-not-found-404";
 import ProtectedRoute from "../protected-route/protected-route";
 import OrdersPage from "../../pages/orders/orders";
+import FeedPage from "../../pages/feed/feed";
 import Modal from "../modal/modal";
 import { useGetIngredientsQuery } from "../../store/api";
 import { useActions } from "../../hooks/actions";
 import { ILocationState } from "../../models/models";
-import {Location} from 'history'
+import { Location } from "history";
+import FeedDetailsPage from "../../pages/feed-details-page/feed-details-page";
+import FeedDetails from "../feed-details/feed-details";
+import OrderDetailsPage from "../../pages/order-details/order-details";
 
 function App() {
   const { getIngredients, getIngredientsFailed, openModal, closeModal } =
@@ -44,7 +48,7 @@ function App() {
     getIngredientsFailed,
   ]);
   const history = useHistory();
-  const location = useLocation<ILocationState | Location<any> | any>()
+  const location = useLocation<ILocationState | Location<any> | any>();
   const background = location.state && location.state.background;
 
   const ModalSwitch = () => {
@@ -75,27 +79,56 @@ function App() {
             />
             <Route path="/reset-password" exact component={ResetPasswordPage} />
             <ProtectedRoute path="/profile" exact component={ProfilePage} />
-            <ProtectedRoute path="/profile/orders" exact component={OrdersPage} />
+            <ProtectedRoute
+              path="/profile/orders"
+              exact
+              component={OrdersPage}
+            />
+            <ProtectedRoute
+              path="/profile/orders/:id"
+              exact
+              component={OrderDetailsPage}
+            />
             <Route
               path="/ingredients/:ingredientId"
               exact
               component={IngredientsPage}
             />
+            <Route path="/feed" exact component={FeedPage} />
+            <Route path="/feed/:id" component={FeedDetailsPage} />
             <Route component={PageNotFound404} />
           </Switch>
 
           {background && (
-            <Route
-              path="/ingredients/:ingredientId"
-              children={
-                <Modal
-                  onClose={() => handleModalClose()}
-                  header="Детали ингредиента"
-                >
-                  <IngredientsPage />
-                </Modal>
-              }
-            />
+            <Switch>
+              <Route
+                path="/ingredients/:ingredientId"
+                children={
+                  <Modal
+                    onClose={() => handleModalClose()}
+                    header="Детали ингредиента"
+                  >
+                    <IngredientsPage />
+                  </Modal>
+                }
+              />
+              <Route
+                path="/feed/:id"
+                children={
+                  <Modal onClose={() => handleModalClose()}>
+                    <FeedDetails />
+                  </Modal>
+                }
+              />
+              <Route
+                path="/profile/orders/:id"
+                children={
+                  <Modal onClose={() => handleModalClose()}>
+                    <FeedDetails />
+                  </Modal>
+                }
+              />
+            </Switch>
           )}
         </main>
       </React.StrictMode>

@@ -18,13 +18,16 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser(state, action: PayloadAction<any>) {
+    setUser(state, action: PayloadAction<IAuthState>) {
       state.email = action.payload.email;
       state.name = action.payload.name;
       state.password = action.payload.password;
       state.isAuth = true;
     },
-    refreshUser(state, action: PayloadAction<any>) {
+    refreshUser(
+      state,
+      action: PayloadAction<{ user: { name: string; email: string } }>
+    ) {
       state.name = action.payload.user.name;
       state.email = action.payload.user.email;
       state.isAuth = true;

@@ -3,7 +3,7 @@ import {
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header-nav.module.css";
-import { Link, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { ILocationState } from "../../models/models";
 
 function AppHeaderNav() {
@@ -13,7 +13,7 @@ function AppHeaderNav() {
     <nav>
       <ul className={styles.navList}>
         <li className="pr-10">
-          <Link to="/" className="d-flex">
+          <NavLink to="/" className="d-flex">
             <BurgerIcon
               type={location.pathname === "/" ? "primary" : "secondary"}
             />
@@ -24,16 +24,22 @@ function AppHeaderNav() {
             >
               Конструктор
             </p>
-          </Link>
+          </NavLink>
         </li>
 
         <li>
-          <Link to="/" className="d-flex">
-            <ListIcon type={"secondary"} />
-            <p className="text text_type_main-default ml-2 text_color_inactive">
+          <NavLink to="/feed" className="d-flex" activeClassName="123">
+            <ListIcon
+              type={location.pathname === "/feed" ? "primary" : "secondary"}
+            />
+            <p
+              className={`text text_type_main-default ml-2 ${
+                location.pathname === "/feed" ? "" : "text_color_inactive"
+              }`}
+            >
               Лента заказов
             </p>
-          </Link>
+          </NavLink>
         </li>
       </ul>
     </nav>

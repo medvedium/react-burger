@@ -11,7 +11,7 @@ import { useActions } from "../../hooks/actions";
 
 const HomePage = () => {
   const { orderName, orderNumber, modalIsOpen } = useAppSelector(
-    (store) => store.burgerConstructor
+    (state) => state.burgerConstructor
   );
 
   const { closeOrderModal } = useActions();

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import styles from "../../components/ingredient-details/ingredient-details.module.css";
+import styles from "./ingredients.module.css";
 import IngredientDetailsProperties from "../../components/ingredient-details-properties/ingredient-details-properties";
 import { useLocation, useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
 import { IIngredient, ILocationState } from "../../models/models";
-import { RootState } from "../../store";
 import { emptyIngredient } from "../../store/ingredients.slice";
 
 const IngredientsPage = () => {
-  const { items } = useAppSelector((store: RootState) => store.ingredients);
-  const { ingredientId } = useParams<{ ingredientId?: string }>();
+  const { items } = useAppSelector((state) => state.ingredients);
+  const { ingredientId } = useParams<{ ingredientId: string }>();
   const [item, setItem] = useState<IIngredient>(emptyIngredient);
   const location = useLocation<ILocationState>();
   const background = location.state && location.state.background;
