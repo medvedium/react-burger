@@ -7,7 +7,7 @@ interface IBurgerConstructorState {
   modalIsOpen: boolean;
 }
 
-const initialState: IBurgerConstructorState = {
+export const initialState: IBurgerConstructorState = {
   orderName: "",
   orderNumber: 0,
   modalIsOpen: false,
@@ -20,6 +20,10 @@ export const burgerConstructorSlice = createSlice({
     getOrderData(state, action: PayloadAction<IOrderResponse>) {
       state.orderName = action.payload.name;
       state.orderNumber = action.payload.order.number;
+    },
+    resetOrderModal(state) {
+      state.orderName = "";
+      state.orderNumber = 0;
     },
     openOrderModal(state) {
       state.modalIsOpen = true;

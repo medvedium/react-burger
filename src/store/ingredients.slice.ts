@@ -34,7 +34,7 @@ interface IngredientsState {
   total: number;
 }
 
-const initialState: IngredientsState = {
+export const initialState: IngredientsState = {
   items: [],
   bun: [],
   sauce: [],

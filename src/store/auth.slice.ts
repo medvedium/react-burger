@@ -7,7 +7,7 @@ interface IAuthState {
   isAuth: boolean;
 }
 
-const initialState: IAuthState = {
+export const initialState: IAuthState = {
   name: "",
   email: "",
   password: "",
