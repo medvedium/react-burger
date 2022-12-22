@@ -12,4 +12,5 @@ export const EMAIL_INPUT = "[data-testid=email-input]";
 export const PASSWORD_INPUT = "[data-testid=password-input]";
 export const LOGIN_INPUT = "[data-testid=login-input]";
 export const ORDER_BTN = "[data-testid=burger-constructor-order]";
+export const AUTH_BTN = "[data-testid=burger-constructor-auth]";
 export const ORDER_NUMBER = "[data-testid=order-details-number]";

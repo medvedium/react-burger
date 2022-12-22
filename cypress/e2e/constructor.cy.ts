@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 // @ts-check
 import {
+  AUTH_BTN,
   BASE_URL,
   BUN,
   CLOSE_BTN,
@@ -55,7 +56,7 @@ describe("Constructor", () => {
     cy.get("@constructor").trigger("drop");
     cy.get("@main").trigger("dragstart");
     cy.get("@constructor").trigger("drop");
-    cy.get(CONSTRUCTOR).click();
+    cy.get(AUTH_BTN).click();
     cy.get(EMAIL_INPUT).type(EMAIL);
     cy.get(PASSWORD_INPUT).type(PASSWORD);
     cy.get(LOGIN_INPUT).click();
@@ -72,7 +73,7 @@ describe("Constructor", () => {
     cy.get("@constructor").trigger("drop");
     cy.get("@main").trigger("dragstart");
     cy.get("@constructor").trigger("drop");
-    cy.get(CONSTRUCTOR).click();
+    cy.get(AUTH_BTN).click();
     cy.get(EMAIL_INPUT).type(EMAIL);
     cy.get(PASSWORD_INPUT).type(PASSWORD);
     cy.get(LOGIN_INPUT).click();
