@@ -73,6 +73,7 @@ const BurgerConstructor = () => {
       <section
         className={`${styles.section} ${isHover ? styles.hovered : ""}`}
         ref={ingredientDropTarget}
+        data-testid="burger-constructor"
       >
         <div className={"pl-8"}>
           <ConstructorElement

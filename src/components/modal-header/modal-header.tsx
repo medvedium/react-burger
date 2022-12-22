@@ -12,7 +12,11 @@ const ModalHeader = ({ header, onClose }: ModalProps) => {
   return (
     <div className={styles.modal_header}>
       <p className="text text_type_main-large">{header}</p>
-      <div className={styles.modal_close} onClick={onClose}>
+      <div
+        className={styles.modal_close}
+        onClick={onClose}
+        data-testid="modal-close-button"
+      >
         <CloseIcon type="primary" />
       </div>
     </div>

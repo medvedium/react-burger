@@ -58,6 +58,9 @@ const ConstructorTotal = () => {
           type="primary"
           size="large"
           onClick={() => handleOrder()}
+          data-testid={
+            isAuth ? "burger-constructor-order" : "burger-constructor-auth"
+          }
         >
           {isLoading ? "Оформляется..." : "Оформить заказ"}
         </Button>

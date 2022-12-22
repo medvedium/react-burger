@@ -13,7 +13,12 @@ const OrderDetails = ({ name, number }: OrderDetailsProps) => {
   else
     return (
       <div className={styles.order_details}>
-        <p className="text text_type_digits-large mb-8">{number}</p>
+        <p
+          className="text text_type_digits-large mb-8"
+          data-testid="order-details-number"
+        >
+          {number}
+        </p>
         <p className={`${styles.order_name} text text_type_main-medium mb-15`}>
           {name}
         </p>

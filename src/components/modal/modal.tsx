@@ -25,7 +25,7 @@ const Modal = ({ header, onClose, children }: ModalProps) => {
 
   return (
     <ModalOverlay onClose={onClose}>
-      <div className={styles.container}>
+      <div className={styles.container} data-testid="modal">
         <ModalHeader onClose={onClose} header={header} />
         {children}
       </div>

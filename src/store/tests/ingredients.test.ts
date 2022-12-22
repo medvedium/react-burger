@@ -16,187 +16,90 @@ const {
   resetConstructor,
 } = ingredientsActions;
 
+const sauceItem = {
+  calories: 99,
+  carbohydrates: 42,
+  fat: 24,
+  image: "https://code.s3.yandex.net/react/code/sauce-03.png",
+  image_large: "https://code.s3.yandex.net/react/code/sauce-03-large.png",
+  image_mobile: "https://code.s3.yandex.net/react/code/sauce-03-mobile.png",
+  name: "Соус традиционный галактический",
+  price: 15,
+  proteins: 42,
+  type: "sauce",
+  __v: 0,
+  _id: "60d3b41abdacab0026a733ce",
+  index: 0,
+  count: 0,
+  uid: "",
+};
+
+const mainItem = {
+  calories: 420,
+  carbohydrates: 33,
+  fat: 244,
+  image: "https://code.s3.yandex.net/react/code/meat-02.png",
+  image_large: "https://code.s3.yandex.net/react/code/meat-02-large.png",
+  image_mobile: "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
+  name: "Мясо бессмертных моллюсков Protostomia",
+  price: 1337,
+  proteins: 433,
+  type: "main",
+  __v: 0,
+  _id: "60d3b41abdacab0026a733c9",
+  count: 0,
+  index: 0,
+  uid: "",
+};
+
+const bunItem = {
+  calories: 420,
+  carbohydrates: 53,
+  fat: 24,
+  image: "https://code.s3.yandex.net/react/code/bun-02.png",
+  image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
+  image_mobile: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+  name: "Краторная булка N-200i",
+  price: 1255,
+  proteins: 80,
+  type: "bun",
+  __v: 0,
+  _id: "60d3b41abdacab0026a733c6",
+  count: 0,
+  index: 0,
+  uid: "",
+};
+
+const bunItemSecond = {
+  _id: "60d3b41abdacab0026a733c7",
+  name: "Флюоресцентная булка R2-D3",
+  type: "bun",
+  proteins: 44,
+  fat: 26,
+  carbohydrates: 85,
+  calories: 643,
+  price: 988,
+  image: "https://code.s3.yandex.net/react/code/bun-01.png",
+  image_mobile: "https://code.s3.yandex.net/react/code/bun-01-mobile.png",
+  image_large: "https://code.s3.yandex.net/react/code/bun-01-large.png",
+  __v: 0,
+  count: 0,
+  uid: "",
+};
+
 describe("RTK ingredients store", () => {
   it("Ingredients should be added to store", () => {
     expect(
       ingredientsReducer(
         initialState,
-        getIngredients([
-          {
-            calories: 99,
-            carbohydrates: 42,
-            fat: 24,
-            image: "https://code.s3.yandex.net/react/code/sauce-03.png",
-            image_large:
-              "https://code.s3.yandex.net/react/code/sauce-03-large.png",
-            image_mobile:
-              "https://code.s3.yandex.net/react/code/sauce-03-mobile.png",
-            name: "Соус традиционный галактический",
-            price: 15,
-            proteins: 42,
-            type: "sauce",
-            __v: 0,
-            _id: "60d3b41abdacab0026a733ce",
-            index: 0,
-            count: 0,
-          },
-          {
-            calories: 420,
-            carbohydrates: 33,
-            fat: 244,
-            image: "https://code.s3.yandex.net/react/code/meat-02.png",
-            image_large:
-              "https://code.s3.yandex.net/react/code/meat-02-large.png",
-            image_mobile:
-              "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-            name: "Мясо бессмертных моллюсков Protostomia",
-            price: 1337,
-            proteins: 433,
-            type: "main",
-            __v: 0,
-            _id: "60d3b41abdacab0026a733c9",
-            count: 0,
-            index: 0,
-          },
-          {
-            calories: 420,
-            carbohydrates: 53,
-            fat: 24,
-            image: "https://code.s3.yandex.net/react/code/bun-02.png",
-            image_large:
-              "https://code.s3.yandex.net/react/code/bun-02-large.png",
-            image_mobile:
-              "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-            name: "Краторная булка N-200i",
-            price: 1255,
-            proteins: 80,
-            type: "bun",
-            __v: 0,
-            _id: "60d3b41abdacab0026a733c6",
-            count: 0,
-            index: 0,
-          },
-        ])
+        getIngredients([sauceItem, mainItem, bunItem])
       )
     ).toEqual({
       ...initialState,
-      items: [
-        {
-          calories: 99,
-          carbohydrates: 42,
-          fat: 24,
-          image: "https://code.s3.yandex.net/react/code/sauce-03.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/sauce-03-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/sauce-03-mobile.png",
-          name: "Соус традиционный галактический",
-          price: 15,
-          proteins: 42,
-          type: "sauce",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733ce",
-          index: 0,
-          count: 0,
-        },
-        {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
-          count: 0,
-          index: 0,
-        },
-        {
-          calories: 420,
-          carbohydrates: 53,
-          fat: 24,
-          image: "https://code.s3.yandex.net/react/code/bun-02.png",
-          image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-          name: "Краторная булка N-200i",
-          price: 1255,
-          proteins: 80,
-          type: "bun",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c6",
-          count: 0,
-          index: 0,
-        },
-      ],
-      sauce: [
-        {
-          calories: 99,
-          carbohydrates: 42,
-          fat: 24,
-          image: "https://code.s3.yandex.net/react/code/sauce-03.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/sauce-03-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/sauce-03-mobile.png",
-          name: "Соус традиционный галактический",
-          price: 15,
-          proteins: 42,
-          type: "sauce",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733ce",
-          index: 0,
-          count: 0,
-          uid: "",
-        },
-      ],
-      main: [
-        {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
-          count: 0,
-          index: 0,
-          uid: "",
-        },
-      ],
-      bun: [
-        {
-          calories: 420,
-          carbohydrates: 53,
-          fat: 24,
-          image: "https://code.s3.yandex.net/react/code/bun-02.png",
-          image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-          name: "Краторная булка N-200i",
-          price: 1255,
-          proteins: 80,
-          type: "bun",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c6",
-          count: 0,
-          index: 0,
-          uid: "",
-        },
-      ],
+      items: [sauceItem, mainItem, bunItem],
+      sauce: [sauceItem],
+      main: [mainItem],
+      bun: [bunItem],
       isRequest: false,
     });
   });
@@ -210,207 +113,46 @@ describe("RTK ingredients store", () => {
   it("Should add selected bun", () => {
     let state: typeof initialState = {
       ...initialState,
-      bun: [
-        {
-          _id: "60d3b41abdacab0026a733c6",
-          name: "Краторная булка N-200i",
-          type: "bun",
-          proteins: 80,
-          fat: 24,
-          carbohydrates: 53,
-          calories: 420,
-          price: 1255,
-          image: "https://code.s3.yandex.net/react/code/bun-02.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-          image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
-          __v: 0,
-          count: 0,
-          uid: "",
-        },
-        {
-          _id: "60d3b41abdacab0026a733c7",
-          name: "Флюоресцентная булка R2-D3",
-          type: "bun",
-          proteins: 44,
-          fat: 26,
-          carbohydrates: 85,
-          calories: 643,
-          price: 988,
-          image: "https://code.s3.yandex.net/react/code/bun-01.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/bun-01-mobile.png",
-          image_large: "https://code.s3.yandex.net/react/code/bun-01-large.png",
-          __v: 0,
-          count: 0,
-          uid: "",
-        },
-      ],
+      bun: [bunItem, bunItemSecond],
     };
-    expect(
-      ingredientsReducer(
-        state,
-        addBun({
-          _id: "60d3b41abdacab0026a733c6",
-          name: "Краторная булка N-200i",
-          type: "bun",
-          proteins: 80,
-          fat: 24,
-          carbohydrates: 53,
-          calories: 420,
-          price: 1255,
-          image: "https://code.s3.yandex.net/react/code/bun-02.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-          image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
-          __v: 0,
-          count: 0,
-          uid: "",
-        })
-      )
-    ).toEqual({
+    expect(ingredientsReducer(state, addBun(bunItem))).toEqual({
       ...state,
       bun: [
         {
-          _id: "60d3b41abdacab0026a733c6",
-          name: "Краторная булка N-200i",
-          type: "bun",
-          proteins: 80,
-          fat: 24,
-          carbohydrates: 53,
-          calories: 420,
-          price: 1255,
-          image: "https://code.s3.yandex.net/react/code/bun-02.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-          image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
-          __v: 0,
+          ...bunItem,
           count: 2,
-          uid: "",
         },
-        {
-          _id: "60d3b41abdacab0026a733c7",
-          name: "Флюоресцентная булка R2-D3",
-          type: "bun",
-          proteins: 44,
-          fat: 26,
-          carbohydrates: 85,
-          calories: 643,
-          price: 988,
-          image: "https://code.s3.yandex.net/react/code/bun-01.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/bun-01-mobile.png",
-          image_large: "https://code.s3.yandex.net/react/code/bun-01-large.png",
-          __v: 0,
-          count: 0,
-          uid: "",
-        },
+        bunItemSecond,
       ],
-      selectedBun: {
-        _id: "60d3b41abdacab0026a733c6",
-        name: "Краторная булка N-200i",
-        type: "bun",
-        proteins: 80,
-        fat: 24,
-        carbohydrates: 53,
-        calories: 420,
-        price: 1255,
-        image: "https://code.s3.yandex.net/react/code/bun-02.png",
-        image_mobile: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-        image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
-        __v: 0,
-        count: 0,
-        uid: "",
-      },
+      selectedBun: bunItem,
     });
   });
 
   it("Should add selected ingredient", () => {
     let state: typeof initialState = {
       ...initialState,
-      main: [
-        {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
-          count: 0,
-          index: 0,
-        },
-      ],
+      main: [mainItem],
     };
     expect(
       ingredientsReducer(
         state,
         addIngredient({
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
+          ...mainItem,
           count: 1,
-          index: 0,
         })
       )
     ).toEqual({
       ...state,
       main: [
         {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
+          ...mainItem,
           count: 1,
-          index: 0,
         },
       ],
       selectedIngredients: [
         {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
+          ...mainItem,
           count: 1,
-          index: 0,
         },
       ],
     });
@@ -421,61 +163,18 @@ describe("RTK ingredients store", () => {
       ...initialState,
       main: [
         {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
+          ...mainItem,
           count: 2,
-          index: 0,
         },
       ],
       selectedIngredients: [
         {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
+          ...mainItem,
           count: 2,
-          index: 0,
           uid: "7Bwr2128",
         },
         {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
-          count: 0,
-          index: 0,
+          ...mainItem,
           uid: "7Bwr6439",
         },
       ],
@@ -484,22 +183,8 @@ describe("RTK ingredients store", () => {
       ingredientsReducer(
         state,
         removeIngredient({
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
+          ...mainItem,
           count: 1,
-          index: 0,
           uid: "7Bwr2128",
         })
       )
@@ -507,42 +192,13 @@ describe("RTK ingredients store", () => {
       ...state,
       main: [
         {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
+          ...mainItem,
           count: 1,
-          index: 0,
         },
       ],
       selectedIngredients: [
         {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
-          count: 0,
-          index: 0,
+          ...mainItem,
           uid: "7Bwr6439",
         },
       ],
@@ -566,42 +222,8 @@ describe("RTK ingredients store", () => {
   it("Get total price should got", () => {
     let state: typeof initialState = {
       ...initialState,
-      selectedIngredients: [
-        {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
-          count: 0,
-          index: 0,
-        },
-      ],
-      selectedBun: {
-        calories: 420,
-        carbohydrates: 53,
-        fat: 24,
-        image: "https://code.s3.yandex.net/react/code/bun-02.png",
-        image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
-        image_mobile: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-        name: "Краторная булка N-200i",
-        price: 1255,
-        proteins: 80,
-        type: "bun",
-        __v: 0,
-        _id: "60d3b41abdacab0026a733c6",
-        count: 0,
-        index: 0,
-      },
+      selectedIngredients: [mainItem],
+      selectedBun: bunItem,
       total: 0,
     };
     expect(ingredientsReducer(state, getTotalPrice)).toEqual({
@@ -613,127 +235,16 @@ describe("RTK ingredients store", () => {
   it("Should update selected ingredients", () => {
     let state: typeof initialState = {
       ...initialState,
-      selectedIngredients: [
-        {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
-          count: 0,
-          index: 0,
-        },
-        {
-          calories: 99,
-          carbohydrates: 42,
-          fat: 24,
-          image: "https://code.s3.yandex.net/react/code/sauce-03.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/sauce-03-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/sauce-03-mobile.png",
-          name: "Соус традиционный галактический",
-          price: 15,
-          proteins: 42,
-          type: "sauce",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733ce",
-          index: 0,
-          count: 0,
-        },
-      ],
+      selectedIngredients: [mainItem, sauceItem],
     };
     expect(
       ingredientsReducer(
         state,
-        updateSelectedIngredients([
-          {
-            calories: 99,
-            carbohydrates: 42,
-            fat: 24,
-            image: "https://code.s3.yandex.net/react/code/sauce-03.png",
-            image_large:
-              "https://code.s3.yandex.net/react/code/sauce-03-large.png",
-            image_mobile:
-              "https://code.s3.yandex.net/react/code/sauce-03-mobile.png",
-            name: "Соус традиционный галактический",
-            price: 15,
-            proteins: 42,
-            type: "sauce",
-            __v: 0,
-            _id: "60d3b41abdacab0026a733ce",
-            index: 0,
-            count: 0,
-          },
-          {
-            calories: 420,
-            carbohydrates: 33,
-            fat: 244,
-            image: "https://code.s3.yandex.net/react/code/meat-02.png",
-            image_large:
-              "https://code.s3.yandex.net/react/code/meat-02-large.png",
-            image_mobile:
-              "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-            name: "Мясо бессмертных моллюсков Protostomia",
-            price: 1337,
-            proteins: 433,
-            type: "main",
-            __v: 0,
-            _id: "60d3b41abdacab0026a733c9",
-            count: 0,
-            index: 0,
-          },
-        ])
+        updateSelectedIngredients([sauceItem, mainItem])
       )
     ).toEqual({
       ...state,
-      selectedIngredients: [
-        {
-          calories: 99,
-          carbohydrates: 42,
-          fat: 24,
-          image: "https://code.s3.yandex.net/react/code/sauce-03.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/sauce-03-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/sauce-03-mobile.png",
-          name: "Соус традиционный галактический",
-          price: 15,
-          proteins: 42,
-          type: "sauce",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733ce",
-          index: 0,
-          count: 0,
-        },
-        {
-          calories: 420,
-          carbohydrates: 33,
-          fat: 244,
-          image: "https://code.s3.yandex.net/react/code/meat-02.png",
-          image_large:
-            "https://code.s3.yandex.net/react/code/meat-02-large.png",
-          image_mobile:
-            "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
-          name: "Мясо бессмертных моллюсков Protostomia",
-          price: 1337,
-          proteins: 433,
-          type: "main",
-          __v: 0,
-          _id: "60d3b41abdacab0026a733c9",
-          count: 0,
-          index: 0,
-        },
-      ],
+      selectedIngredients: [sauceItem, mainItem],
     });
   });
 });

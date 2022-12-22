@@ -27,7 +27,12 @@ const IngredientsPage = () => {
       )}
 
       <img src={item.image_large} alt={item.name} className="mb-4" />
-      <p className="text text_type_main-medium mb-8">{item.name}</p>
+      <p
+        className="text text_type_main-medium mb-8"
+        data-testid="ingredient-details-name"
+      >
+        {item.name}
+      </p>
       <IngredientDetailsProperties ingredient={item} />
     </div>
   );
