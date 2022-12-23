@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <ErrorBoundary>
-      <BrowserRouter>
+      <BrowserRouter basename={"/react-burger"}>
         <App />
       </BrowserRouter>
     </ErrorBoundary>

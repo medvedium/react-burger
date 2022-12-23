@@ -53,13 +53,15 @@ export default function BurgerConstructorItem({
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
       const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      if (dragIndex && dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      if (dragIndex && dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-      moveCard(dragIndex, hoverIndex);
+      if (dragIndex) {
+        moveCard(dragIndex, hoverIndex);
+      }
       item.index = hoverIndex;
     },
   });

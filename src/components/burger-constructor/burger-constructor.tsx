@@ -29,6 +29,7 @@ const BurgerConstructor = () => {
         newItem.uid = nanoid(8);
         addIngredient(newItem);
         getTotalPrice();
+        console.log(newItem);
       }
     },
     collect: (monitor) => ({
@@ -72,6 +73,7 @@ const BurgerConstructor = () => {
       <section
         className={`${styles.section} ${isHover ? styles.hovered : ""}`}
         ref={ingredientDropTarget}
+        data-testid="burger-constructor"
       >
         <div className={"pl-8"}>
           <ConstructorElement

@@ -13,9 +13,9 @@ export interface IIngredient {
   image_mobile: string;
   image_large: string;
   __v: number;
-  count: number;
+  count?: number;
   uid?: string;
-  index: number;
+  index?: number;
 }
 
 export interface IUser {
@@ -37,14 +37,14 @@ export interface ServerResponse {
   data: IIngredient[];
 }
 
-export interface IOrder {
+export interface IOrderResponseItem {
   number: number;
 }
 
 export interface IOrderResponse {
   success: boolean;
   name: string;
-  order: IOrder;
+  order: IOrderResponseItem;
 }
 
 export interface IUserResponse {
@@ -80,4 +80,4 @@ export interface IOrderRequest {
   totalToday: number;
 }
 
-export type TWsActions = typeof wsActions
+export type TWsActions = typeof wsActions;

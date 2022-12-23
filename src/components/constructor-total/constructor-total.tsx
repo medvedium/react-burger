@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
 import { useActions } from "../../hooks/actions";
 import { usePostOrderDataMutation } from "../../store/api";
-import Loader from "../loader/loader";
 
 const ConstructorTotal = () => {
   const [makeOrder, { isLoading, isError }] = usePostOrderDataMutation();
@@ -17,7 +16,8 @@ const ConstructorTotal = () => {
   const { selectedIngredients, selectedBun, total } = useAppSelector(
     (state) => state.ingredients
   );
-  const { resetConstructor, getOrderData, openOrderModal } = useActions();
+  const { resetConstructor, getOrderData, openOrderModal, resetOrderModal } =
+    useActions();
 
   const addedIds = useMemo(() => {
     return (
@@ -34,11 +34,12 @@ const ConstructorTotal = () => {
     if (isAuth) {
       if (selectedBun._id && selectedIngredients.length) {
         resetConstructor();
+        resetOrderModal();
+        openOrderModal();
         makeOrder(addedIds)
           .unwrap()
           .then((res) => {
             getOrderData(res);
-            openOrderModal();
           });
       }
     } else if (!isAuth) {
@@ -46,8 +47,7 @@ const ConstructorTotal = () => {
     }
   };
 
-  if (isLoading) return <Loader />;
-  else if (isError) return <p>Ошибка</p>;
+  if (isError) return <p>Ошибка</p>;
   else
     return (
       <div className={`${styles.total_block} mt-10`}>
@@ -58,8 +58,11 @@ const ConstructorTotal = () => {
           type="primary"
           size="large"
           onClick={() => handleOrder()}
+          data-testid={
+            isAuth ? "burger-constructor-order" : "burger-constructor-auth"
+          }
         >
-          Оформить заказ
+          {isLoading ? "Оформляется..." : "Оформить заказ"}
         </Button>
       </div>
     );

@@ -4,7 +4,7 @@ interface IModalState {
   modalIsOpen: boolean;
 }
 
-const initialState: IModalState = {
+export const initialState: IModalState = {
   modalIsOpen: false,
 };
 

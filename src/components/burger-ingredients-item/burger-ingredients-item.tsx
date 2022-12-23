@@ -34,6 +34,7 @@ const BurgerIngredientsItem = ({ item }: BurgerIngredientsItemProps) => {
           state: { background: location },
         }}
         key={ingredientId}
+        data-testid={`ingredient-cart-${ingredientId}`}
       >
         <div className={styles.card} ref={dragRef}>
           <img src={item.image} alt={item.name} />
