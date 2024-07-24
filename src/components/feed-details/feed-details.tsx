@@ -1,12 +1,11 @@
-import React from "react";
-import styles from "./feed-details.module.css";
 import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import FeedDetailsItem from "../feed-details-item/feed-details-item";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
+import FeedDetailsItem from "../feed-details-item/feed-details-item";
+import styles from "./feed-details.module.css";
 
 const FeedDetails = () => {
   const { id } = useParams<{ id: string }>();

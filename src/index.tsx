@@ -1,12 +1,11 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
-import "./normalize.css";
-import "./index.css";
-import App from "./components/app/app";
-import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import ErrorBoundary from "./components/error-boundary/error-boundary";
 import { BrowserRouter } from "react-router-dom";
+import App from "./components/app/app";
+import ErrorBoundary from "./components/error-boundary/error-boundary";
+import "./index.css";
+import "./normalize.css";
+import reportWebVitals from "./reportWebVitals";
 import { store } from "./store";
 
 const root = ReactDOM.createRoot(
